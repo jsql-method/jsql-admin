@@ -1,0 +1,36 @@
+<div class="notificationsComponent" aria-live="polite" aria-atomic="true">
+  <div>
+    <div
+      class="toast"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      ng-repeat="notification in vm.notifications track by $index"
+    >
+      <div class="toast-header">
+        <div
+          ng-switch="notification.type"
+          class="type {{ notification.type }} mr-2"
+        >
+          <i class="ion ion-ios-checkmark" ng-switch-when="success"></i>
+          <i class="ion ion-ios-close" ng-switch-when="error"></i>
+          <i class="ion ion-ios-information" ng-switch-when="info"></i>
+        </div>
+
+        <strong class="mr-auto">{{ notification.title }}</strong>
+        <small class="text-muted">{{
+          vm.getTimeText(notification.minutes)
+        }}</small>
+        <button
+          type="button"
+          class="ml-2 mb-1 close"
+          ng-click="vm.remove(notification)"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body" ng-bind-html="notification.message"></div>
+    </div>
+  </div>
+</div>

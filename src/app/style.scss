@@ -1,0 +1,486 @@
+/*
+    DEMO STYLE
+*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #fafafa;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.navbar {
+  padding: 15px 10px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ddd;
+  margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #ffffff0f;
+}
+
+a.download {
+  background: #fff;
+  color: #7386D5;
+}
+
+a.article,
+a.article:hover {
+  background: #6d7fcc !important;
+  color: #fff !important;
+}
+
+.description-overflow {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 10px;
+}
+
+.underline-title-card {
+  background-color: rgba(41, 41, 41, 0.51);
+  height: 1px;
+  margin-bottom: 15px;
+}
+
+
+/* ---------------------------------------------------
+    ICONS
+----------------------------------------------------- */
+
+.icon-documentation {
+  background-image: url('../images/icons/docs.png');
+}
+
+.icon-profile {
+  background-image: url('../images/icons/profile.png');
+}
+
+.icon-admins {
+  background-image: url('../images/icons/admins.png');
+}
+
+.icon-applications {
+  background-image: url('../images/icons/applications.png');
+}
+
+.icon-builds {
+  background-image: url('../images/icons/builds.png');
+}
+
+.icon-traffic {
+  background-image: url('../images/icons/traffic.png');
+}
+
+.icon-team {
+  background-image: url('../images/icons/my_team.png');
+}
+
+.icon-developer-key {
+  background-image: url('../images/icons/developer_key.png');
+}
+
+.icon-queries {
+  background-image: url('../images/icons/sql_queries.png');
+}
+
+.icon-security {
+  background-image: url('../images/icons/options.png');
+}
+
+.icon-billing {
+  background-image: url('../images/icons/billing.png');
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+  width: 100%;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+.btn-info {
+  color: #fff;
+  background-color: #0c7abd;
+  border-color: #0b7abc;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -250px;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+  #sidebarCollapse span {
+    display: none;
+  }
+}
+
+.profileController .avatar {
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: 80px;
+  background-color: #d0d0d0;
+  display: flex;
+  width: 100px;
+  margin-right: 1rem;
+}
+
+.profileController .avatar-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+
+.buildsController .stats .col {
+  padding: 1rem;
+  flex-direction: column;
+  display: flex;
+  width: 25%;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(10,124,190,1) 0%, rgba(23,109,179,1) 100%);
+  color: #fff;
+  /* margin: 0 0.25rem; */
+  flex: 0 0 23%;
+  max-width: 23%;
+}
+
+.buildsController .stats .col:not(:last-child){
+  margin-right: 0.25rem;
+}
+
+.buildsController .stats .col span {
+  display: flex;
+}
+
+.buildsController .stats .col span:nth-child(1){
+  padding: 1rem;
+  /* width: 100%; */
+}
+
+.buildsController .stats .col span:nth-child(2){
+  padding: 0;
+}
+
+.buildsController .stats .col span:nth-child(3){padding-top: 1rem;font-size: 2rem;}
+
+
+/* ---------------------------------------------------
+    FIELD INPUT
+----------------------------------------------------- */
+
+.field,
+.field_danger {
+  --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
+}
+
+.field__input,
+.field_danger__input {
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  font-family: inherit;
+  font-size: 1em;
+}
+
+.field__input:focus::-webkit-input-placeholder,
+.field_danger__input:focus::-webkit-input-placeholder {
+  color: var(--uiFieldPlaceholderColor);
+}
+
+.field__input:focus::-moz-placeholder,
+.field_danger:focus::-moz-placeholder {
+  color: var(--uiFieldPlaceholderColor);
+  opacity: 1;
+}
+
+/*
+=====
+LEVEL 2. CORE STYLES
+=====
+*/
+
+.a-field,
+.b-field {
+  display: inline-block;
+}
+
+.a-field__input,
+.b-field__input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.a-field__input:focus,
+.b-field__input:focus {
+  outline: none;
+}
+
+/*
+=====
+LEVEL 3. PRESENTATION STYLES
+=====
+*/
+
+/* a-field b-field */
+
+.a-field,
+.b-field {
+  --uiFieldHeight: var(--fieldHeight, 25px);
+  --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+  --uiFieldBorderColor: var(--fieldBorderColor);
+
+  --uiFieldFontSize: var(--fieldFontSize, 1em);
+  --uiFieldHintFontSize: var(--fieldHintFontSize, 1em);
+
+  --uiFieldPaddingRight: var(--fieldPaddingRight, 1px);
+  --uiFieldPaddingBottom: var(--fieldPaddingBottom, 1px);
+  --uiFieldPaddingLeft: var(--fieldPaddingLeft, 35px);
+
+  position: relative;
+  box-sizing: border-box;
+  font-size: var(--uiFieldFontSize);
+  padding-top: 1em;
+}
+
+.a-field .a-field__input,
+.b-field .b-field__input {
+  height: var(--uiFieldHeight);
+  padding: 0 var(--uiFieldPaddingRight) 0 var(--uiFieldPaddingLeft);
+  border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColor);
+}
+
+.a-field .a-field__input::-webkit-input-placeholder,
+.b-field .b-field__input::-webkit-input-placeholder {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.a-field .a-field__input::-moz-placeholder,
+.b-field .b-field__input::-moz-placeholder {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.a-field
+.a-field__input:not(:placeholder-shown)
+~ .a-field__label-wrap
+.a-field__label,
+.b-field
+.b-field__input:not(:placeholder-shown)
+~ .b-field__label-wrap
+.b-field__label {
+  opacity: 0;
+  bottom: var(--uiFieldPaddingBottom);
+}
+
+.a-field .a-field__input:focus::-webkit-input-placeholder,
+.b-field .b-field__input:focus::-webkit-input-placeholder {
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.a-field .a-field__input:focus::-moz-placeholder,
+.b-field .b-field__input:focus::-moz-placeholder {
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.a-field .a-field__label-wrap,
+.b-field .b-field__label-wrap {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--uiFieldHeight);
+
+  pointer-events: none;
+  cursor: text;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.a-field .a-field__label,
+.b-field .b-field__label {
+  position: absolute;
+  left: var(--uiFieldPaddingLeft);
+  bottom: calc(50% - 0.1em);
+
+  line-height: 1;
+  font-size: var(--uiFieldHintFontSize);
+
+  pointer-events: none;
+  transition: bottom 0.2s cubic-bezier(0.9, -0.15, 0.1, 1.15),
+  opacity 0.2s ease-out;
+  will-change: bottom, opacity;
+}
+
+.a-field .a-field__input:focus ~ .a-field__label-wrap .a-field__label,
+.b-field .b-field__input:focus ~ .b-field__label-wrap .b-field__label {
+  opacity: 1;
+  bottom: var(--uiFieldHeight);
+}
+
+/* a-field_a1 b-field_b1 */
+
+.a-field_a1 .a-field__input,
+.b-field_b1 .b-field__input {
+  transition: border-color 0.2s ease-out;
+  will-change: border-color;
+}
+
+.a-field_a1 .a-field__input:focus,
+.b-field_b1 .b-field__input:focus {
+  border-color: var(--fieldBorderColorActive);
+}
+
+/* a-field_a2 b-field_b2 */
+
+.a-field_a2 .a-field__label-wrap:after,
+.b-field_b2 .b-field__label-wrap:after {
+  content: "";
+  box-sizing: border-box;
+  width: 0;
+  height: var(--uiFieldBorderWidth);
+  background-color: var(--fieldBorderColorActive);
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  will-change: width;
+  transition: width 0.285s ease-out;
+}
+
+.a-field_a2 .a-field__input:focus ~ .a-field__label-wrap:after,
+.b-field_b2 .b-field__input:focus ~ .b-field__label-wrap:after {
+  width: 100%;
+}
+
+/* a-field_a3  b-field_b3 */
+
+.a-field_a3,
+.b-field_b3 {
+  padding-top: 1.5em;
+}
+
+.a-field_a3 .a-field__label-wrap:after,
+.b-field_b3 .b-field__label-wrap:after {
+  content: "";
+  box-sizing: border-box;
+  width: 100%;
+  height: 0;
+
+  opacity: 0;
+  border: var(--uiFieldBorderWidth) solid var(--fieldBorderColorActive);
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  will-change: opacity, height;
+  transition: height 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.a-field_a3 .a-field__input:focus ~ .a-field__label-wrap:after,
+.b-field_b3 .b-field__input:focus ~ .b-field__label-wrap:after {
+  height: 100%;
+  opacity: 1;
+}
+
+.a-field_a3 .a-field__input:focus ~ .a-field__label-wrap .a-field__label,
+.b-field_b3 .b-field__input:focus ~ .b-field__label-wrap .b-field__label {
+  bottom: calc(var(--uiFieldHeight) + 0.5em);
+}
+
+/*
+=====
+LEVEL 4. SETTINGS
+=====
+*/
+
+.field {
+  --fieldBorderColor: rgb(171, 171, 171);
+  --fieldBorderColorActive: black;
+  font-size: 14px;
+}
+
+.field_danger {
+  --fieldBorderColor: rgb(255, 85, 85);
+  --fieldBorderColorActive: red;
+  font-size: 14px;
+}
+
+@media only screen and (min-width: 720px) {
+  .field-resize {
+    width: 280px;
+  }
+}

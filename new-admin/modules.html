@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Collapsible sidebar using Bootstrap 4</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+            integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+            integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+
+            <div class="avatar rounded-circle"></div>
+
+            <div class="details">
+                <div class="name font-weight-bold">Eryk Sandecki</div>
+                <div class="type">Developer</div>
+                <div class="company">JSQL Sp.z.o.o.</div>
+            </div>
+
+        </div>
+
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#"><span class="icon icon-profile"></span>Profile</a>
+            </li>
+            <li>
+                <a href="#"><span class="icon icon-developer-key"></span>Developer key</a>
+            </li>
+            <li>
+                <a href="#"><span class="icon icon-builds"></span>Builds</a>
+            </li>
+            <li class="active">
+                <a href="#applications" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <span class="icon icon-applications"></span>
+                    Applications
+                </a>
+                <ul class="collapse list-unstyled" id="applications">
+                    <li>
+                        <a href="#">App 1</a>
+                    </li>
+                    <li>
+                        <a href="#">App 2</a>
+                    </li>
+                    <li>
+                        <a href="#">App 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a href="#queries" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <span class="icon icon-queries"></span>
+                    Queries
+                </a>
+                <ul class="collapse list-unstyled" id="queries">
+                    <li>
+                        <a href="#">App 1</a>
+                    </li>
+                    <li>
+                        <a href="#">App 2</a>
+                    </li>
+                    <li>
+                        <a href="#">App 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a href="#security" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <span class="icon icon-security"></span>
+                    Security
+                </a>
+                <ul class="collapse list-unstyled" id="security">
+                    <li>
+                        <a href="#">App 1</a>
+                    </li>
+                    <li>
+                        <a href="#">App 2</a>
+                    </li>
+                    <li>
+                        <a href="#">App 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><span class="icon icon-team"></span>Team</a>
+            </li>
+            <li>
+                <a href="#"><span class="icon icon-admins"></span>Admins</a>
+            </li>
+            <li>
+                <a href="#"><span class="icon icon-billing"></span>Billing</a>
+            </li>
+            <li>
+                <a href="#"><span class="icon icon-documentation"></span>Docs</a>
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left"></i>
+                    <span>Toggle Sidebar</span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Page</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Page</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Page</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Page</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content buildsController">
+            <h2>Modules</h2>
+
+
+            <div class="row mt-2">
+
+                <div class="col-12">
+                    <h3>Roles</h3>
+
+                    <form class="form-inline">
+                        <button type="submit" class="btn btn-primary">+ Add custom module</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Module</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Authorization</td>
+                            <td><span class="badge badge-primary">ENABLED</span></td>
+                            <td>
+                                <form class="form-inline">
+                                    <button type="button" class="btn btn-danger mr-2">
+                                        Disable
+                                    </button>
+                                    <button type="button" class="btn btn-primary">
+                                        Settings
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><span class="badge badge-secondary">DISABLED</span></td>
+                            <td>
+                                <form class="form-inline">
+                                    <button type="button" class="btn btn-primary">
+                                        Enable
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Queues</td>
+                            <td><span class="badge badge-secondary">DISABLED</span></td>
+                            <td>
+                                <form class="form-inline">
+                                    <button type="button" class="btn btn-primary">
+                                        Enable
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Schedulers</td>
+                            <td><span class="badge badge-secondary">DISABLED</span></td>
+                            <td>
+                                <form class="form-inline">
+                                    <button type="button" class="btn btn-primary">
+                                        Enable
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="content buildsController">
+            <h2>Authorization module - settings</h2>
+
+            <div class="row mt-2">
+
+                <div class="col-12">
+                    <h3>Roles</h3>
+
+                    <form class="form-inline">
+                        <button type="submit" class="btn btn-primary">+ Add role</button>
+                    </form>
+                </div>
+
+            </div>
+
+
+            <div class="row mt-2">
+
+                <div class="col-12">
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Role name</th>
+                            <th scope="col">Role enum</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Admin</td>
+                            <td>ADMIN</td>
+                            <td>
+                                <form>
+                                    <button type="button" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>User</td>
+                            <td>USER</td>
+                            <td>
+                                <form>
+                                    <button type="button" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-6">
+                    <h3>Sign in options</h3>
+                    <form>
+                        <div class="form-group">
+                            <label>Login fields</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="username" value="username">
+                                <label class="form-check-label" for="username">username</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="password" value="password">
+                                <label class="form-check-label" for="password">password</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="email" value="email">
+                                <label class="form-check-label" for="email">email</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+
+                </div>
+
+                <div class="col-6">
+                    <h3>Sign up options</h3>
+                    <form>
+                        <label>Login fields</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="username" value="username">
+                            <label class="form-check-label" for="username">username</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="password" value="password">
+                            <label class="form-check-label" for="password">password</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="email" value="email">
+                            <label class="form-check-label" for="email">email</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="content buildsController">
+            <h2>Authorization module - add role</h2>
+
+            <div class="row mt-2">
+                <div class="col-12">
+
+                    <form>
+                        <div class="form-group">
+                            <label for="roleName">Role name</label>
+                            <input type="text" class="form-control" id="roleName"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleEnum">Role enum</label>
+                            <input type="text" class="form-control" id="roleEnum"/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+<style>
+    .toast {
+        opacity: 1 !important;
+    }
+</style>
+<div aria-live="polite" aria-atomic="true" style="position: fixed;
+    min-height: 200px;
+    bottom: 3rem;
+    right: 1rem;">
+    <!-- Position it -->
+    <div style="position: absolute; top: 0; right: 0;">
+
+        <!-- Then put toasts within -->
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded mr-2" alt="...">
+                <strong class="mr-auto">Bootstrap</strong>
+                <small class="text-muted">just now</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                See? Just like this.
+            </div>
+        </div>
+
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded mr-2" alt="...">
+                <strong class="mr-auto">Bootstrap</strong>
+                <small class="text-muted">2 seconds ago</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Heads up, toasts will stack automatically
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+        crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        })
+
+
+    });
+</script>
+
+
+</body>
+
+</html>

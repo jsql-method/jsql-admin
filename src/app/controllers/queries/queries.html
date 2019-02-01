@@ -1,0 +1,142 @@
+<div class="content queriesController">
+  <h2>{{ vm.application ? vm.application.name : "App" }} - queries</h2>
+  <div class="underline-title-card"></div>
+  <div class="row mt-2">
+    <div class="col-12" style="margin-bottom: 10px;">
+      <form class="form-inline">
+        <div class="input-group mr-2">
+          <label for="dateFrom" class="mr-2 label-filter">Search:</label>
+          <input id="search" class="form-control filter-input" type="text" ng-model="vm.valueQueryOrHash" ng-change="vm.setFilterQueryOrHash(vm.valueQueryOrHash)"
+          />
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <span class="ion-ios-search"></span>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-12">
+      <form class="form-inline" ng-submit="vm.submitFilterQueries()">
+        <div class="container-form">
+          <label for="dateFrom" class="mr-2 label-filter">Date from:</label>
+          <input id="dateFrom" class="form-control filter-input" type="text" uib-datepicker-popup="{{ vm.format }}" ng-model="vm.dateFrom" ng-change="vm.setDateFrom()" is-open="vm.popup1.opened" datepicker-options="vm.dateOptions" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-secondary" ng-click="vm.open1()">
+              <i class="fa-svg-icon">
+                <svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"
+                  />
+                </svg>
+              </i>
+            </button>
+          </span>
+        </div>
+        <div class="container-form">
+          <label for="dateTo" class="mr-2 label-filter">Date to:</label>
+          <input id="dateTo" class="form-control filter-input" type="text" uib-datepicker-popup="{{ vm.format }}" ng-model="vm.dateTo" ng-change="vm.setDateTo()" is-open="vm.popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-secondary" ng-click="vm.open2()">
+              <i class="fa-svg-icon">
+                <svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"
+                  />
+                </svg>
+              </i>
+            </button>
+          </span>
+        </div>
+        <div ng-if="vm.role !== 'APP_DEV'" class="container-form">
+          <label class="mr-2 label-filter">Members:</label>
+          <input class="form-control text-center filter-input" placeholder="--Members--" ng-model="vm.memberValue" ng-change="vm.setFilterMembers(vm.members)" ng-focus="vm.showMultiSelect(0)" ng-click="$event.stopPropagation();"/>
+          <div ng-click="$event.stopPropagation();" class="multiselect-contain">
+            <div>
+              <div class="empty-check"></div>
+              <p style="color:#999;">Choose your members</p>
+            </div>
+            <div>
+              <input class="inp-cbx" id="cbx-member-1" ng-click="vm.chooseAllMembers($event)" type="checkbox" style="display: none;"/>
+              <label class="cbx" for="cbx-member-1"><span>
+                  <svg width="12px" height="10px" viewbox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                  </svg></span></label>
+              <p>All members</p>
+            </div>
+            <div>
+              <input class="inp-cbx" id="cbx-yours" ng-click="vm.chooseUserId($event)" ng-checked="vm.checkChoosenMember(vm.profileId)" type="checkbox" style="display: none;"/>
+              <label class="cbx" for="cbx-yours"><span>
+                  <svg width="12px" height="10px" viewbox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                  </svg></span></label>
+              <p style="color: #0b2e13;text-decoration: underline;">Your Queries</p>
+            </div>
+            <div ng-repeat="member in vm.members">
+              <input id="{{ 'cbx-member-' + ($index + 2) }}"  class="inp-cbx" type="checkbox" style="display: none;" ng-click="vm.addOrRemoveMember(member.id)" ng-checked="vm.checkChoosenMember(member.id)"/>
+              <label class="cbx" for="{{ 'cbx-member-' + ($index + 2) }}"><span>
+                  <svg width="12px" height="10px" viewbox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                  </svg></span></label>
+                  <p>{{ member.firstName + ' ' + member.lastName }}</p>
+            </div>
+          </div>
+          </div>
+          <div class="container-form">
+          <div class="form-check form-check-inline more-options">
+            <input id="inlineCheckbox1" class="form-check-input" ng-model="vm.dataFilterQueries.used" type="checkbox" value="option1" ng-checked="vm.dataFilterQueries.used"/>
+            <label class="form-check-label" for="inlineCheckbox1">Used</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input id="inlineCheckbox2" class="form-check-input" ng-model="vm.dataFilterQueries.dynamic" type="checkbox" value="option1" ng-checked="vm.dataFilterQueries.dynamic"/>
+            <label class="form-check-label" for="inlineCheckbox2">Dynamic</label>
+          </div>
+          </div>
+          <div class="container-form">
+            <button type="submit" class="btn btn-primary mb-2 submit-filter">Show</button>
+            <button type="button" class="btn btn-secondary mb-2" ng-click="vm.clearData()">Clear</button>
+          </div>
+      </form>
+    </div>
+    <table style="margin: 0px;" class="table table-bordered">
+      <thead>
+        <tr>
+          <th ng-if="vm.role !== 'APP_DEV'" scope="col">Team member</th>
+          <th scope="col">Query</th>
+          <th scope="col">Hash</th>
+          <th scope="col">Date</th>
+          <th scope="col">Used</th>
+          <th scope="col">Dynamic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="queries in vm.queries track by $index">
+          <td ng-if="vm.role !== 'APP_DEV'" class="description-overflow">
+            {{ queries.user }}
+          </td>
+          <td
+            ng-dblclick="vm.setEdit($index, queries.query)"
+            class="quries-edit description-overflow"
+          >
+            {{ vm.vissibleEdit && vm.indexVissible === $index ? "" : queries.query }}
+            <input id="input-edit-query" style="width: 100%;" ng-blur="vm.saveQuery(queries)" ng-model="vm.valueQuery" ng-if="vm.vissibleEdit && vm.indexVissible === $index"/>
+          </td>
+          <td class="description-overflow">{{ queries.hash }}</td>
+          <td class="description-overflow">{{ queries.queryDate }}</td>
+          <td class="description-overflow">
+            <span
+              ng-class="queries.used ? 'badge badge-primary' : 'badge badge-secondary'"
+              >{{ queries.used ? "Yes" : "No" }}</span
+            >
+          </td>
+          <td class="description-overflow">
+            <span ng-class="queries.dynamic ? 'badge badge-primary' : 'badge badge-secondary'">{{ queries.dynamic ? "Yes" : "No" }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p ng-if="vm.queries.length === 0" class="quries-empty">
+      No data to display
+    </p>
+  </div>
+</div>

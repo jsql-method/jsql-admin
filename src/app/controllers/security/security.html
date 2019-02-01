@@ -1,0 +1,175 @@
+<div class="content securityController">
+  <h2>{{ vm.application.name }} - security details</h2>
+  <div class="underline-title-card"></div>
+  <div class="row">
+    <div class="col">
+      <form ng-submit="vm.validateHashLength()">
+        <div class="form-group">
+          <label for="encodeQuery">Encode query</label>
+          <select
+            class="form-control"
+            ng-model="vm.encodeQuery"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="encodeQuery"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="encodingAlgorithm">Encoding algorithm</label>
+          <select
+            class="form-control"
+            ng-model="vm.encodingAlgorithm"
+            ng-options="option.value as option.name for option in vm.encodingAlgorithmOptions"
+            id="encodingAlgorithm"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="addSalt">Add salt</label>
+          <select
+            class="form-control"
+            ng-model="vm.addSalt"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="addSalt"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="saltAfter">Salt after</label>
+          <select
+            class="form-control"
+            ng-model="vm.saltAfter"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="saltAfter"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="saltBefore">Salt before</label>
+          <select
+            class="form-control"
+            ng-model="vm.saltBefore"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="saltBefore"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="salt">Salt</label>
+          <input
+            type="text"
+            class="form-control"
+            id="salt"
+            ng-model="vm.salt"
+          />
+          <button
+            type="button"
+            class="btn btn-primary mt-2"
+            ng-click="vm.generateRandomSalt()"
+          >
+            Generate
+          </button>
+        </div>
+        <div class="form-group">
+          <label for="randomSalt">Random salt</label>
+          <select
+            class="form-control"
+            ng-model="vm.randomSalt"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="randomSalt"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hashLengthEqualToQuery">Hash length equal to query</label>
+          <select
+            class="form-control"
+            ng-model="vm.hashLengthEqualToQuery"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="hashLengthEqualToQuery"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hashMinLength">Hash min length</label>
+          <input
+            type="number"
+            class="form-control"
+            id="hashMinLength"
+            ng-model="vm.hashMinLength"
+            ng-blur="vm.validateHashMinLength(true)"
+            ng-change="vm.validateHashMinLength()"
+          />
+          <div
+            class="text-danger-security"
+            ng-repeat="messages in vm.messages.hashMinLength track by $index"
+          >
+            {{ messages }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="hashMaxLength">Hash max length</label>
+          <input
+            type="number"
+            class="form-control"
+            id="hashMaxLength"
+            ng-model="vm.hashMaxLength"
+            ng-blur="vm.validateHashMaxLength(true)"
+            ng-change="vm.validateHashMaxLength()"
+          />
+          <div
+            class="text-danger-security"
+            ng-repeat="messages in vm.messages.hashMaxLength track by $index"
+          >
+            {{ messages }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="removeQueriesAfterBuild"
+            >Remove queries after build</label
+          >
+          <select
+            class="form-control"
+            ng-model="vm.removeQueriesAfterBuild"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="removeQueriesAfterBuild"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="databaseDialect">Database dialect</label>
+          <select
+            class="form-control"
+            ng-model="vm.databaseDialect"
+            ng-options="option.value as option.name for option in vm.databaseDialectOptions"
+            id="databaseDialect"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="applicationLanguage">Application language</label>
+          <select
+            class="form-control"
+            ng-model="vm.applicationLanguage"
+            ng-options="option.value as option.name for option in vm.applicationLanguageOptions"
+            id="applicationLanguage"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="plainQueriesAllowed">Plain queries allowed</label>
+          <select
+            class="form-control"
+            ng-model="vm.plainQueriesAllowed"
+            ng-options="is.value as is.name for is in vm.isTrue"
+            id="plainQueriesAllowed"
+          >
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+</div>

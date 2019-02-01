@@ -1,0 +1,109 @@
+<section class="sign-card loginController">
+  <!-- starts -->
+  <div class="sign-contain">
+    <div class="sign-information">
+      <div class="contain-picture-logo">
+        <img
+          src="./images/auth/jsql-logo-alfa.png"
+          alt="JSQL Admin"
+          class="picture-logo"
+        />
+      </div>
+    </div>
+    <div class="sign-form">
+      <form ng-submit="vm.validateLoginForm()">
+        <div class="title-sign"><b>Login</b></div>
+        <div class="form-sign">
+          <div class="icon-sign"><i class="fa fa-envelope"></i></div>
+          <label class="field-resize field a-field a-field_a1 page__field">
+            <input
+              type="text"
+              placeholder="Email"
+              class="field__input a-field__input"
+              ng-model="vm.email"
+              ng-blur="vm.validateEmail(true)"
+              ng-change="vm.validateEmail()"
+            />
+            <span class="a-field__label-wrap">
+              <span class="a-field__label"> Email </span>
+            </span>
+          </label>
+          <div
+            class="text-danger"
+            ng-repeat="messages in vm.messages.email track by $index"
+          >
+            {{ messages }}
+          </div>
+        </div>
+        <div class="form-sign">
+          <div class="icon-sign"><i class="fa fa-unlock-alt"></i></div>
+          <label class="field-resize field a-field a-field_a1 page__field">
+            <input
+              type="password"
+              placeholder="Password"
+              class="field__input a-field__input"
+              ng-model="vm.password"
+              ng-blur="vm.validatePassword(true)"
+              ng-change="vm.validatePassword()"
+            />
+            <span class="a-field__label-wrap">
+              <span class="a-field__label"> Password </span>
+            </span>
+          </label>
+          <div
+            class="text-danger"
+            ng-repeat="messages in vm.messages.password track by $index"
+          >
+            {{ messages }}
+          </div>
+        </div>
+        <div class="form-sign">
+          <a
+            class="text-right text-inverse"
+            style="text-decoration: underline"
+            href="/auth/reset-password"
+          >
+            Forgot your password? Click here
+          </a>
+          <div class="contain-validation-contain">
+            {{ vm.generalMessage }}
+          </div>
+        </div>
+
+        <div class="contain-submit">
+          <button
+            type="submit"
+            class="btn btn-primary waves-effect text-center button-sign btn-sign"
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary waves-effect text-center button-sign btn-sign"
+            ng-click="vm.go()"
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+      <div class="support-information">
+        <div class="sign-underline"></div>
+        <p class="text-inverse text-support">
+          Thank you and enjoy our website
+        </p>
+        <p class="text-inverse text-support-team">
+          <b>Your JSQL Team</b>
+        </p>
+        <div class="logo-support">
+          <img
+            src="./images/auth/jsql-logo-alfa.png"
+            alt="JSQL Admin"
+            width="60"
+            height="60"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of -->
+</section>

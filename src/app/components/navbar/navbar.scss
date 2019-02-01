@@ -1,0 +1,16 @@
+.navbarComponent {
+  li {
+    margin-left: 0.5rem;
+
+    > a {
+      background: #efefef;
+      border-radius: 5px;
+      color: #929292 !important;
+      font-size: 0.9rem;
+
+      &:hover {
+        background: #dedede;
+      }
+    }
+  }
+}

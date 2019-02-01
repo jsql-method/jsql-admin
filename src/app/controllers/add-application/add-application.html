@@ -1,0 +1,20 @@
+<div class="content applicationsController">
+  <h2>Add application</h2>
+  <div class="underline-title-card"></div>
+  <div class="row">
+    <div class="col">
+      <form>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input ng-model="vm.name" type="text" class="form-control" id="name" ng-blur="vm.validateName(true)" ng-change="vm.validateName()" placeholder="Name"/>
+        </div>
+        <p class="text-danger-add-application" ng-repeat="message in vm.message track by $index">
+          {{ message }}
+        </p>
+        <button ng-click="vm.validateAddApplication()" type="submit" class="btn btn-primary">
+          Add
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

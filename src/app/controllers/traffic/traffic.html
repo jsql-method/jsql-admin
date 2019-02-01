@@ -1,0 +1,125 @@
+<div class="content trafficController">
+    <h2>API Traffic</h2>
+    <div class="underline-title-card"></div>
+    <div class="row mt-2">
+        <form class="form-inline">
+            <div class="container-form">
+                <label class="mr-2 label-filter">Applications:</label>
+                <input
+                        class="form-control text-center filter-input"
+                        placeholder="--Applications--"
+                        ng-model="vm.applicationValue"
+                        ng-change="vm.setFilterApplications(vm.applicationValue)"
+                        ng-focus="vm.showMultiSelect(0)"
+                        ng-click="$event.stopPropagation();"
+                />
+                <div ng-click="$event.stopPropagation();" class="multiselect-contain">
+                    <div>
+                        <div class="empty-check"></div>
+                        <p style="color:#999;">Choose your applications</p>
+                    </div>
+                    <div>
+                        <input ng-click="vm.chooseAllApplications($event)" class="inp-cbx" id="cbx-application-1" type="checkbox" style="display: none;"/>
+                        <label class="cbx" for="cbx-application-1"><span>
+                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg></span></label>
+                        <p>All applications</p>
+                    </div>
+                    <div ng-repeat="application in vm.applications">
+                        <input
+                                ng-click="vm.addOrRemoveApplication(application.id)"
+                                ng-checked="vm.checkChoosenApplication(application.id)"
+                                class="inp-cbx" id="{{ 'cbx-application-' + ($index + 2) }}"
+                                type="checkbox"
+                                style="display: none;"/>
+                        <label class="cbx" for="{{ 'cbx-application-' + ($index + 2) }}"><span>
+                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg></span></label>
+                        <p>{{ application.name }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-form">
+                <label for="dateFrom" class="mr-2 label-filter">Date from:</label>
+                <input
+                        id="dateFrom"
+                        type="text"
+                        class="form-control filter-input"
+                        uib-datepicker-popup="{{ vm.format }}"
+                        ng-model="vm.dataFilterTraffic.dateFrom"
+                        is-open="vm.popup1.opened"
+                        datepicker-options="dateOptions"
+                        ng-required="true"
+                        close-text="Close"
+                        alt-input-formats="altInputFormats"
+                />
+                <span class="input-group-btn">
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    ng-click="vm.open1()"
+            >
+              <i class="fa-svg-icon">
+                <svg
+                        width="1792"
+                        height="1792"
+                        viewBox="0 0 1792 1792"
+                        xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                          d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"
+                  />
+                </svg>
+              </i>
+            </button>
+          </span>
+            </div>
+            <div class="container-form">
+                <label for="dateTo" class="mr-2 label-filter">Date to:</label>
+                <input
+                        id="dateTo"
+                        type="text"
+                        class="form-control filter-input"
+                        uib-datepicker-popup="{{ vm.format }}"
+                        ng-model="vm.dataFilterTraffic.dateTo"
+                        is-open="vm.popup2.opened"
+                        datepicker-options="dateOptions"
+                        ng-required="true"
+                        close-text="Close"
+                        alt-input-formats="altInputFormats"
+                />
+                <span class="input-group-btn">
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    ng-click="vm.open2()"
+            >
+              <i class="fa-svg-icon">
+                <svg
+                        width="1792"
+                        height="1792"
+                        viewBox="0 0 1792 1792"
+                        xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                          d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"
+                  />
+                </svg>
+              </i>
+            </button>
+          </span>
+            </div>
+            <div class="container-form">
+                <button type="submit" class="btn btn-primary mb-2 submit-filter">Show</button>
+                <button type="submit" class="btn btn-secondary mb-2">Clear</button>
+            </div>
+        </form>
+
+        <div style="width:100%;">
+            <canvas id="canvas"></canvas>
+        </div>
+
+    </div>
+</div>

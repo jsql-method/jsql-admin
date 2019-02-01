@@ -1,0 +1,41 @@
+<div class="content developerKeyController">
+  <h2>Developer key</h2>
+  <div class="underline-title-card"></div>
+  <div class="row">
+    <div class="col">
+      <form>
+        <div class="form-group">
+          <label for="developerKey">Your developer key</label>
+          <input
+            type="text"
+            class="form-control"
+            id="developerKey"
+            readonly
+            ng-model="vm.memberKey"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          ng-click="vm.copyToClipboard()"
+        >
+          Copy to clipboard
+        </button>
+      </form>
+    </div>
+    <div class="col">
+      <form>
+        <div class="form-group">
+          <label for="role">Your role</label>
+          <input
+            type="text"
+            class="form-control"
+            id="role"
+            readonly
+            ng-model="vm.loginRole"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

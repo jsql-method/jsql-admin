@@ -1,0 +1,41 @@
+.notificationsComponent {
+  display: flex;
+  position: fixed;
+  align-items: flex-end;
+  bottom: 1rem;
+  right: 1rem;
+  width: 18rem;
+
+  > div:first-child {
+    position: relative;
+  }
+
+  .toast {
+    opacity: 1;
+
+    .toast-body {
+      a {
+        font-weight: 500;
+        color: #0c79bc;
+      }
+    }
+
+    .type {
+      i {
+        font-size: 1.5rem;
+      }
+
+      &.success {
+        color: #28a745;
+      }
+
+      &.error {
+        color: #dc3545;
+      }
+
+      &.info {
+        color: #17a2b8;
+      }
+    }
+  }
+}

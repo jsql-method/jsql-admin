@@ -1,0 +1,40 @@
+.contain-submit-reset {
+  float: left;
+  width: 100%;
+  text-align: center;
+}
+
+.support-information-reset {
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+.icon-sign-reset {
+  position: absolute;
+  left: 25%;
+  top: 10px;
+}
+
+.text-danger-reset {
+  color: red;
+  text-align: center;
+  font-size: 12px;
+  float: left;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 540px) {
+  .icon-sign-reset {
+    left: 32%;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .icon-sign-reset {
+    left: 24%;
+  }
+}

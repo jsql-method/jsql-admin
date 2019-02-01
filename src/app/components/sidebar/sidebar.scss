@@ -1,0 +1,96 @@
+.sidebarComponent {
+  min-width: 250px;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  max-width: 250px;
+  color: #fff;
+  transition: all 0.3s;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(10, 124, 190, 1) 0%,
+    rgba(23, 109, 179, 1) 100%
+  );
+
+  .sidebar-header {
+    padding: 1rem 0.5rem;
+    display: flex;
+  }
+
+  ul.components {
+    padding: 20px 0;
+  }
+
+  ul p {
+    color: #fff;
+    padding: 10px;
+  }
+
+  ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  ul li a .icon {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 32px;
+    height: 32px;
+    margin-right: 0.5rem;
+  }
+
+  ul li.active {
+    background-color: rgba(255, 246, 246, 0.1);
+  }
+
+  ul li.expanded {
+    background-color: rgba(255, 246, 246, 0.08);
+  }
+
+  ul li:hover {
+    background-color: rgba(255, 246, 246, 0.08);
+  }
+
+  ul li.expanded > a,
+  a[aria-expanded="true"] {
+    color: #fff;
+  }
+
+  .sidebar-header .avatar {
+    width: 80px;
+    height: 80px;
+    float: left;
+  }
+
+  .sidebar-header .avatar img {
+    border: 3px solid #fff;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+  }
+
+  .sidebar-header .details {
+    padding-left: 1rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    float: left;
+    width: calc(100% - 80px);
+  }
+
+  .sidebar-header .type {
+  }
+
+  .sidebar-header .name {
+  }
+
+  .sidebar-header .company {
+  }
+
+  .logout-sidebar:hover {
+    cursor: pointer;
+  }
+}
