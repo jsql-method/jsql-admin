@@ -75,7 +75,7 @@ deploy_service_dev:
      - docker -H 172.32.1.31 pull registry.jsql.it:443/poligon-jsql/jsql-admin:dev
      - docker -H 172.32.1.31 service scale dev_jsql_admin=0
      - docker -H 172.32.1.31 service update --force dev_jsql_admin
-     - docker -H 172.32.1.31 service scale dev_jsql_admin=0
+     - docker -H 172.32.1.31 service scale dev_jsql_admin=1
    only:
      refs:
        - dev
@@ -89,7 +89,7 @@ deploy_service_test:
     - docker -H 172.32.1.31 pull registry.jsql.it:443/poligon-jsql/jsql-admin:test
     - docker -H 172.32.1.31 service scale test_jsql_admin=0
     - docker -H 172.32.1.31 service update --force test_jsql_admin
-    - docker -H 172.32.1.31 service scale test_jsql_admin=0
+    - docker -H 172.32.1.31 service scale test_jsql_admin=1
   only:
     refs:
       - test
