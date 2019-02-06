@@ -12,7 +12,6 @@ var app = angular
         "ui.bootstrap",
         "constants"
     ])
-    .constant("SERVER_URL", "http://softwarecartoon.com:")
     .config([
         "$httpProvider",
         "$provide",
