@@ -78,7 +78,7 @@
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: "http://softwarecartoon.com:9191/api/avatar",
+                url: SERVER_URL + '/api/avatar',
                 data: objFormData,
                 processData: false,
                 contentType: false,

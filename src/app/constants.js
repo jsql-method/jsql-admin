@@ -2,6 +2,6 @@
 
  angular.module('constants', [])
 
-.constant('PORT', 9191)
+.constant('SERVER_URL', 'https://dev-api.jsql.it')
 
 ;
