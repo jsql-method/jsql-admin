@@ -400,7 +400,6 @@ module.exports = function (grunt) {
             'concat:bundleCss',
             'concat:bundleJs',
             'clean:prod',
-            'concurrent:server'
         ]);
 
     });
