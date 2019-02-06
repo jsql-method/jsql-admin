@@ -1,0 +1,95 @@
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+.common_build: &common_build_ref
+  image: node:11
+  before_script:
+    - npm install -g bower grunt
+    - npm install
+    - bower install --allow-root
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+stages:
+  - build
+  - deploy image
+  - deploy service
+
+
+build_dev:
+  <<: *common_build_ref
+  stage: build
+  script:
+    - grunt dev
+  only:
+    refs:
+      - dev
+
+
+build_test:
+  <<: *common_build_ref
+  stage: build
+  script:
+    - grunt test
+  only:
+    refs:
+      - test
+
+
+deploy_image_dev:
+   image: docker
+   stage: deploy image
+   before_script:
+     - export CI_PROJECT_PATH_LOWERCASE=`echo $CI_PROJECT_PATH | tr '[:upper:]' '[:lower:]'`
+   script:
+     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - docker build -f Dockerfile.gitlab-ci -t $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME .
+     - docker push $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME
+   only:
+     refs:
+       - dev
+
+deploy_image_test:
+    image: docker
+    stage: deploy image
+    before_script:
+      - export CI_PROJECT_PATH_LOWERCASE=`echo $CI_PROJECT_PATH | tr '[:upper:]' '[:lower:]'`
+    script:
+      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+      - docker build -f Dockerfile.gitlab-ci -t $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME .
+      - docker push $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME
+    only:
+      refs:
+        - test
+
+
+deploy_service_dev:
+   image: docker
+   stage: deploy service
+   script:
+     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - docker -H 172.32.1.31 pull registry.jsql.it:443/jsql/jsql-admin:dev
+     - docker -H 172.32.1.31 service scale dev_jsql_admin=0
+     - docker -H 172.32.1.31 service update --force dev_jsql_admin
+     - docker -H 172.32.1.31 service scale dev_jsql_admin=1
+   only:
+     refs:
+       - dev
+
+
+deploy_service_test:
+  image: docker
+  stage: deploy service
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker -H 172.32.1.31 pull registry.jsql.it:443/jsql/jsql-admin:test
+    - docker -H 172.32.1.31 service scale test_jsql_admin=0
+    - docker -H 172.32.1.31 service update --force test_jsql_admin
+    - docker -H 172.32.1.31 service scale test_jsql_admin=1
+  only:
+    refs:
+      - test
