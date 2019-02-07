@@ -3,7 +3,14 @@ cache:
   paths:
     - node_modules/
 
-.common_build: &common_build_ref
+
+stages:
+  - build
+  - "create image"
+  - "deploy service"
+
+
+.common_build_template: &common_build_ref
   image: node:11
   before_script:
     - npm install -g bower grunt
@@ -12,84 +19,99 @@ cache:
   artifacts:
     paths:
       - dist/
-    expire_in: 1 week
-
-stages:
-  - build
-  - deploy image
-  - deploy service
+    expire_in: 1 day
 
 
-build_dev:
-  <<: *common_build_ref
-  stage: build
-  script:
-    - grunt dev
-  only:
-    refs:
-      - dev
-
-
-build_test:
-  <<: *common_build_ref
-  stage: build
-  script:
-    - grunt test
-  only:
-    refs:
-      - test
-
-
-deploy_image_dev:
+.deploy_image_branch_template: &deploy_image_branch_ref
+  #PARAM
+  #DOCKER_IMAGE_TAG - the docker image tag
    image: docker
-   stage: deploy image
+   stage: "create image"
    before_script:
      - export CI_PROJECT_PATH_LOWERCASE=`echo $CI_PROJECT_PATH | tr '[:upper:]' '[:lower:]'`
    script:
      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - docker build -f Dockerfile.gitlab-ci -t $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME .
-     - docker push $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME
-   only:
-     refs:
-       - dev
-
-deploy_image_test:
-    image: docker
-    stage: deploy image
-    before_script:
-      - export CI_PROJECT_PATH_LOWERCASE=`echo $CI_PROJECT_PATH | tr '[:upper:]' '[:lower:]'`
-    script:
-      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-      - docker build -f Dockerfile.gitlab-ci -t $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME .
-      - docker push $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:$CI_COMMIT_REF_NAME
-    only:
-      refs:
-        - test
+     - docker build -f Dockerfile.gitlab-ci -t $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:${DOCKER_IMAGE_TAG} .
+     - docker push $CI_REGISTRY/$CI_PROJECT_PATH_LOWERCASE:${DOCKER_IMAGE_TAG}
 
 
-deploy_service_dev:
+.deploy_service_template: &deploy_service_ref
+  #PARAM
+  #ENVIRONMENT_HOST - ip address docker daemon host
    image: docker
-   stage: deploy service
+   stage: "deploy service"
+   cache: {}
    script:
+     - export SERVICE_NAME=${CI_COMMIT_REF_NAME}_${CI_PROJECT_NAMESPACE}_${CI_PROJECT_NAME}
+     - echo "SERVICE_NAME=$SERVICE_NAME"
+     - echo "IMAGE=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}"
      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - docker -H 172.32.1.31 pull registry.jsql.it:443/jsql/jsql-admin:dev
-     - docker -H 172.32.1.31 service scale dev_jsql_admin=0
-     - docker -H 172.32.1.31 service update --force dev_jsql_admin
-     - docker -H 172.32.1.31 service scale dev_jsql_admin=1
-   only:
-     refs:
-       - dev
+     - docker -H ${ENVIRONMENT_HOST} pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+     - docker -H ${ENVIRONMENT_HOST} service scale $SERVICE_NAME=0
+     - docker -H ${ENVIRONMENT_HOST} service update --force $SERVICE_NAME
+     - docker -H ${ENVIRONMENT_HOST} service scale $SERVICE_NAME=1
 
 
-deploy_service_test:
-  image: docker
-  stage: deploy service
+build:
+  <<: *common_build_ref
+  stage: build
   script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker -H 172.32.1.31 pull registry.jsql.it:443/jsql/jsql-admin:test
-    - docker -H 172.32.1.31 service scale test_jsql_admin=0
-    - docker -H 172.32.1.31 service update --force test_jsql_admin
-    - docker -H 172.32.1.31 service scale test_jsql_admin=1
+    - grunt ${CI_COMMIT_REF_NAME}
+  only:
+    refs:
+      - tags
+      - dev
+      - test
+      - prod
+
+
+
+create image:
+  <<: *deploy_image_branch_ref
+  variables:
+    DOCKER_IMAGE_TAG: $CI_COMMIT_REF_NAME
+  only:
+      - dev
+      - test
+      - prod
+
+create image tag:
+  variables:
+    DOCKER_IMAGE_TAG: $CI_COMMIT_TAG
+  <<: *deploy_image_branch_ref
+  only:
+    - tags
+
+
+deploy dev:
+  <<: *deploy_service_ref
+  variables:
+    ENVIRONMENT_HOST: 172.32.1.31
+  environment:
+    name: dev
+    url: https://dev.jsql.it
+  only:
+    refs:
+      - dev
+
+deploy test:
+  <<: *deploy_service_ref
+  variables:
+    ENVIRONMENT_HOST: 172.32.1.31
+  environment:
+    name: test
+    url: https://test.jsql.it
   only:
     refs:
       - test
+
+deploy prod:
+  <<: *deploy_service_ref
+  variables:
+    ENVIRONMENT_HOST: 172.32.1.41
+  environment:
+    name: prod
+    url: https://customer.jsql.it
+  only:
+    refs:
+      - prod
