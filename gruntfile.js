@@ -338,7 +338,8 @@ module.exports = function (grunt) {
                     dest: './src/app/constants.js'
                 },
                 constants: {
-                    PORT: 9026
+                    SERVER_URL : 'https://dev-api.jsql.it'
+                    // PORT: 9026
                 }
             },
             test: {
@@ -346,7 +347,8 @@ module.exports = function (grunt) {
                     dest: './src/app/constants.js'
                 },
                 constants: {
-                    PORT: 9024
+                    SERVER_URL : 'https://test-api.jsql.it'
+                    // PORT: 9024
                 }
             },
             prod: {
@@ -354,7 +356,8 @@ module.exports = function (grunt) {
                     dest: './src/app/constants.js'
                 },
                 constants: {
-                    PORT: 9027
+                    SERVER_URL : 'http://customer-api.jsql.it'
+                    // PORT: 9027
                 }
             }
         }
@@ -396,7 +399,7 @@ module.exports = function (grunt) {
              'build',
             'concat:bundleCss',
             'concat:bundleJs',
-            'clean:prod'
+            'clean:prod',
         ]);
 
     });
