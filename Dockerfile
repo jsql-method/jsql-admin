@@ -9,4 +9,5 @@ RUN npm install -g bower grunt && \
     grunt prod
 
 FROM nginx:stable-alpine
-COPY --from=builder /build/dist/ /usr/share/nginx/html
+COPY cicd/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /build/dist/ /usr/share/nginx/html/
