@@ -356,7 +356,7 @@ module.exports = function (grunt) {
                     dest: './src/app/constants.js'
                 },
                 constants: {
-                    SERVER_URL : 'https://customer-api.jsql.it'
+                    SERVER_URL : 'https://api.jsql.it'
                     // PORT: 9027
                 }
             }
