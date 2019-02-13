@@ -46,10 +46,12 @@ stages:
      - echo "SERVICE_NAME=$SERVICE_NAME"
      - echo "IMAGE=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}"
      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - docker -H ${ENVIRONMENT_HOST} pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
      - docker -H ${ENVIRONMENT_HOST} service scale $SERVICE_NAME=0
-     - docker -H ${ENVIRONMENT_HOST} service update --force $SERVICE_NAME
+     - docker -H ${ENVIRONMENT_HOST} rmi -f $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+     - docker -H ${ENVIRONMENT_HOST} pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+     - docker -H ${ENVIRONMENT_HOST} service update --force $SERVICE_NAME --image $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
      - docker -H ${ENVIRONMENT_HOST} service scale $SERVICE_NAME=1
+
 
 
 build:
