@@ -11,7 +11,8 @@
         DictService,
         $uibModal,
         EventEmitterService,
-        $injector
+        $injector,
+        SERVER_URL
     ) {
         var vm = this;
 
@@ -56,7 +57,9 @@
 
        function uploadImage(element) {
             var reader = new FileReader();
-            if(element.files[0].type !== 'image/jpeg' && element.files.type !== 'image/jpg' && element.files.type !== 'image/png') {
+            var objFormData = new FormData();
+
+            if(element.files[0].type !== 'image/jpeg' && element.files[0].type !== 'image/jpg' && element.files[0].type !== 'image/png') {
                 openModal("Please upload only image type files. (jpg jpeg gif png)");
                 return;
             }
@@ -71,7 +74,7 @@
                     event.target["result"];
             };
 
-            var objFormData = new FormData();
+
             objFormData.append("file", element.files[0]);
 
             reader.readAsDataURL(element.files[0]);
