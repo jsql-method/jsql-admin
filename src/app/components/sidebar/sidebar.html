@@ -1,5 +1,5 @@
-<nav id="sidebar" class="sidebarComponent">
-  <div class="sidebar-header">
+<nav id="sidebar-custom" class="sidebarComponent">
+  <div >
     <div ng-if="vm.profile.avatarStyle" class="avatar rounded-circle" style="{{ vm.profile.avatarStyle }}">
       <img src="{{ vm.profile.avatarStyle }}" />
     </div>
@@ -86,5 +86,4 @@
       </a>
     </li>
   </ul>
-  {{ vm.expandProperMenu() }}
 </nav>
