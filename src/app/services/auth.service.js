@@ -105,7 +105,6 @@
             var session = sessionStorage.getItem(provider.SESSION_STORAGE);
             var key = sessionStorage.getItem(provider.KEY_STORAGE);
 
-
             if(cookies === false) {
                 provider.removeCookies();
                 provider.deleteSession();
@@ -262,7 +261,7 @@
 
         provider.setCookie = function (cname, exminutes) {
             var d = new Date();
-            var expire_time = d.setTime(d.getTime() + (exminutes * 60 * 1000 + (3600 * 1000)));
+            var expire_time = d.setTime(d.getTime() + (exminutes  * 1000 + (3600 * 1000)));
             var expires = d.toUTCString();
 
             window.document.cookie = cname + "=" + expire_time.valueOf() + ";expires=" + expires + ";path=/";

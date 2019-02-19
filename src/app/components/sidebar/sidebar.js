@@ -105,6 +105,7 @@
 
           AuthService.logout().then(function() {
 
+            AuthService.removeCookies();
             AuthService.deleteSession();
             window.localStorage.clear();
             window.location.href = "/auth/login/";
