@@ -281,6 +281,7 @@
         };
 
         provider.readCookie = function (cname) {
+
             var nameEQ = cname + "=";
             var ca = document.cookie.split(';');
 
@@ -294,6 +295,7 @@
                 }
             }
             return null;
+
         };
 
         provider.removeCookies = function () {
