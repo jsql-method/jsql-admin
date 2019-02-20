@@ -20,7 +20,6 @@
         vm.setExpanded = setExpanded;
         vm.logout = logout;
         vm.toggle = toggle;
-        vm.expandProperMenu = expandProperMenu;
 
         vm.currentRoute = $state.current.name;
 
@@ -106,6 +105,7 @@
 
           AuthService.logout().then(function() {
 
+            AuthService.removeCookies();
             AuthService.deleteSession();
             window.localStorage.clear();
             window.location.href = "/auth/login/";
@@ -141,25 +141,6 @@
         function setActive(path) {
 
           return $location.path().substr(0, path.length) === path ? "active" : "";
-
-        }
-
-        function expandProperMenu() {
-
-          let currentPath = $location.path();
-          let menuItem = document.getElementById("sidebar").querySelectorAll('[href="' + currentPath + '"]');
-
-          menuItem = menuItem[0];
-
-          if (menuItem) {
-            if (
-              menuItem.parentElement.parentElement.classList.contains(
-                "collapse"
-              )
-            ) {
-              menuItem.parentElement.parentElement.classList.add("show");
-            }
-          }
 
         }
 

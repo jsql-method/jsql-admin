@@ -2,6 +2,6 @@
 
  angular.module('constants', [])
 
-.constant('SERVER_URL', 'https://api.jsql.it')
+.constant('SERVER_URL', 'https://test-api.jsql.it')
 
 ;

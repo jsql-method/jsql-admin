@@ -41,6 +41,8 @@
                     result.data.data.auth
                 );
 
+                provider.setCookie('auth_expire', 60);
+
                 if (result.data.code === 200) {
                     localStorage.setItem('_mRole', result.data.data.role);
                     localStorage.setItem('_mCompany', result.data.data.companyName);
@@ -99,9 +101,17 @@
          * @returns {boolean}
          */
         provider.isLogged = function () {
+            var cookies = provider.isSessionCookieExist('auth_expire');
             var session = sessionStorage.getItem(provider.SESSION_STORAGE);
             var key = sessionStorage.getItem(provider.KEY_STORAGE);
-            if (session && key) {
+
+            if(cookies === false) {
+                provider.removeCookies();
+                provider.deleteSession();
+            }
+
+            if (session && key && cookies) {
+                provider.setCookie('auth_expire', 60);
                 return true;
             }
 
@@ -249,6 +259,54 @@
             }
         };
 
+        provider.setCookie = function (cname, exminutes) {
+            var d = new Date();
+            var expire_time = d.setTime(d.getTime() + (exminutes  * 1000 + (3600 * 1000)));
+            var expires = d.toUTCString();
+
+            window.document.cookie = cname + "=" + expire_time.valueOf() + ";expires=" + expires + ";path=/";
+        };
+
+        provider.isSessionCookieExist = function (cname) {
+            var d = new Date();
+            var fresh_time = d.getTime();
+
+            if (document.cookie.split(';')
+                .filter(function(item) { return item.includes(cname + '=') === true })
+                .length && parseInt(provider.readCookie(cname)) > fresh_time.valueOf()) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        provider.readCookie = function (cname) {
+
+            var nameEQ = cname + "=";
+            var ca = document.cookie.split(';');
+
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1,c.length);
+                }
+                if (c.indexOf(nameEQ) === 0) {
+                    return c.substring(nameEQ.length,c.length);
+                }
+            }
+            return null;
+
+        };
+
+        provider.removeCookies = function () {
+            var res = document.cookie;
+            var multiple = res.split(";");
+            for(var i = 0; i < multiple.length; i++) {
+                var key = multiple[i].split("=");
+                document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+            }
+        };
+        
         return provider;
     }
 })(angular);
