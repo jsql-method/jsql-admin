@@ -99,7 +99,7 @@
         };
 
         function submitReset() {
-            let data = {
+            var data = {
                 newPassword: vm.password
             };
 

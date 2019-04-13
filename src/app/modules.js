@@ -47,6 +47,9 @@ var app = angular
         }
 
     }])
+    .config(['$qProvider', function ($qProvider) {
+        $qProvider.errorOnUnhandledRejections(false);
+    }])
     .config([
         "$stateProvider",
         "$urlRouterProvider",
@@ -192,7 +195,7 @@ var app = angular
                     }
                 })
                 .state("login", {
-                    url: "/auth/login",
+                    url: "/login",
                     templateUrl: "app/controllers/login/login.html",
                     controller: "LoginController",
                     controllerAs: "vm",
@@ -202,19 +205,8 @@ var app = angular
                         shortTitle: 'Sign in'
                     }
                 })
-                .state("register", {
-                    url: "/auth/register",
-                    templateUrl: "app/controllers/register/register.html",
-                    controller: "RegisterController",
-                    controllerAs: "vm",
-                    data: {
-                        requiresLogin: false,
-                        title: 'JSQL - Sign up',
-                        shortTitle: 'Sign up'
-                    }
-                })
                 .state("activate", {
-                    url: "/auth/activate/:id",
+                    url: "/activate/:id",
                     templateUrl: "app/controllers/activate/activate.html",
                     controller: "ActivateController",
                     controllerAs: "vm",
@@ -224,19 +216,19 @@ var app = angular
                         shortTitle: 'Activate'
                     }
                 })
-                .state("resetPassword", {
-                    url: "/auth/reset-password",
+                .state("forgotPassword", {
+                    url: "/forgot-password",
                     templateUrl: "app/controllers/resetPassword/resetPassword.html",
                     controller: "ResetPasswordController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: false,
-                        title: 'JSQL - Reset password',
-                        shortTitle: 'Reset password'
+                        title: 'JSQL - Forgot password',
+                        shortTitle: 'Forgot password'
                     }
                 })
                 .state("reset", {
-                    url: "/auth/reset/:id",
+                    url: "/reset-password/:id",
                     templateUrl: "app/controllers/reset/reset.html",
                     controller: "ResetController",
                     controllerAs: "vm",
@@ -256,3 +248,4 @@ var app = angular
             date: "dd-MM-yyyy"
         }
     });
+

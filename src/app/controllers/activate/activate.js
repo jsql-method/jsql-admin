@@ -53,7 +53,7 @@
 
         function reactivateAccount() {
 
-            let data  = {
+            var data  = {
               token: token
             };
 

@@ -56,7 +56,7 @@
 
     function submitAddApplication() {
 
-      let data = {
+      var data = {
         name: vm.name
       };
 

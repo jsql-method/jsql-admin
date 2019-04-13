@@ -37,6 +37,7 @@ app.run([
                 create: true,
                 sortField: "text"
             });
+
         });
 
         $rootScope.$on("$stateChangeStart", function (
@@ -58,7 +59,7 @@ app.run([
                 }
 
                 if (toState.data.roles) {
-                    let role = localStorage.getItem('_mRole');
+                    var role = AuthService.getRole();
                     if (toState.data.roles.indexOf(role) > -1) {
                         return;
                     }

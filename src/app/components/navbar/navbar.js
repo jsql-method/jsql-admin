@@ -57,7 +57,7 @@
 
                 function clearLastVisited() {
 
-                    let url = vm.mostVisited[0].url;
+                    var url = vm.mostVisited[0].url;
                     vm.mostVisited = vm.mostVisited.filter(function (visited) {
 
                         if (visited.url !== url) {

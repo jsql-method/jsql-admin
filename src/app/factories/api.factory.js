@@ -42,7 +42,15 @@
             Accept: "application/json; charset=utf-8"
           },
           data: request
-        });
+        }).then(function(result){
+
+          if(result){
+              return result.data || null;
+          }
+
+          return null;
+
+       });
 
 
       return {

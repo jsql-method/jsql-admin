@@ -30,7 +30,7 @@
 
     //--------
     function init() {
-      vm.memberKey = AuthService.getMemberKey();
+      vm.developerKey = AuthService.getDeveloperKey();
       vm.loginRole = localStorage.getItem('_mRole');
     }
 

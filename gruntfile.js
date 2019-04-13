@@ -3,6 +3,7 @@
 var options = {
 
     appFiles: [
+        './src/app/en.js',
         './src/app/modules.js',
         './src/app/constants.js',
         './src/app/modals/**/*.js',
@@ -333,6 +334,15 @@ module.exports = function (grunt) {
                 name: 'constants'
             },
             // Environment targets
+            local: {
+                options: {
+                    dest: './src/app/constants.js'
+                },
+                constants: {
+                    SERVER_URL : 'http://localhost:9191'
+                    // PORT: 9026
+                }
+            },
             dev: {
                 options: {
                     dest: './src/app/constants.js'
@@ -384,7 +394,7 @@ module.exports = function (grunt) {
 
         grunt.config('preprocess.options.context.ENV', 'development');
 
-        grunt.task.run(['ngconstant:dev',
+        grunt.task.run(['ngconstant:local',
             'copy:index', 'html2js', 'preprocess:index'
         ]);
 
@@ -399,7 +409,7 @@ module.exports = function (grunt) {
              'build',
             'concat:bundleCss',
             'concat:bundleJs',
-            'clean:prod',
+            'clean:prod'
         ]);
 
     });
@@ -437,7 +447,7 @@ module.exports = function (grunt) {
         grunt.config('preprocess.options.context.ENV', 'development');
 
         grunt.task.run([
-            'ngconstant:test',
+            'ngconstant:local',
             'build',
             'connect:dist',
             'concurrent:server'

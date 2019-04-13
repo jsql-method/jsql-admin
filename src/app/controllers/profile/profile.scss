@@ -1,22 +1,35 @@
 .profileController {
   padding: 20px;
 
-  .avatar-section {
-    padding-bottom: 20px;
+  .col {
+    max-width: 28rem;
   }
 
-  .avatar {
-    width: 80px !important;
-    .upload-image-user {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+  .additional-margin {
+    margin-top: 6rem;
+  }
+
+  .avatar-group {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+
+    .avatar {
+      height: 5rem;
+      display: flex;
+      width: 7rem;
+
+      img {
+        width: 5rem;
+      }
+
     }
-  }
 
-  button {
-    width: 135px;
-    margin-bottom: 10px;
+    .btn {
+      display: flex;
+      height: 2.5rem;
+    }
+
   }
 
   .text-danger-profile {
@@ -37,9 +50,4 @@
     margin-bottom: 10px;
   }
 
-  .upload-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-  }
 }

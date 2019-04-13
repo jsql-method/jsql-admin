@@ -75,7 +75,7 @@
 
       EventService.registerClick("build-click", function() {
         var selectors = document.getElementsByClassName("multiselect-contain");
-        for (let i = 0; i < selectors.length; i++) {
+        for (var i = 0; i < selectors.length; i++) {
           selectors[i].style.display = "none";
         }
       });
@@ -113,8 +113,8 @@
     }
 
     function addElements(start) {
-      let element = [];
-      let limit = 0;
+      var element = [];
+      var limit = 0;
       if (start + 10 < vm.builds.length) {
         limit = start + 10;
       } else {
@@ -123,7 +123,7 @@
 
       // wyswietlanie od najnowszych
       for (
-        let i = vm.builds.length - start - 1;
+        var i = vm.builds.length - start - 1;
         i >= vm.builds.length - limit;
         i--
       ) {
@@ -131,7 +131,7 @@
       }
 
       // wyswietlanie od najstarszych - moze sie przydac jak trzeba bedzie zrobic przycisk do sortowania
-      // for (let i = start; i < limit; i++) {
+      // for (var i = start; i < limit; i++) {
       //   element.push(
       //    vm.builds[i]
       // )
@@ -154,9 +154,9 @@
     };
 
     function updateStats() {
-      let dateFrom = getData('dateFrom');
-      let dateTo = getData();
-      let data = {
+      var dateFrom = getData('dateFrom');
+      var dateTo = getData();
+      var data = {
         applications: vm.applications.map(function (app) {
           return app.id;
         }),
@@ -190,26 +190,26 @@
     }
 
     function getData(when) {
-        let data = new Date();
-        let dateOffset;
+        var data = new Date();
+        var dateOffset;
         if(when === 'dateFrom') {
             dateOffset = (24*60*60*1000) * 7; //5 days
             data.setTime(data.getTime() - dateOffset);
         }
 
-        let day = data.getDate();
+        var day = data.getDate();
 
         if(day < 10) {
             day = '0' + day;
         }
 
-        let mounth = data.getMonth() + 1;
+        var mounth = data.getMonth() + 1;
 
         if(mounth < 10) {
             mounth = '0' + mounth;
         }
 
-        let year = data.getFullYear();
+        var year = data.getFullYear();
 
         return day + '-' + mounth + '-' + year;
     }
@@ -219,7 +219,7 @@
         selectOptions = [];
       }
 
-      for (let i = 0; i < builds.length; i++) {
+      for (var i = 0; i < builds.length; i++) {
         selectOptions.push({
           app: builds[i].applicationName,
           member: builds[i].buildOwner
@@ -270,8 +270,8 @@
       var amountUsersWith = getAmountAllMounths(Object.keys(users).length);
       filterDateForUsers(users, amountUsersWith);
 
-      for (let i = 0; i < Object.keys(users).length; i++) {
-        let color = getRandomColor();
+      for (var i = 0; i < Object.keys(users).length; i++) {
+        var color = getRandomColor();
         datasets.push({
           label: Object.keys(users)[i],
           backgroundColor: color,
@@ -349,8 +349,8 @@
     }
 
     function getUsers() {
-      let dataUsers = {};
-      for (let i = 0; i < vm.builds.length; i++) {
+      var dataUsers = {};
+      for (var i = 0; i < vm.builds.length; i++) {
         if (!dataUsers.hasOwnProperty(vm.builds[i].buildOwner)) {
           dataUsers[vm.builds[i].buildOwner] = vm.builds[i].buildOwner;
         }
@@ -359,11 +359,11 @@
     }
 
     function getAmountAllMounths(usersLength) {
-      let amountsUsers = [];
-      for (let i = 0; i < usersLength; i++) {
-        let mounth = [];
+      var amountsUsers = [];
+      for (var i = 0; i < usersLength; i++) {
+        var mounth = [];
 
-        for (let j = 0; j < 12; j++) {
+        for (var j = 0; j < 12; j++) {
           mounth.push(0);
         }
         amountsUsers.push(mounth);
@@ -372,11 +372,11 @@
     }
 
     function filterDateForUsers(users, amountUsersWith) {
-      for (let i = 0; i < vm.builds.length; i++) {
-        for (let j = 0; j < Object.keys(users).length; j++) {
+      for (var i = 0; i < vm.builds.length; i++) {
+        for (var j = 0; j < Object.keys(users).length; j++) {
           if (vm.builds[i].buildOwner === Object.keys(users)[j]) {
-            let length = vm.builds[i].hashingTime.length;
-            let numberAddBuild =
+            var length = vm.builds[i].hashingTime.length;
+            var numberAddBuild =
               parseInt(vm.builds[i].hashingTime.substr(length - 7, 2)) - 1;
             amountUsersWith[j][numberAddBuild] += 1;
           }
@@ -453,7 +453,7 @@
           return id === applicationId;
         })
       ) {
-        let index = vm.dataFilterBuilds.applications.indexOf(applicationId);
+        var index = vm.dataFilterBuilds.applications.indexOf(applicationId);
         vm.dataFilterBuilds.applications.splice(index, 1);
       } else {
         vm.dataFilterBuilds.applications.push(applicationId);
@@ -511,7 +511,7 @@
           return id === memberId;
         })
       ) {
-        let index = vm.dataFilterBuilds.members.indexOf(memberId);
+        var index = vm.dataFilterBuilds.members.indexOf(memberId);
         vm.dataFilterBuilds.members.splice(index, 1);
       } else {
         vm.dataFilterBuilds.members.push(memberId);

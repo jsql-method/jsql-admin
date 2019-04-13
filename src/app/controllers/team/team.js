@@ -204,7 +204,7 @@
     }
 
     function submitAddMember() {
-      let data = {
+      var data = {
         firstName: vm.firstName,
         lastName: vm.lastName,
         email: vm.email,
@@ -250,7 +250,7 @@
     }
 
     function checkAssignApplication(id) {
-      for (let i = 0; i < vm.memberApplication.length; i++) {
+      for (var i = 0; i < vm.memberApplication.length; i++) {
         if (vm.memberApplication[i] === id) {
           return true;
         }
@@ -260,7 +260,7 @@
     }
 
     function addMemberToApplication(id) {
-      let data = {
+      var data = {
         member: vm.members[vm.editMember].id,
         application: id
       };
@@ -271,7 +271,7 @@
     }
 
     function deleteMemberWithApplication(id) {
-      let data = {
+      var data = {
         member: vm.members[vm.editMember].id,
         application: id
       };

@@ -236,7 +236,7 @@
                     return id === applicationId;
                 })
             ) {
-                let index = vm.dataFilterTraffic.applications.indexOf(applicationId);
+                var index = vm.dataFilterTraffic.applications.indexOf(applicationId);
                 vm.dataFilterTraffic.applications.splice(index, 1);
             } else {
                 vm.dataFilterTraffic.applications.push(applicationId);

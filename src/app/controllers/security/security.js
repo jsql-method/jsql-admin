@@ -138,7 +138,7 @@
     };
 
     function updateOptions() {
-      let data = {
+      var data = {
         encodeQuery: vm.encodeQuery,
         encodingAlgorithm: vm.encodingAlgorithm,
         isSalt: vm.addSalt,
@@ -164,27 +164,27 @@
     }
 
     function generateRandomSalt() {
-      let chars = [];
-      let genNumber = vm.genNumber();
-      let genCharArray = vm.genCharArray("a", "z");
-      let salt = "";
+      var chars = [];
+      var genNumber = vm.genNumber();
+      var genCharArray = vm.genCharArray("a", "z");
+      var salt = "";
 
-      for (let i = 0; i < genNumber.length; i++) {
+      for (var i = 0; i < genNumber.length; i++) {
         chars.push(genNumber[i]);
       }
 
-      for (let i = 0; i < genCharArray.length; i++) {
+      for (var i = 0; i < genCharArray.length; i++) {
         chars.push(genCharArray[i]);
       }
 
-      for (let i = 0; i < 10; i++) {
+      for (var i = 0; i < 10; i++) {
         salt += chars[Math.floor(Math.random() * chars.length)];
       }
       vm.salt = salt;
     }
 
     function genCharArray(charA, charZ) {
-      let a = [],
+      var a = [],
         i = charA.charCodeAt(0),
         j = charZ.charCodeAt(0);
       for (; i <= j; ++i) {
@@ -194,8 +194,8 @@
     }
 
     function genNumber() {
-      let number = [];
-      for (let i = 0; i < 10; i++) {
+      var number = [];
+      for (var i = 0; i < 10; i++) {
         number.push(i.toString());
       }
       return number;

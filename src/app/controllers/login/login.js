@@ -1,107 +1,45 @@
-(function(angular) {
-  "use strict";
+(function (angular) {
+    "use strict";
 
-  angular
-    .module("jsql")
-    .controller("LoginController", ["AuthService", "$state", LoginController]);
-
-  /**
-   * @ngInject
-   */
-  function LoginController(AuthService, $state) {
-    var vm = this;
-
-    vm.generalMessage = "";
-    vm.email = "";
-    vm.password = "";
-
-    vm.messages = {
-      email: [],
-      password: []
-    };
-
-    init();
-
-    //--------
-    function init() {}
-
-    vm.go = function() {
-      $state.go("register");
-    };
+    angular
+        .module("jsql")
+        .controller("LoginController", ["AuthService", "UtilsService", LoginController]);
 
     /**
-     * Validate Form login
+     * @ngInject
      */
+    function LoginController(AuthService, UtilsService) {
+        var vm = this;
 
-    var onTouchEmail = false;
-    var onTouchPassword = false;
+        vm.email = '';
+        vm.password = '';
+        vm.generalMessage = '';
 
-    vm.validateLoginForm = function() {
-      onTouchEmail = true;
-      onTouchPassword = true;
+        vm.submitLogin = function () {
 
-      vm.generalMessage = "";
-      vm.validateEmail();
-      vm.validatePassword();
+            vm.generalMessage = '';
+            vm.messages = null;
 
-      for (var messagesValidate in vm.messages) {
-        if (vm.messages[messagesValidate].length > 0) {
-          return;
-        }
-      }
+            AuthService.login(
+                {
+                    email: vm.email,
+                    password: vm.password
+                },
+                function (result) {
 
-      vm.submitLogin();
-    };
+                    if (UtilsService.hasErrors(result)) {
 
-    vm.validateEmail = function(result) {
-      if (result !== undefined) {
-        onTouchEmail = result;
-      }
+                        if (result.status === 401) {
+                            vm.generalMessage = translation.unauthorized;
+                        } else if (result.status === 204) {
+                            vm.messages = UtilsService.getErrors(result);
+                        }
 
-      if (!onTouchEmail) {
-        return;
-      }
+                    }
 
-      vm.messages.email = [];
 
-      if (vm.email.length === 0) {
-        vm.messages.email.push("Email can't be blank.");
-      }
-    };
-
-    vm.validatePassword = function(result) {
-      if (result !== undefined) {
-        onTouchPassword = result;
-      }
-
-      if (!onTouchPassword) {
-        return;
-      }
-
-      vm.messages.password = [];
-
-      if (vm.password.length === 0) {
-        vm.messages.password.push("Password can't be blank.");
-      }
-
-      if (vm.password.length > 100) {
-        vm.messages.password.push("Max length number of characters 100.");
-      }
-    };
-
-    vm.submitLogin = function() {
-      AuthService.login(
-        {
-          email: vm.email,
-          password: vm.password
-        },
-        function(result) {
-          if (result.data.code !== 200) {
-            vm.generalMessage = result.data.description;
-          }
-        },
-        function() {}
-      );
-    };
-  }
+                }
+            );
+        };
+    }
 })(angular);
