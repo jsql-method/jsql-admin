@@ -34,13 +34,28 @@
                         vissibleSidebar = true;
                     }
 
+                    function isVisited(pageName) {
+
+                        if(vm.mostVisited.length > 0){
+                            if (vm.mostVisited[0].name === pageName) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+
+                    }
+
                     EventEmitterService.on(
                         EventEmitterService.namespace.VISIT_PAGE,
                         function (pageData) {
-                            vm.mostVisited.unshift({
-                                name: pageData.name,
-                                url: pageData.url
-                            });
+
+                            if (!isVisited(pageData.name)) {
+                                vm.mostVisited.unshift({
+                                    name: pageData.name,
+                                    url: pageData.url
+                                });
+                            }
 
                             StorageService.set(
                                 StorageService.namespace.LAST_PAGES,

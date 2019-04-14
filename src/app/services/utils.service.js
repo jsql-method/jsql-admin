@@ -10,8 +10,12 @@
         var utils = {};
 
 
-        utils.openSuccessModal = function(text){
-            utils.openModal(text, false, 'Confirm', null, null, null);
+        utils.openFailedModel = function(text){
+            utils.openModal(text || translation.something_gone_wrong, false, 'Ok', 'error', 'Error', null);
+        };
+
+        utils.openSuccessModal = function(text, callback){
+            utils.openModal(text, false, 'Confirm', null, null, callback);
         };
 
         utils.openModal = function (text, vissibleButtonDelete, submitTextButton, clazz, title, callBack) {
@@ -45,15 +49,23 @@
 
         };
 
+        utils.getGeneralError = function(result){
+            return result.data.errorMessage;
+        };
+
+        utils.hasGeneralError = function(result){
+            return (result.status === 200 || result.status === 204) && result.data.errorMessage;
+        };
+
         utils.hasErrors = function (result) {
-            return result.status === 204 || result.status !== 200;
+            return result.status === 204 && result.data.messages;
         };
 
         utils.getErrors = function (result) {
-
+            var errorData = result.data.messages;
             var messages = {};
-            for (var field in result.data) {
-                messages[field] = translation[result.data[field]] || translation.error.replace('{0}', result.data[field]);
+            for (var field in errorData) {
+                messages[field] = translation[errorData[field]] || translation.error.replace('{0}', errorData[field]);
             }
             return messages;
 

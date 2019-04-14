@@ -27,7 +27,7 @@
                 },
                 function (result) {
 
-                    if (UtilsService.hasErrors(result)) {
+                    if (result.status !== 200) {
 
                         if (result.status === 401) {
                             vm.generalMessage = translation.unauthorized;

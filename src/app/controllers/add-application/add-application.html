@@ -1,20 +1,24 @@
-<div class="content applicationsController">
-  <h2>Add application</h2>
+<div class="applicationsController subpage">
+  <h2>Add new application</h2>
   <div class="underline-title-card"></div>
   <div class="row">
     <div class="col">
-      <form>
+
+      <form ng-submit="vm.submitApplication()">
+
         <div class="form-group">
           <label for="name">Name</label>
-          <input ng-model="vm.name" type="text" class="form-control" id="name" ng-blur="vm.validateName(true)" ng-change="vm.validateName()" placeholder="Name"/>
+          <input ng-model="vm.application.name" type="text"
+                 class="form-control {{vm.messages.name ? 'is-invalid' : ''}}" id="name"
+                 placeholder="{{vm.application.name}}" autocomplete="off"/>
+          <div class="invalid-feedback" ng-show="vm.messages.name">
+            {{ vm.messages.name }}
+          </div>
         </div>
-        <p class="text-danger-add-application" ng-repeat="message in vm.message track by $index">
-          {{ message }}
-        </p>
-        <button ng-click="vm.validateAddApplication()" type="submit" class="btn btn-primary">
-          Add
-        </button>
+
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
+
     </div>
   </div>
 </div>

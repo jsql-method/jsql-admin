@@ -1,46 +1,54 @@
-(function(angular) {
-  "use strict";
+(function (angular) {
+    "use strict";
 
-  angular.module("jsql").service("ApplicationService", ApplicationService);
-
-  /**
-   * @ngInject
-   */
-  function ApplicationService(EndpointsFactory) {
-    var provider = {};
+    angular.module("jsql").service("ApplicationService", ApplicationService);
 
     /**
-     * Funkcja dodaje membera
+     * @ngInject
      */
+    function ApplicationService(EndpointsFactory) {
+        var provider = {};
 
-    provider.generateApplication = function(data) {
-      return EndpointsFactory.generateApplication(data).$promise;
-    };
+        /**
+         * Funkcja dodaje membera
+         */
 
-    provider.deleteApplication = function(id) {
-      return EndpointsFactory.deleteApplication(id).$promise;
-    };
+        provider.createApplication = function (data) {
+            return EndpointsFactory.createApplication(data).$promise;
+        };
 
-    provider.getQueries = function(dateFrom, dateTo, data) {
-      return EndpointsFactory.getQueries(dateFrom, dateTo, data).$promise;
-    };
+        provider.getApplication = function (id) {
+            return EndpointsFactory.application(id).$promise;
+        };
 
-    provider.getAllOptions = function(apiKey) {
-      return EndpointsFactory.getAllOptions(apiKey).$promise;
-    };
+        provider.deleteApplication = function (id) {
+            return EndpointsFactory.deleteApplication(id).$promise;
+        };
 
-    provider.getOptionsValues = function() {
-      return EndpointsFactory.getOptionsValues().$promise;
-    };
+        provider.getQueries = function (dateFrom, dateTo, data) {
+            return EndpointsFactory.getQueries(dateFrom, dateTo, data).$promise;
+        };
 
-    provider.updateOptions = function(id, data) {
-      return EndpointsFactory.updateOptions(id, data).$promise;
-    };
+        provider.getAllOptions = function (apiKey) {
+            return EndpointsFactory.getAllOptions(apiKey).$promise;
+        };
 
-    provider.updateQuery = function(id, data) {
-      return EndpointsFactory.updateQuery(id, data).$promise;
-    };
+        provider.getOptions = function (id) {
+            return EndpointsFactory.getOptions(id).$promise;
+        };
 
-    return provider;
-  }
+        provider.getOptionsValues = function () {
+            return EndpointsFactory.getOptionsValues().$promise;
+        };
+
+        provider.updateOptions = function (id, data) {
+            return EndpointsFactory.updateOptions(id, data).$promise;
+        };
+
+        provider.updateQuery = function (id, data) {
+            return EndpointsFactory.updateQuery(id, data).$promise;
+        };
+
+        return provider;
+    }
 })(angular);

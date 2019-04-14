@@ -1,0 +1,12 @@
+.applicationsController {
+
+  .col {
+    max-width: 28rem;
+  }
+
+  .form-control:disabled, .form-control[readonly] {
+    background-color: #ffffff;
+    cursor: not-allowed;
+  }
+
+}

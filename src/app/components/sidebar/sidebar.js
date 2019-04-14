@@ -37,7 +37,7 @@
                 }
 
                 function getImage() {
-                    vm.avatar = SERVER_URL + '/api/avatar/' + AuthService.getToken();
+                    vm.avatar = SERVER_URL + '/api/avatar/' + AuthService.getToken()+'?t='+new Date().getTime();
                 }
 
                 function getApplications() {
@@ -49,8 +49,13 @@
                 }
 
                 function getSessionData() {
-                    vm.session = AuthService.getSessionData();
-                    vm.session.role = AuthService.beautifyRole(vm.session.role);
+
+                    AuthService.refreshSession(function(){
+
+                        vm.session = AuthService.getSessionData();
+                        vm.session.role = AuthService.beautifyRole(vm.session.role);
+
+                    });
 
                 }
 
@@ -62,10 +67,8 @@
 
                     AuthService.logout().then(function () {
 
-                        AuthService.removeCookies();
                         AuthService.deleteSession();
-                        window.localStorage.clear();
-                        window.location.href = "/login/";
+                        window.location.href = "/login";
 
                     });
 
@@ -97,6 +100,16 @@
                 EventEmitterService.on(
                     EventEmitterService.namespace.APPLICATIONS,
                     getApplications
+                );
+
+                EventEmitterService.on(
+                    EventEmitterService.namespace.SESSION,
+                    getSessionData
+                );
+
+                EventEmitterService.on(
+                    EventEmitterService.namespace.AVATAR,
+                    getImage
                 );
 
             }

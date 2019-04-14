@@ -35,9 +35,9 @@
 
         dict.data[endpoint].promise = EndpointsFactory[endpoint]()
           .$promise.then(function(result) {
-            dict.data[endpoint].result = result;
+            dict.data[endpoint].result = result.data;
             dict.data[endpoint].loading = false;
-            return result;
+            return result.data;
           })
           .catch(function(err) {
             console.log(err);

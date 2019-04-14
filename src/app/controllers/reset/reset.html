@@ -1,97 +1,68 @@
-<section class="sign-card-reset-form">
-    <div class="sign-contain-reset-form" style="height: 600px;">
-        <div class="sign-information-reset-reset-form">
-            <div class="contain-picture-logo-reset-form">
-                <img
-                        src="./images/auth/jsql-logo-alfa.png"
-                        alt="JSQL Admin"
-                        class="picture-logo-reset-form"
-                />
+<section class="resetController">
+
+    <div class="reset-form">
+
+        <h5>
+            Setting new password
+        </h5>
+
+        <div class="form-wrapper">
+
+            <div class="logo-container">
+                <div class="logo"></div>
             </div>
+
+            <div class="form-container">
+
+                <div class="logo-container">
+                    <div class="logo"></div>
+                </div>
+
+                <form ng-submit="vm.submitReset()">
+
+                    <div class="form-group">
+                        <label for="newPassword">New password</label>
+                        <input ng-model="vm.changePassword.newPassword" type="password"
+                               class="form-control {{vm.messages.newPassword ? 'is-invalid' : ''}}"
+                               id="newPassword" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.newPassword">
+                            {{ vm.messages.newPassword }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repeatNewPassword">Repeat new password</label>
+                        <input ng-model="vm.changePassword.repeatNewPassword" type="password"
+                               class="form-control {{vm.messages.repeatNewPassword ? 'is-invalid' : ''}}"
+                               id="repeatNewPassword" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.repeatNewPassword">
+                            {{ vm.messages.repeatNewPassword }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Set password</button>
+
+                </form>
+
+            </div>
+
         </div>
-        <div style="float: left;width: 100%;font-size: 12px;height: 20px;">
-        </div>
-        <div class="sign-underline-logo-reset-form"></div>
-        <div class="sign-form-reset-form">
-            <form ng-submit="vm.validateResetForm()">
-                <div class="title-sign-reset-form">
-                    Reset Password.
+
+        <div class="friendly-information">
+            <div class="underline"></div>
+
+            <div class="info-row">
+                <div class="desc">
+                    <p class="text-left">Thank you and enjoy our solution</p>
+                    <p class="text-left">Your JSQL Team</p>
                 </div>
-                <div class="form-sign-reset-form">
-                    <div class="icon-sign-reset">
-                        <i class="fa fa-unlock-alt"></i>
-                    </div>
-                    <label class="field-resize field a-field a-field_a1 page__field">
-                        <input
-                                type="password"
-                                placeholder="New Password"
-                                class="field__input a-field__input"
-                                ng-model="vm.password"
-                                ng-blur="vm.validatePassword(true)"
-                                ng-change="vm.validatePassword()"
-                        />
-                        <span class="a-field__label-wrap">
-                            <span class="a-field__label"> New Password </span>
-                        </span>
-                    </label>
-                    <div
-                      class="text-danger-reset"
-                      ng-repeat="messages in vm.messages.password track by $index"
-                    >
-                        {{ messages }}
-                    </div>
-                </div>
-                <div class="form-sign-reset-form">
-                    <div class="icon-sign-reset">
-                        <i class="fa fa-unlock-alt" style="opacity: 0.5;"> </i>
-                    </div>
-                    <label class="field-resize field a-field a-field_a1 page__field">
-                        <input
-                                type="password"
-                                placeholder="Repeat-Password"
-                                class="field__input a-field__input"
-                                ng-model="vm.repeatPassword"
-                                ng-blur="vm.validateRepeatPassword(true)"
-                                ng-change="vm.validateRepeatPassword()"
-                        />
-                        <span class="a-field__label-wrap">
-                            <span class="a-field__label"> Repeat Password </span>
-                        </span>
-                    </label>
-                    <div
-                      class="text-danger-reset"
-                      ng-repeat="messages in vm.messages.repeatPassword track by $index"
-                    >
-                        {{ messages }}
-                    </div>
-                </div>
-                <div class="contain-submit-reset">
-                    <button
-                            type="submit"
-                            class="btn btn-primary waves-effect text-center"
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
-            <div class="support-information-reset">
-                <div class="sign-underline-reset-form"></div>
-                <p class="text-inverse text-support-reset-form">
-                    Thank you and enjoy our website
-                </p>
-                <p class="text-inverse text-support-team-reset-form">
-                    <b>Your JSQL Team</b>
-                </p>
-                <div class="logo-support-reset-form">
-                    <img
-                            src="./images/auth/jsql-logo-alfa.png"
-                            alt="JSQL Admin"
-                            width="60"
-                            height="60"
-                    />
+                <div class="logo-container">
+                    <div class="logo"></div>
                 </div>
             </div>
+
         </div>
+
     </div>
-    <!-- end of -->
+
 </section>

@@ -38,7 +38,7 @@
                 if (result.status === 200) {
 
                     provider.setSession(result.data);
-                    EndpointsFactory.plan(user).$promise.then(function (result) {
+                    EndpointsFactory.plan().$promise.then(function (result) {
                         provider.setPlan(result.data);
                         $state.go('builds');
                     });
@@ -52,6 +52,26 @@
                     callback(err.data);
                 }
             });
+        };
+
+        provider.refreshSession = function(callback){
+
+            EndpointsFactory.session().$promise.then(function (result) {
+
+                if (result.status === 200) {
+                    provider.setSession(result.data);
+                    EndpointsFactory.plan().$promise.then(function (result) {
+                        provider.setPlan(result.data);
+                        if(callback){
+                            callback();
+                        }
+                    });
+                }
+
+                return result;
+
+            })
+
         };
 
         /**
@@ -128,10 +148,14 @@
          * Usuwa zapisaną sesję w przeglądarce
          */
         provider.deleteSession = function () {
+
             sessionStorage.removeItem(provider.SESSION_STORAGE);
             sessionStorage.removeItem(provider.KEY_STORAGE);
-            sessionStorage.removeItem(provider.MEMBER_KEY);
-            sessionStorage.removeItem(provider.LOGIN_ROLE);
+            sessionStorage.removeItem(provider.SESSION_DATA);
+            sessionStorage.removeItem(provider.DEV_KEY_STORAGE);
+
+            window.localStorage.clear();
+            provider.removeCookies();
         };
 
         /**
@@ -173,7 +197,7 @@
         };
 
         provider.getSessionData = function () {
-            return JSON.parse(sessionStorage.getItem(provider.SESSION_DATA));
+            return JSON.parse(sessionStorage.getItem(provider.SESSION_DATA)) || {};
         };
 
         provider.hashDeveloperKey = function (developerKey) {
@@ -274,8 +298,8 @@
             return sessionData.plan;
         };
 
-        provider.updateUserDetails = function (id, data) {
-            return EndpointsFactory.updateUserDetails(id, data).$promise;
+        provider.updateUserDetails = function (data) {
+            return EndpointsFactory.updateUserDetails(data).$promise;
         };
 
         provider.changePassword = function (data) {

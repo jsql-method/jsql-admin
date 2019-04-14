@@ -113,8 +113,8 @@ var app = angular
                         shortTitle: 'Add application'
                     }
                 })
-                .state("applications", {
-                    url: "/applications/:id",
+                .state("application", {
+                    url: "/application/:id",
                     templateUrl: "app/controllers/applications/applications.html",
                     controller: "ApplicationsController",
                     controllerAs: "vm",
@@ -228,7 +228,7 @@ var app = angular
                     }
                 })
                 .state("reset", {
-                    url: "/reset-password/:id",
+                    url: "/reset-password/:token",
                     templateUrl: "app/controllers/reset/reset.html",
                     controller: "ResetController",
                     controllerAs: "vm",

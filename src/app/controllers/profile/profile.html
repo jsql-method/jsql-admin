@@ -1,77 +1,116 @@
 <div class="profileController subpage">
-    <h2>Profile</h2>
-    <div class="underline-title-card"></div>
-    <div class="row">
-        <div class="col">
-            <form ng-submit="vm.updateProfile()">
 
-                <div class="form-group avatar-group">
-                    <div class="avatar rounded-circle">
-                        <img src="{{vm.avatar}}"/>
-                    </div>
-                    <input type="file" accept=".png, .jpg, .jpeg" class="d-none" id="avatar" onchange="angular.element(this).scope().vm.uploadImage(this)"/>
-                    <button type="button" class="btn btn-primary" ng-click="vm.clickSelect()">Change image</button>
-                </div>
-
-                <div class="form-group">
-                    <label for="firstName">First name</label>
-                    <input ng-model="vm.profile.firstName" type="text" class="form-control {{vm.messagesProfile.firstName ? 'is-invalid' : ''}}" id="firstName" placeholder="{{vm.profile.firstName}}" autocomplete="off"/>
-                    <div class="invalid-feedback" ng-show="vm.messagesProfile.firstName">
-                        {{ vm.messagesProfile.firstName }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="lastName">Last name</label>
-                    <input ng-model="vm.profile.lastName" type="text" class="form-control {{vm.messagesProfile.lastName ? 'is-invalid' : ''}}" id="lastName" placeholder="{{vm.profile.lastName}}" autocomplete="off"/>
-                    <div class="invalid-feedback" ng-show="vm.messagesProfile.lastName">
-                        {{ vm.messagesProfile.lastName }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input ng-model="vm.profile.email" type="email" class="form-control {{vm.messagesProfile.email ? 'is-invalid' : ''}}" id="email" placeholder="{{vm.profile.email}}" autocomplete="off"/>
-                    <div class="invalid-feedback" ng-show="vm.messagesProfile.email">
-                        {{ vm.messagesProfile.email }}
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-danger" ng-click="vm.deactivateAccount()">Delete account</button>
-            </form>
-        </div>
-
-        <div class="col">
-            <form ng-submit="vm.updatePassword()" class="additional-margin">
-
-                <div class="form-group">
-                    <label for="oldPassword">Current password</label>
-                    <input ng-model="vm.changePassword.oldPassword" type="text" class="form-control {{vm.messagesChangePassword.oldPassword ? 'is-invalid' : ''}}" id="oldPassword" autocomplete="off"/>
-                    <div class="invalid-feedback" ng-show="vm.messagesChangePassword.oldPassword">
-                        {{ vm.messagesChangePassword.oldPassword }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="lastName">New password</label>
-                    <input ng-model="vm.changePassword.newPassword" type="text" class="form-control {{vm.messagesChangePassword.newPassword ? 'is-invalid' : ''}}" id="newPassword" autocomplete="off"/>
-                    <div class="invalid-feedback" ng-show="vm.messagesChangePassword.newPassword">
-                        {{ vm.messagesChangePassword.newPassword }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="repeatNewPassword">Repeat new password</label>
-                    <input ng-model="vm.changePassword.repeatNewPassword" type="text" class="form-control {{vm.messagesChangePassword.repeatNewPassword ? 'is-invalid' : ''}}" id="repeatNewPassword" autocomplete="off"/>
-                    <div class="invalid-feedback" ng-show="vm.messagesChangePassword.repeatNewPassword">
-                        {{ vm.messagesChangePassword.repeatNewPassword }}
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Change password</button>
-
-            </form>
+    <div class="spinner" ng-show="vm.loading">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </div>
+
+    <div ng-show="!vm.loading">
+        <h2>Profile</h2>
+        <div class="underline-title-card"></div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group avatar-group">
+
+                    <form ng-submit="vm.clickSelect()">
+                        <div class="avatar-subgroup">
+                            <div class="avatar">
+                                <img src="{{vm.avatar}}" class="rounded-circle"/>
+                            </div>
+                            <input type="file" accept=".png, .jpg, .jpeg" class="d-none is-invalid" id="avatar"
+                                   onchange="angular.element(this).scope().vm.uploadImage(this)"/>
+                            <button type="submit" class="btn btn-primary">Change image</button>
+
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messagesProfile.avatar"
+                             style="display: block !important;">
+                            {{ vm.messagesProfile.avatar }}
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col">
+                <form ng-submit="vm.updateProfile()">
+
+                    <div class="form-group">
+                        <label for="firstName">First name</label>
+                        <input ng-model="vm.profile.firstName" type="text"
+                               class="form-control {{vm.messagesProfile.firstName ? 'is-invalid' : ''}}" id="firstName"
+                               placeholder="{{vm.profile.firstName}}" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messagesProfile.firstName">
+                            {{ vm.messagesProfile.firstName }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last name</label>
+                        <input ng-model="vm.profile.lastName" type="text"
+                               class="form-control {{vm.messagesProfile.lastName ? 'is-invalid' : ''}}" id="lastName"
+                               placeholder="{{vm.profile.lastName}}" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messagesProfile.lastName">
+                            {{ vm.messagesProfile.lastName }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input ng-model="vm.profile.email" type="email"
+                               class="form-control {{vm.messagesProfile.email ? 'is-invalid' : ''}}" id="email"
+                               placeholder="{{vm.profile.email}}" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messagesProfile.email">
+                            {{ vm.messagesProfile.email }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-danger" ng-click="vm.deactivateAccount()">Delete account
+                    </button>
+                </form>
+            </div>
+
+            <div class="col">
+                <form ng-submit="vm.updatePassword()">
+
+                    <div class="form-group">
+                        <label for="oldPassword">Current password</label>
+                        <input ng-model="vm.changePassword.oldPassword" type="password"
+                               class="form-control {{vm.messagesChangePassword.oldPassword ? 'is-invalid' : ''}}"
+                               id="oldPassword" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messagesChangePassword.oldPassword">
+                            {{ vm.messagesChangePassword.oldPassword }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPassword">New password</label>
+                        <input ng-model="vm.changePassword.newPassword" type="password"
+                               class="form-control {{vm.messagesChangePassword.newPassword ? 'is-invalid' : ''}}"
+                               id="newPassword" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messagesChangePassword.newPassword">
+                            {{ vm.messagesChangePassword.newPassword }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repeatNewPassword">Repeat new password</label>
+                        <input ng-model="vm.changePassword.repeatNewPassword" type="password"
+                               class="form-control {{vm.messagesChangePassword.repeatNewPassword ? 'is-invalid' : ''}}"
+                               id="repeatNewPassword" autocomplete="off"/>
+                        <div class="invalid-feedback" ng-show="vm.messagesChangePassword.repeatNewPassword">
+                            {{ vm.messagesChangePassword.repeatNewPassword }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Change password</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
