@@ -12,7 +12,7 @@
     dict.data = {
       profile: null,
       applications: null,
-      members: null,
+      developers: null,
       admins: null
     };
 

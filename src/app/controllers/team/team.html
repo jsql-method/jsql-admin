@@ -1,4 +1,4 @@
-<div class="myTeamController subpage" ng-if="vm.section === 'list-members'">
+<div class="myTeamController subpage" >
 
     <div class="spinner" ng-show="vm.loading">
         <div class="lds-ellipsis">
@@ -9,14 +9,14 @@
         </div>
     </div>
 
-    <div ng-show="!vm.loading">
-        <h2>My team</h2>
+    <div ng-show="!vm.loading" ng-if="vm.section === 'list-developers'">
+        <h2>Developers</h2>
         <div class="underline-title-card"></div>
         <div class="row mt-2">
             <div class="col-12">
                 <form class="form-inline">
-                    <button type="submit" class="btn btn-primary" ng-click="vm.section = 'add-member'">
-                        + Add team member
+                    <button type="submit" class="btn btn-primary" ng-click="vm.section = 'add-developer'">
+                        + Add developer
                     </button>
                 </form>
             </div>
@@ -27,33 +27,23 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th scope="col">Member name</th>
+                        <th scope="col">Developer name</th>
                         <th scope="col">Email</th>
                         <th scope="col">&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="member in vm.members track by $index">
+                    <tr ng-repeat="developer in vm.developers track by $index">
                         <td class="description-overflow">
-                            {{ member.firstName + " " + member.lastName }}
+                            {{ developer.firstName + " " + developer.lastName }}
                         </td>
-                        <td class="description-overflow">{{ member.email }}</td>
+                        <td class="description-overflow">{{ developer.email }}</td>
                         <td>
                             <form class="form-inline">
-                                <button
-                                        style="margin: 5px"
-                                        ng-click="vm.deleteMemberOpenModal(member.id)"
-                                        type="button"
-                                        class="btn btn-danger mr-2"
-                                >
+                                <button type="button" class="btn btn-danger mr-2" ng-click="vm.deleteDeveloper(developer.id)">
                                     Delete
                                 </button>
-                                <button
-                                        style="margin: 5px"
-                                        ng-click="vm.getApplicationsMember($index)"
-                                        type="button"
-                                        class="btn btn-primary"
-                                >
+                                <button type="button" class="btn btn-primary" ng-click="vm.getApplicationsDeveloper(developer.id)">
                                     Applications privileges
                                 </button>
                             </form>
@@ -65,79 +55,66 @@
         </div>
     </div>
 
-    <div class="content buildsController" ng-if="vm.section==='add-member'">
-        <h2>Add member</h2>
-
+    <div ng-show="!vm.loading" ng-if="vm.section==='add-developer'">
+        <h2>New developer</h2>
+        <div class="underline-title-card"></div>
         <div class="row mt-2">
             <div class="col-12">
-                <form ng-submit="vm.validateAddMember()">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="email"
-                                ng-model="vm.email"
-                                ng-blur="vm.validateEmail(true)"
-                                ng-change="vm.validateEmail()"
-                        />
-                        <p
-                                class="text-danger"
-                                ng-repeat="message in vm.messages.email track by $index"
-                        >
-                            {{ message }}
-                        </p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="firstName">First name</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="firstName"
-                                ng-model="vm.firstName"
-                                ng-blur="vm.validateFirstName(true)"
-                                ng-change="vm.validateFirstName()"
-                        />
-                        <p
-                                class="text-danger"
-                                ng-repeat="message in vm.messages.firstName track by $index"
-                        >
-                            {{ message }}
-                        </p>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="lastName"
-                                ng-model="vm.lastName"
-                                ng-blur="vm.validateLastName(true)"
-                                ng-change="vm.validateLastName()"
-                        />
-                        <p
-                                class="text-danger"
-                                ng-repeat="message in vm.messages.lastName track by $index"
-                        >
-                            {{ message }}
-                        </p>
-                    </div>
-                    <p class="text-danger">{{ vm.generalMessage }}</p>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                    <button class="btn btn-secondary" ng-click="vm.backToList()">
+                <form class="form-inline">
+                    <button type="submit" class="btn btn-primary" ng-click="vm.backToList()">
                         Back
                     </button>
                 </form>
             </div>
         </div>
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <form ng-submit="vm.addDeveloper()">
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control {{vm.messages.email ? 'is-invalid' : ''}}" id="email" ng-model="vm.developer.email"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.email">
+                            {{ vm.messages.email }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control {{vm.messages.firstName ? 'is-invalid' : ''}}" id="firstName" ng-model="vm.developer.firstName"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.firstName">
+                            {{ vm.messages.firstName }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last name</label>
+                        <input type="text" class="form-control {{vm.messages.lastName ? 'is-invalid' : ''}}" id="lastName" ng-model="vm.developer.lastName"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.lastName">
+                            {{ vm.messages.lastName }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div
-            class="content buildsController"
-            ng-if="vm.section === 'application-member'"
-    >
-        <h2>{{ vm.nameEditMemberApplications }} - applications privileges</h2>
+    <div ng-show="!vm.loading" ng-if="vm.section === 'application-developer'">
+        <h2>{{vm.developer.firstName + ' ' + vm.developer.lastName}} - developer privileges</h2>
+        <div class="underline-title-card"></div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <form class="form-inline">
+                    <button type="submit" class="btn btn-primary" ng-click="vm.backToList()">
+                        Back
+                    </button>
+                </form>
+            </div>
+        </div>
 
         <div class="row mt-2">
             <div class="col-12">
@@ -153,34 +130,23 @@
                     <tr ng-repeat="application in vm.applications track by $index">
                         <td class="description-overflow">{{ application.name }}</td>
                         <td>
-              <span
-                      ng-class="vm.checkAssignApplication(application.id) ? 'badge badge-primary' : 'badge badge-secondary'"
-              >{{
-                  vm.checkAssignApplication(application.id) ? "Yes" : "No"
-                }}</span
-              >
+                            <span class="{{application.assigned ? 'badge badge-primary' : 'badge badge-secondary'}}">
+                                {{ application.assigned ? "Yes" : "No"}}
+                            </span>
                         </td>
                         <td>
-                            <form>
-                                <button
-                                        type="button"
-                                        ng-click="vm.checkAssignApplication(application.id) === false ? vm.addMemberToApplication(application.id) : vm.deleteMemberWithApplication(application.id)"
-                                        ng-class="vm.checkAssignApplication(application.id) === false ? 'btn btn-primary' : 'btn btn-secondary'"
-                                >
-                                    {{
-                                    vm.checkAssignApplication(application.id) === false
-                                    ? "Assign"
-                                    : "Unassign"
-                                    }}
+                            <form class="form-inline">
+                                <button type="button" class="btn btn-primary" ng-click="vm.assignDeveloper(application.id)">
+                                    Assign
+                                </button>
+                                <button type="button" class="vbtn btn-secondary" ng-click="vm.unassingDeveloper(application.id)">
+                                    Unassign
                                 </button>
                             </form>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-secondary" ng-click="vm.section='list-members'">
-                    Back
-                </button>
             </div>
         </div>
     </div>

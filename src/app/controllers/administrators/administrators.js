@@ -8,7 +8,7 @@
   /**
    * @ngInject
    */
-  function AdministratorsController(AuthService, AdminService, MemberService, DictService, $uibModal, EventEmitterService) {
+  function AdministratorsController(AuthService, AdminService, DeveloperService, DictService, $uibModal, EventEmitterService) {
 
     var vm = this;
     var adminDeleteOrDemote = false;
@@ -74,7 +74,7 @@
 
     function deleteAdmin() {
 
-      MemberService.deleteMember(vm.idDeleteAdmin).then(function(result) {
+      DeveloperService.deleteDeveloper(vm.idDeleteAdmin).then(function(result) {
 
         if (result.data.code === 200) {
           refreshAdmin();
@@ -86,7 +86,6 @@
             "success",
             "Delete admin!"
           );
-          EventEmitterService.broadcast(EventEmitterService.namespace.USERS);
         }
 
       });
@@ -117,7 +116,7 @@
       };
 
       AdminService.demoteAdmin(data).then(function(result) {
-        refreshMembers();
+        refreshDevelopers();
         refreshAdmin();
         adminDeleteOrDemote = true;
         openModal(
@@ -142,9 +141,9 @@
 
     }
 
-    function refreshMembers() {
+    function refreshDevelopers() {
 
-      DictService.refresh("members");
+      DictService.refresh("developers");
 
     }
 
@@ -277,11 +276,10 @@
         if (result.data.code === 200) {
           clearData();
           refreshAdmin();
-          refreshMembers();
+          refreshDevelopers();
           openModal("Your admin has been added");
 
           vm.section = "list-admins";
-          EventEmitterService.broadcast(EventEmitterService.namespace.USERS);
         } else {
           vm.generalMessage = result.data.description;
         }

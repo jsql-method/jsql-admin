@@ -10,7 +10,7 @@
     var provider = {};
 
     /**
-     * Funkcja dodaje membera
+     * Funkcja dodaje developera
      */
 
     provider.addAdmin = function(data) {

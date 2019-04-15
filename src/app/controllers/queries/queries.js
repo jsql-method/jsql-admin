@@ -23,8 +23,8 @@
         vm.valueQuery = "";
         vm.copyQueries = [];
         vm.format = dateFormat.html5Types.date;
-        vm.members = [];
-        vm.copyMembers = [];
+        vm.developers = [];
+        vm.copyDevelopers = [];
         vm.popup1 = {
             opened: false
         };
@@ -34,9 +34,9 @@
         vm.dateTo;
         vm.dateFrom;
         vm.altInputFormats = ['M!/d!/yyyy'];
-        vm.memberValue = "";
+        vm.developerValue = "";
         vm.dataFilterQueries = {
-            members: [],
+            developers: [],
             dateFrom: "",
             dateTo: "",
             used: false,
@@ -51,11 +51,11 @@
         vm.open2 = open2;
         vm.showMultiSelect = showMultiSelect;
         vm.hideMultiSelect = hideMultiSelect;
-        vm.setFilterMembers = setFilterMembers;
+        vm.setFilterDevelopers = setFilterDevelopers;
         vm.chooseUserId = chooseUserId;
-        vm.chooseAllMembers = chooseAllMembers;
-        vm.checkChoosenMember = checkChoosenMember;
-        vm.addOrRemoveMember = addOrRemoveMember;
+        vm.chooseAllDevelopers = chooseAllDevelopers;
+        vm.checkChoosenDeveloper = checkChoosenDeveloper;
+        vm.addOrRemoveDeveloper = addOrRemoveDeveloper;
 
         init();
 
@@ -65,7 +65,7 @@
             DictService.profile()
                 .then(function (result) {
                     vm.profileId = result.id;
-                    getMembers();
+                    getDevelopers();
                 });
 
             window.addEventListener("click", function () {
@@ -77,12 +77,12 @@
             });
         }
 
-        function getMembers() {
+        function getDevelopers() {
 
-            DictService.members()
+            DictService.developers()
                 .then(function (result) {
                     if (result) {
-                        vm.members = angular.copy(result);
+                        vm.developers = angular.copy(result);
                     }
                     getAdmins();
                 })
@@ -96,15 +96,15 @@
                     if (result) {
                         if (result.length > 0) {
                             result.forEach(function (admin) {
-                                vm.members.push(admin);
+                                vm.developers.push(admin);
                             });
-                            vm.members = vm.members.filter(function (member) {
-                               if(member.id !== vm.profileId) {
+                            vm.developers = vm.developers.filter(function (developer) {
+                               if(developer.id !== vm.profileId) {
                                    return true;
                                }
                                return false;
                             });
-                            vm.copyMembers = vm.members.slice();
+                            vm.copyDevelopers = vm.developers.slice();
                         }
                     }
                     getApplications();
@@ -127,7 +127,7 @@
 
             var data = {
                 applications: [vm.id],
-                members: [vm.profileId],
+                developers: [vm.profileId],
                 used: true,
                 dynamic: false
             };
@@ -137,7 +137,7 @@
 
             vm.dataFilterQueries.dateFrom = dateFrom;
             vm.dataFilterQueries.dateTo = dateTo;
-            vm.dataFilterQueries.members = [vm.profileId];
+            vm.dataFilterQueries.developers = [vm.profileId];
 
             ApplicationService.getQueries(dateFrom, dateTo, data)
                 .then(function (result) {
@@ -217,7 +217,7 @@
 
             var dataQueries = {
                 applications: [vm.id],
-                members: getIdMembers(),
+                developers: getIdDevelopers(),
                 used: vm.dataFilterQueries.used,
                 dynamic: vm.dataFilterQueries.dynamic
             };
@@ -257,7 +257,7 @@
 
         function submitFilterQueries() {
 
-            if(vm.dataFilterQueries.members.length === 0) {
+            if(vm.dataFilterQueries.developers.length === 0) {
                 openModal("Minimum one user required");
                 return;
             }
@@ -266,7 +266,7 @@
 
             var data = {
                 applications: [vm.id],
-                members: vm.dataFilterQueries.members,
+                developers: vm.dataFilterQueries.developers,
                 used: vm.dataFilterQueries.used,
                 dynamic: vm.dataFilterQueries.dynamic
             };
@@ -300,7 +300,7 @@
 
         function clearData() {
             vm.dataFilterQueries = {
-                members: [],
+                developers: [],
                 dateFrom: "",
                 dateTo: "",
                 used: false,
@@ -353,21 +353,21 @@
             selector.style.display = "none";
         }
 
-        function setFilterMembers(value) {
-            vm.membersValue = value;
-            filterMembers();
+        function setFilterDevelopers(value) {
+            vm.developersValue = value;
+            filterDevelopers();
         }
 
-        function filterMembers() {
-            vm.members = vm.copyMembers.filter(member => {
-                if (vm.memberValue === "") {
+        function filterDevelopers() {
+            vm.developers = vm.copyDevelopers.filter(developer => {
+                if (vm.developerValue === "") {
                     return true;
                 } else if (
                     (
-                        member.firstName.toLowerCase() +
+                        developer.firstName.toLowerCase() +
                         " " +
-                        member.lastName.toLowerCase()
-                    ).includes(vm.memberValue.toLowerCase())
+                        developer.lastName.toLowerCase()
+                    ).includes(vm.developerValue.toLowerCase())
                 ) {
                     return true;
                 }
@@ -377,10 +377,10 @@
 
         function chooseUserId(event) {
             if (event.target.checked === true) {
-                vm.dataFilterQueries.members.push(vm.profileId);
+                vm.dataFilterQueries.developers.push(vm.profileId);
             } else {
-                vm.dataFilterQueries.members = vm.dataFilterQueries.members.filter(function (member) {
-                    if(member !== vm.profileId) {
+                vm.dataFilterQueries.developers = vm.dataFilterQueries.developers.filter(function (developer) {
+                    if(developer !== vm.profileId) {
                         return true;
                     }
                     return false;
@@ -388,23 +388,23 @@
             }
         }
 
-        function chooseAllMembers(event) {
+        function chooseAllDevelopers(event) {
             if (event.target.checked === true) {
-                vm.dataFilterQueries.members = vm.members.map(function (
-                    member
+                vm.dataFilterQueries.developers = vm.developers.map(function (
+                    developer
                 ) {
-                    return member.id;
+                    return developer.id;
                 });
-                vm.dataFilterQueries.members.push(vm.profileId);
+                vm.dataFilterQueries.developers.push(vm.profileId);
             } else {
-                vm.dataFilterQueries.members = [];
+                vm.dataFilterQueries.developers = [];
             }
         }
 
-        function checkChoosenMember(memberId) {
+        function checkChoosenDeveloper(developerId) {
             if (
-                vm.dataFilterQueries.members.find(function (id) {
-                    return id === memberId;
+                vm.dataFilterQueries.developers.find(function (id) {
+                    return id === developerId;
                 })
             ) {
                 return true;
@@ -412,16 +412,16 @@
             return false;
         }
 
-        function addOrRemoveMember(memberId) {
+        function addOrRemoveDeveloper(developerId) {
             if (
-                vm.dataFilterQueries.members.find(function (id) {
-                    return id === memberId;
+                vm.dataFilterQueries.developers.find(function (id) {
+                    return id === developerId;
                 })
             ) {
-                var index = vm.dataFilterQueries.members.indexOf(memberId);
-                vm.dataFilterQueries.members.splice(index, 1);
+                var index = vm.dataFilterQueries.developers.indexOf(developerId);
+                vm.dataFilterQueries.developers.splice(index, 1);
             } else {
-                vm.dataFilterQueries.members.push(memberId);
+                vm.dataFilterQueries.developers.push(developerId);
             }
         }
 

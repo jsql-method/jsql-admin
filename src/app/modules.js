@@ -159,15 +159,15 @@ var app = angular
                     }
                 })
                 .state("team", {
-                    url: "/team",
+                    url: "/developers",
                     templateUrl: "app/controllers/team/team.html",
                     controller: "TeamController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
                         roles: ['ADMIN', 'COMPANY_ADMIN', 'APP_ADMIN'],
-                        title: 'JSQL - Team',
-                        shortTitle: 'Team'
+                        title: 'JSQL - Developers',
+                        shortTitle: 'Developers'
                     }
                 })
                 .state("administrators", {

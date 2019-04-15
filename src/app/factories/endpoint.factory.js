@@ -19,18 +19,18 @@
             deleteApplication: deleteApplication,
             stats: stats,
             profile: profile,
-            members: members,
+            developers: developers,
             admins: admins,
             forgotPassword: forgotPassword,
             reset: reset,
             activateAccount: activateAccount,
             reactivateAccount: reactivateAccount,
             deactivateAccount: deactivateAccount,
-            addMember: addMember,
-            deleteMember: deleteMember,
-            getMemberApplications: getMemberApplications,
-            addMemberToApplication: addMemberToApplication,
-            deleteMemberWithApplication: deleteMemberWithApplication,
+            addDeveloper: addDeveloper,
+            deleteDeveloper: deleteDeveloper,
+            getDeveloperApplications: getDeveloperApplications,
+            addDeveloperToApplication: addDeveloperToApplication,
+            deleteDeveloperWithApplication: deleteDeveloperWithApplication,
             demoteAdmin: demoteAdmin,
             addAdmin: addAdmin,
             getQueries: getQueries,
@@ -118,7 +118,7 @@
             return ApiFactory.get(SERVER_URL + "/api/user");
         }
 
-        function members() {
+        function developers() {
             return ApiFactory.get(SERVER_URL + "/api/app-dev");
         }
 
@@ -126,28 +126,28 @@
             return ApiFactory.get(SERVER_URL + "/api/app-admin");
         }
 
-        function addMember(memberRequest) {
-            return ApiFactory.post(SERVER_URL + "/api/app-dev", memberRequest);
+        function addDeveloper(developerRequest) {
+            return ApiFactory.post(SERVER_URL + "/api/app-dev", developerRequest);
         }
 
-        function deleteMember(id) {
+        function deleteDeveloper(id) {
             return ApiFactory.delete(SERVER_URL + "/api/app-dev/" + id);
         }
 
-        function getMemberApplications(id) {
+        function getDeveloperApplications(id) {
             return ApiFactory.get(
                 SERVER_URL + "/api/app-dev/application/" + id
             );
         }
 
-        function addMemberToApplication(data) {
+        function addDeveloperToApplication(data) {
             return ApiFactory.post(
                 SERVER_URL + "/api/app-dev/application",
                 data
             );
         }
 
-        function deleteMemberWithApplication(data) {
+        function deleteDeveloperWithApplication(data) {
             return ApiFactory.post(SERVER_URL + "/api/app-dev/application/unassign", data);
         }
 

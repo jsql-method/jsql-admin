@@ -25,5 +25,8 @@ var translation = {
     'confirmEnableProductionMode': 'Are you sure to switch to production mode? You will not be able to modify settings and queries during this mode',
     'confirmDisableProductionMode': 'Are you sure to disable production mode? This can switch off your applications using JSQL',
     'productionEnabled': 'Production mode has been enabled',
-    'productionDisabled': 'Production mode has been disabled'
+    'productionDisabled': 'Production mode has been disabled',
+    'delete_developer' : 'Remove developer',
+    'developer_deleted' : 'Developer has been removed',
+    'developer_created' : 'Developer has been created'
 };

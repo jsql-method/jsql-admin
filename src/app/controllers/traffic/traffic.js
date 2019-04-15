@@ -170,7 +170,7 @@
         /**
          * Multiselect
          * a) Filter applications
-         * b) Filter members
+         * b) Filter developers
          */
 
         function showMultiSelect(index) {

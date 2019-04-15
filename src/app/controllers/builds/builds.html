@@ -65,42 +65,42 @@
         </div>
       </div>
       <div ng-if="vm.role !== 'APP_DEV'" class="container-form">
-        <label class="mr-2 label-filter">Members:</label>
+        <label class="mr-2 label-filter">Developers:</label>
         <input
           class="form-control text-center filter-input"
-          placeholder="--Members--"
-          ng-model="vm.memberValue"
-          ng-change="vm.setFilterMembers(vm.members)"
+          placeholder="--Developers--"
+          ng-model="vm.developerValue"
+          ng-change="vm.setFilterDevelopers(vm.developers)"
           ng-focus="vm.showMultiSelect(1)"
           ng-click="$event.stopPropagation();vm.hideMultiSelect(0);"
         />
         <div ng-click="$event.stopPropagation();" class="multiselect-contain">
           <div>
             <div class="empty-check"></div>
-            <p style="color:#999;">Choose your members</p>
+            <p style="color:#999;">Choose your developers</p>
           </div>
           <div>
-            <input ng-click="vm.chooseAllMembers($event)" class="inp-cbx" id="cbx-member-1" type="checkbox" style="display: none;"/>
-            <label class="cbx" for="cbx-member-1"><span>
+            <input ng-click="vm.chooseAllDevelopers($event)" class="inp-cbx" id="cbx-developer-1" type="checkbox" style="display: none;"/>
+            <label class="cbx" for="cbx-developer-1"><span>
                 <svg width="12px" height="10px" viewbox="0 0 12 10">
                   <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                 </svg></span></label>
-                <p>All members</p>
+                <p>All developers</p>
           </div>
-          <div ng-repeat="member in vm.members">
+          <div ng-repeat="developer in vm.developers">
             <input
               class="inp-cbx"
-              id="{{ 'cbx-member-' + ($index + 2) }}"
+              id="{{ 'cbx-developer-' + ($index + 2) }}"
               type="checkbox"
               style="display: none;"
-              ng-click="vm.addOrRemoveMember(member.id)"
-              ng-checked="vm.checkChoosenMember(member.id)"
+              ng-click="vm.addOrRemoveDeveloper(developer.id)"
+              ng-checked="vm.checkChoosenDeveloper(developer.id)"
             />
-            <label class="cbx" for="{{ 'cbx-member-' + ($index + 2) }}"><span>
+            <label class="cbx" for="{{ 'cbx-developer-' + ($index + 2) }}"><span>
                 <svg width="12px" height="10px" viewbox="0 0 12 10">
                   <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                 </svg></span></label>
-                <p>{{ member.firstName + ' ' + member.lastName }}</p>
+                <p>{{ developer.firstName + ' ' + developer.lastName }}</p>
           </div>
         </div>
       </div>
@@ -178,7 +178,7 @@
       <thead>
         <tr>
           <th scope="col">Application</th>
-          <th scope="col">Member</th>
+          <th scope="col">Developer</th>
           <th scope="col">Date and time</th>
         </tr>
       </thead>

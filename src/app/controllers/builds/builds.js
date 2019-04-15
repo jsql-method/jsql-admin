@@ -24,17 +24,17 @@
     vm.applications = [];
     vm.copyApplications = [];
 
-    vm.members = [];
-    vm.copyMembers = [];
+    vm.developers = [];
+    vm.copyDevelopers = [];
 
     vm.options = [
       {
         app: "Something Cool",
-        member: "something-cool-value"
+        developer: "something-cool-value"
       },
       {
         app: "Something Else",
-        member: "something-else-value"
+        developer: "something-else-value"
       }
     ];
 
@@ -49,17 +49,17 @@
     vm.checkChoosenApplication = checkChoosenApplication;
     vm.addOrRemoveApplication = addOrRemoveApplication;
 
-    vm.setFilterMembers = setFilterMembers;
-    vm.chooseAllMembers = chooseAllMembers;
-    vm.checkChoosenMember = checkChoosenMember;
-    vm.addOrRemoveMember = addOrRemoveMember;
+    vm.setFilterDevelopers = setFilterDevelopers;
+    vm.chooseAllDevelopers = chooseAllDevelopers;
+    vm.checkChoosenDeveloper = checkChoosenDeveloper;
+    vm.addOrRemoveDeveloper = addOrRemoveDeveloper;
 
     vm.applicationValue = "";
-    vm.memberValue = "";
+    vm.developerValue = "";
 
     vm.dataFilterBuilds = {
       applications: [],
-      members: [],
+      developers: [],
       dateFrom: "",
       dateTo: ""
     };
@@ -71,7 +71,7 @@
 
     //--------
     function init() {
-      getMembers();
+      getDevelopers();
 
       EventService.registerClick("build-click", function() {
         var selectors = document.getElementsByClassName("multiselect-contain");
@@ -81,10 +81,10 @@
       });
     }
 
-    function getMembers() {
-      DictService.members().then(function(result) {
+    function getDevelopers() {
+      DictService.developers().then(function(result) {
         if(result) {
-          vm.members = angular.copy(result);
+          vm.developers = angular.copy(result);
         }
         getAdmins();
       });
@@ -95,11 +95,11 @@
         if(result) {
           if (result.length > 0) {
             result.forEach(function(admin) {
-              vm.members.push(admin);
+              vm.developers.push(admin);
             });
           }
         }
-        vm.copyMembers = vm.members.slice();
+        vm.copyDevelopers = vm.developers.slice();
         getApplication();
       });
     }
@@ -160,7 +160,7 @@
         applications: vm.applications.map(function (app) {
           return app.id;
         }),
-        members: getIdMembers()
+        developers: getIdDevelopers()
       };
 
       EndpointsFactory.stats(dateFrom, dateTo, data).$promise.then(function(result) {
@@ -176,15 +176,15 @@
       });
     }
 
-    function getIdMembers() {
+    function getIdDevelopers() {
       if(vm.role === 'APP_DEV') {
         DictService.profile()
             .then(function (result) {
               return result.id;
             })
       } else {
-        return vm.members.map(function (member) {
-          return member.id;
+        return vm.developers.map(function (developer) {
+          return developer.id;
         })
       }
     }
@@ -222,7 +222,7 @@
       for (var i = 0; i < builds.length; i++) {
         selectOptions.push({
           app: builds[i].applicationName,
-          member: builds[i].buildOwner
+          developer: builds[i].buildOwner
         });
       }
     }
@@ -387,7 +387,7 @@
     /**
      * Multiselect
      * a) Filter applications
-     * b) Filter members
+     * b) Filter developers
      */
 
     function showMultiSelect(index) {
@@ -460,23 +460,23 @@
       }
     }
 
-    // b) Filter members //
+    // b) Filter developers //
 
-    function setFilterMembers(value) {
-      vm.membersValue = value;
-      filterMembers();
+    function setFilterDevelopers(value) {
+      vm.developersValue = value;
+      filterDevelopers();
     }
 
-    function filterMembers() {
-      vm.members = vm.copyMembers.filter(member => {
-        if (vm.memberValue === "") {
+    function filterDevelopers() {
+      vm.developers = vm.copyDevelopers.filter(developer => {
+        if (vm.developerValue === "") {
           return true;
         } else if (
           (
-            member.firstName.toLowerCase() +
+            developer.firstName.toLowerCase() +
             " " +
-            member.lastName.toLowerCase()
-          ).includes(vm.memberValue.toLowerCase())
+            developer.lastName.toLowerCase()
+          ).includes(vm.developerValue.toLowerCase())
         ) {
           return true;
         }
@@ -484,20 +484,20 @@
       });
     }
 
-    function chooseAllMembers(event) {
+    function chooseAllDevelopers(event) {
       if (event.target.checked === true) {
-        vm.dataFilterBuilds.members = vm.members.map(function(member) {
-          return member.id;
+        vm.dataFilterBuilds.developers = vm.developers.map(function(developer) {
+          return developer.id;
         });
       } else {
-        vm.dataFilterBuilds.members = [];
+        vm.dataFilterBuilds.developers = [];
       }
     }
 
-    function checkChoosenMember(memberId) {
+    function checkChoosenDeveloper(developerId) {
       if (
-        vm.dataFilterBuilds.members.find(function(id) {
-          return id === memberId;
+        vm.dataFilterBuilds.developers.find(function(id) {
+          return id === developerId;
         })
       ) {
         return true;
@@ -505,16 +505,16 @@
       return false;
     }
 
-    function addOrRemoveMember(memberId) {
+    function addOrRemoveDeveloper(developerId) {
       if (
-        vm.dataFilterBuilds.members.find(function(id) {
-          return id === memberId;
+        vm.dataFilterBuilds.developers.find(function(id) {
+          return id === developerId;
         })
       ) {
-        var index = vm.dataFilterBuilds.members.indexOf(memberId);
-        vm.dataFilterBuilds.members.splice(index, 1);
+        var index = vm.dataFilterBuilds.developers.indexOf(developerId);
+        vm.dataFilterBuilds.developers.splice(index, 1);
       } else {
-        vm.dataFilterBuilds.members.push(memberId);
+        vm.dataFilterBuilds.developers.push(developerId);
       }
     }
   }
