@@ -1,179 +1,188 @@
-<div class="content myTeamController" ng-if="vm.section === 'list-members'">
-  <h2>My team</h2>
-  <div class="underline-title-card"></div>
-  <div class="row mt-2">
-    <div class="col-12">
-      <form class="form-inline">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          ng-click="vm.section = 'add-member'"
-        >
-          + Add team member
-        </button>
-      </form>
+<div class="myTeamController subpage" ng-if="vm.section === 'list-members'">
+
+    <div class="spinner" ng-show="vm.loading">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
-  </div>
 
-  <div class="row mt-2">
-    <div class="col-12">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Member name</th>
-            <th scope="col">Email</th>
-            <th scope="col">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="member in vm.members track by $index">
-            <td class="description-overflow">
-              {{ member.firstName + " " + member.lastName }}
-            </td>
-            <td class="description-overflow">{{ member.email }}</td>
-            <td>
-              <form class="form-inline">
-                <button
-                  style="margin: 5px"
-                  ng-click="vm.deleteMemberOpenModal(member.id)"
-                  type="button"
-                  class="btn btn-danger mr-2"
-                >
-                  Delete
-                </button>
-                <button
-                  style="margin: 5px"
-                  ng-click="vm.getApplicationsMember($index)"
-                  type="button"
-                  class="btn btn-primary"
-                >
-                  Applications privileges
-                </button>
-              </form>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<div class="content buildsController" ng-if="vm.section==='add-member'">
-  <h2>Add member</h2>
-
-  <div class="row mt-2">
-    <div class="col-12">
-      <form ng-submit="vm.validateAddMember()">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="text"
-            class="form-control"
-            id="email"
-            ng-model="vm.email"
-            ng-blur="vm.validateEmail(true)"
-            ng-change="vm.validateEmail()"
-          />
-          <p
-            class="text-danger"
-            ng-repeat="message in vm.messages.email track by $index"
-          >
-            {{ message }}
-          </p>
+    <div ng-show="!vm.loading">
+        <h2>My team</h2>
+        <div class="underline-title-card"></div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <form class="form-inline">
+                    <button type="submit" class="btn btn-primary" ng-click="vm.section = 'add-member'">
+                        + Add team member
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <div class="form-group">
-          <label for="firstName">First name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="firstName"
-            ng-model="vm.firstName"
-            ng-blur="vm.validateFirstName(true)"
-            ng-change="vm.validateFirstName()"
-          />
-          <p
-            class="text-danger"
-            ng-repeat="message in vm.messages.firstName track by $index"
-          >
-            {{ message }}
-          </p>
+        <div class="row mt-2">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Member name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="member in vm.members track by $index">
+                        <td class="description-overflow">
+                            {{ member.firstName + " " + member.lastName }}
+                        </td>
+                        <td class="description-overflow">{{ member.email }}</td>
+                        <td>
+                            <form class="form-inline">
+                                <button
+                                        style="margin: 5px"
+                                        ng-click="vm.deleteMemberOpenModal(member.id)"
+                                        type="button"
+                                        class="btn btn-danger mr-2"
+                                >
+                                    Delete
+                                </button>
+                                <button
+                                        style="margin: 5px"
+                                        ng-click="vm.getApplicationsMember($index)"
+                                        type="button"
+                                        class="btn btn-primary"
+                                >
+                                    Applications privileges
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="lastName">Last Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="lastName"
-            ng-model="vm.lastName"
-            ng-blur="vm.validateLastName(true)"
-            ng-change="vm.validateLastName()"
-          />
-          <p
-            class="text-danger"
-            ng-repeat="message in vm.messages.lastName track by $index"
-          >
-            {{ message }}
-          </p>
-        </div>
-        <p class="text-danger">{{ vm.generalMessage }}</p>
-        <button type="submit" class="btn btn-primary">Add</button>
-        <button class="btn btn-secondary" ng-click="vm.backToList()">
-          Back
-        </button>
-      </form>
     </div>
-  </div>
-</div>
 
-<div
-  class="content buildsController"
-  ng-if="vm.section === 'application-member'"
->
-  <h2>{{ vm.nameEditMemberApplications }} - applications privileges</h2>
+    <div class="content buildsController" ng-if="vm.section==='add-member'">
+        <h2>Add member</h2>
 
-  <div class="row mt-2">
-    <div class="col-12">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Application</th>
-            <th scope="col">Assigned</th>
-            <th scope="col">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="application in vm.applications track by $index">
-            <td class="description-overflow">{{ application.name }}</td>
-            <td>
+        <div class="row mt-2">
+            <div class="col-12">
+                <form ng-submit="vm.validateAddMember()">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="email"
+                                ng-model="vm.email"
+                                ng-blur="vm.validateEmail(true)"
+                                ng-change="vm.validateEmail()"
+                        />
+                        <p
+                                class="text-danger"
+                                ng-repeat="message in vm.messages.email track by $index"
+                        >
+                            {{ message }}
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName">First name</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="firstName"
+                                ng-model="vm.firstName"
+                                ng-blur="vm.validateFirstName(true)"
+                                ng-change="vm.validateFirstName()"
+                        />
+                        <p
+                                class="text-danger"
+                                ng-repeat="message in vm.messages.firstName track by $index"
+                        >
+                            {{ message }}
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="lastName"
+                                ng-model="vm.lastName"
+                                ng-blur="vm.validateLastName(true)"
+                                ng-change="vm.validateLastName()"
+                        />
+                        <p
+                                class="text-danger"
+                                ng-repeat="message in vm.messages.lastName track by $index"
+                        >
+                            {{ message }}
+                        </p>
+                    </div>
+                    <p class="text-danger">{{ vm.generalMessage }}</p>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button class="btn btn-secondary" ng-click="vm.backToList()">
+                        Back
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div
+            class="content buildsController"
+            ng-if="vm.section === 'application-member'"
+    >
+        <h2>{{ vm.nameEditMemberApplications }} - applications privileges</h2>
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Application</th>
+                        <th scope="col">Assigned</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="application in vm.applications track by $index">
+                        <td class="description-overflow">{{ application.name }}</td>
+                        <td>
               <span
-                ng-class="vm.checkAssignApplication(application.id) ? 'badge badge-primary' : 'badge badge-secondary'"
-                >{{
+                      ng-class="vm.checkAssignApplication(application.id) ? 'badge badge-primary' : 'badge badge-secondary'"
+              >{{
                   vm.checkAssignApplication(application.id) ? "Yes" : "No"
                 }}</span
               >
-            </td>
-            <td>
-              <form>
-                <button
-                  type="button"
-                  ng-click="vm.checkAssignApplication(application.id) === false ? vm.addMemberToApplication(application.id) : vm.deleteMemberWithApplication(application.id)"
-                  ng-class="vm.checkAssignApplication(application.id) === false ? 'btn btn-primary' : 'btn btn-secondary'"
-                >
-                  {{
-                    vm.checkAssignApplication(application.id) === false
-                      ? "Assign"
-                      : "Unassign"
-                  }}
+                        </td>
+                        <td>
+                            <form>
+                                <button
+                                        type="button"
+                                        ng-click="vm.checkAssignApplication(application.id) === false ? vm.addMemberToApplication(application.id) : vm.deleteMemberWithApplication(application.id)"
+                                        ng-class="vm.checkAssignApplication(application.id) === false ? 'btn btn-primary' : 'btn btn-secondary'"
+                                >
+                                    {{
+                                    vm.checkAssignApplication(application.id) === false
+                                    ? "Assign"
+                                    : "Unassign"
+                                    }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-secondary" ng-click="vm.section='list-members'">
+                    Back
                 </button>
-              </form>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button class="btn btn-secondary" ng-click="vm.section='list-members'">
-        Back
-      </button>
+            </div>
+        </div>
     </div>
-  </div>
+
 </div>
