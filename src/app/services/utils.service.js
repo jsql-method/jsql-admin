@@ -9,6 +9,19 @@
     function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal) {
         var utils = {};
 
+        utils.without = function(map, arr){
+
+            var map2 = {};
+
+            for(var prop in map){
+                if(arr.indexOf(prop) === -1){
+                    map2[prop] = map[prop];
+                }
+            }
+
+            return map2;
+
+        };
 
         utils.openFailedModel = function(text){
             utils.openModal(text || translation.something_gone_wrong, false, 'Ok', 'error', 'Error', null);

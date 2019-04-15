@@ -91,10 +91,10 @@
 
             if (!vm.options.hashLengthLikeQuery) {
 
-                if (vm.options.hashMinLength <= 10) {
+                if (vm.options.hashMinLength < 10) {
                     vm.messages.hashMinLength = translation.hash_length_min_value;
                     return;
-                } else if (vm.options.hashMaxLength >= 500) {
+                } else if (vm.options.hashMaxLength > 500) {
                     vm.messages.hashMaxLength = translation.hash_length_max_value;
                     return;
                 } else if (vm.options.hashMinLength > vm.options.hashMaxLength) {
@@ -109,7 +109,7 @@
                 return;
             }
 
-            ApplicationService.updateOptions(vm.id, _.without(vm.options, ['application', 'apiKey', 'prod']))
+            ApplicationService.updateOptions(vm.id, UtilsService.without(vm.options, ['application', 'apiKey', 'prod']))
                 .then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {

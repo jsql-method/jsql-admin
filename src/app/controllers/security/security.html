@@ -18,8 +18,11 @@
                 <form ng-submit="vm.submitOptions()">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="prod" ng-change="vm.warningProdMode()" ng-model="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.prod ? 'is-invalid' : ''}}" id="prod" ng-change="vm.warningProdMode()" ng-model="vm.options.prod">
                             <label class="custom-control-label" for="prod">Production mode</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.prod">
+                            {{ vm.messages.prod }}
                         </div>
                     </div>
                     <div class="form-group">
@@ -28,53 +31,80 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="isSalt" ng-model="vm.options.isSalt" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.isSalt ? 'is-invalid' : ''}}" id="isSalt" ng-model="vm.options.isSalt" ng-disabled="vm.options.prod">
                             <label class="custom-control-label" for="isSalt">Enable salt adding</label>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="saltAfter" ng-model="vm.options.saltAfter" ng-disabled="!vm.options.isSalt || vm.options.prod">
-                            <label class="custom-control-label" for="saltAfter">Add salt after query</label>
+                        <div class="invalid-feedback" ng-show="vm.messages.isSalt">
+                            {{ vm.messages.isSalt }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="saltBefore" ng-model="vm.options.saltBefore" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.saltAfter ? 'is-invalid' : ''}}" id="saltAfter" ng-model="vm.options.saltAfter" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <label class="custom-control-label" for="saltAfter">Add salt after query</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.saltAfter">
+                            {{ vm.messages.saltAfter }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.saltBefore ? 'is-invalid' : ''}}" id="saltBefore" ng-model="vm.options.saltBefore" ng-disabled="!vm.options.isSalt || vm.options.prod">
                             <label class="custom-control-label" for="saltBefore">Add salt before query</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.saltBefore">
+                            {{ vm.messages.saltBefore }}
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="salt">Salt</label>
-                        <input id="salt" type="text" class="form-control" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt"/>
+                        <input id="salt" type="text" class="form-control {{vm.messages.isSalt ? 'is-invalid' : ''}}" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.isSalt">
+                            {{ vm.messages.isSalt }}
+                        </div>
                         <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.prod">
                             Generate
                         </button>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="saltRandomize" ng-model="vm.options.saltRandomize" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.saltRandomize ? 'is-invalid' : ''}}" id="saltRandomize" ng-model="vm.options.saltRandomize" ng-disabled="!vm.options.isSalt || vm.options.prod">
                             <label class="custom-control-label" for="saltRandomize">Generate random salt in-fly</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.saltRandomize">
+                            {{ vm.messages.saltRandomize }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="hashLengthLikeQuery" ng-model="vm.options.hashLengthLikeQuery" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.hashLengthLikeQuery ? 'is-invalid' : ''}}" id="hashLengthLikeQuery" ng-model="vm.options.hashLengthLikeQuery" ng-disabled="vm.options.prod">
                             <label class="custom-control-label" for="hashLengthLikeQuery">Hash length should be equal to query length</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.hashLengthLikeQuery">
+                            {{ vm.messages.hashLengthLikeQuery }}
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="hashMinLength">Hash min length</label>
-                        <input id="hashMinLength" type="number" class="form-control" ng-model="vm.options.hashMinLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                        <input id="hashMinLength" type="number" class="form-control {{vm.messages.hashMinLength ? 'is-invalid' : ''}}" ng-model="vm.options.hashMinLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.hashMinLength">
+                            {{ vm.messages.hashMinLength }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="hashMaxLength">Hash max length</label>
-                        <input id="hashMaxLength" type="number" class="form-control" ng-model="vm.options.hashMaxLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                        <input id="hashMaxLength" type="number" class="form-control {{vm.messages.hashMaxLength ? 'is-invalid' : ''}}" ng-model="vm.options.hashMaxLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.hashMaxLength">
+                            {{ vm.messages.hashMaxLength }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="removeQueriesAfterBuild" ng-model="vm.options.removeQueriesAfterBuild" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.removeQueriesAfterBuild ? 'is-invalid' : ''}}" id="removeQueriesAfterBuild" ng-model="vm.options.removeQueriesAfterBuild" ng-disabled="vm.options.prod">
                             <label class="custom-control-label" for="removeQueriesAfterBuild">Remove developer queries after build</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.removeQueriesAfterBuild">
+                            {{ vm.messages.removeQueriesAfterBuild }}
                         </div>
                     </div>
                     <div class="form-group">
@@ -83,8 +113,11 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="plainQueriesAllowed" ng-model="vm.options.plainQueriesAllowed" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.plainQueriesAllowed ? 'is-invalid' : ''}}" id="plainQueriesAllowed" ng-model="vm.options.plainQueriesAllowed" ng-disabled="vm.options.prod">
                             <label class="custom-control-label" for="plainQueriesAllowed">Disable hashing for development mode</label>
+                        </div>
+                        <div class="invalid-feedback" ng-show="vm.messages.plainQueriesAllowed">
+                            {{ vm.messages.plainQueriesAllowed }}
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" ng-disabled="vm.options.prod">Save options</button>
