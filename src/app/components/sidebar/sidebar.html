@@ -1,15 +1,15 @@
 <nav id="sidebar-custom" class="sidebarComponent">
   <div class="sidebar-header">
-    <div ng-if="vm.profile.avatarStyle" class="avatar rounded-circle" style="{{ vm.profile.avatarStyle }}">
-      <img src="{{ vm.profile.avatarStyle }}" />
+    <div class="avatar rounded-circle">
+      <img src="{{ vm.avatar ? vm.avatar : '' }}" />
     </div>
     <div class="details">
-      <div class="name font-weight-bold">{{ vm.profile.fullName }}</div>
-      <div class="type">{{ vm.profile.role }}</div>
-      <div class="company">{{ vm.profile.company }}</div>
-      <div ng-if="vm.profile.role !== 'APP_DEV' && vm.profile.role !== 'APP_ADMIN'">{{ vm.plan ? vm.plan.name : "" }}</div>
-      <div>{{vm.plan && vm.admins > -1 && vm.members > -1 ? "Users: " + (vm.admins + vm.members) + "/" + vm.plan.maxUsers : "" }}</div>
-      <div ng-if="vm.profile.role !== 'APP_DEV'">{{vm.plan && vm.applications ? "Apps: " + vm.applications.length + "/" + vm.plan.maxApps : "" }}</div>
+      <div class="name font-weight-bold">{{ vm.session.fullName }}</div>
+      <!--<div class="type">{{ vm.session.role }}</div>-->
+      <div class="company">{{ vm.session.companyName }}</div>
+      <!--<div ng-if="vm.session.role === 'COMPANY_ADMIN'">{{ vm.plan.name }}</div>-->
+      <!--<div ng-if="vm.session.role !== 'APP_DEV'"><span class="icon icon-apps"></span>{{vm.plan.usedApps + '/' + vm.plan.maxApps}}</div>-->
+      <!--<div ng-if="vm.session.role !== 'APP_DEV'"><span class="icon icon-users"></span> {{vm.plan.usedUsers + '/' + vm.plan.maxUsers}}</div>-->
     </div>
   </div>
   <ul class="list-unstyled components">
@@ -38,11 +38,16 @@
         <span class="icon icon-applications"></span> Applications
       </a>
       <ul class="collapse list-unstyled" id="applications">
-        <li ng-if="vm.profile.role !== 'APP_DEV'" ng-class="vm.setActive('/add-application')">
-          <a href="/add-application">Add App</a>
+        <li ng-if="vm.session.role !== 'APP_DEV'" ng-class="vm.setActive('/add-application')">
+          <a href="/add-application">+ Add application</a>
         </li>
-        <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/applications/'+application.id)">
-          <a href="/applications/{{ application.id }}">{{application.name }}</a>
+        <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/application/'+application.id)">
+          <a href="/application/{{ application.id }}">
+            <span ng-if="application.prod" class="ion ion-arrow-right-b"></span>
+            <span ng-if="!application.prod" class="ion ion-code"></span>
+
+            {{application.name}}
+          </a>
         </li>
       </ul>
     </li>
@@ -57,7 +62,7 @@
         </li>
       </ul>
     </li>
-    <li ng-if="vm.profile.role !== 'APP_DEV'" class="{{ vm.setExpanded('security') }}">
+    <li ng-if="vm.session.role !== 'APP_DEV'" class="{{ vm.setExpanded('security') }}">
       <a href="javascript:void(0);" data-target="#security" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
         <span class="icon icon-security"></span> Security
       </a>
@@ -67,16 +72,16 @@
         </li>
       </ul>
     </li>
-    <li ng-if="vm.profile.role !== 'APP_DEV'" ng-class="vm.setActive('/team')">
+    <li ng-if="vm.session.role !== 'APP_DEV'" ng-class="vm.setActive('/team')">
       <a href="/team"><span class="icon icon-team"></span>Team</a>
     </li>
     <li ng-class="vm.setActive('/traffic')">
       <a href="/traffic"><span class="icon icon-traffic"></span>Traffic</a>
     </li>
-    <li ng-if="vm.profile.role !== 'APP_DEV' && vm.profile.role !== 'APP_ADMIN'" ng-class="vm.setActive('/administrators')">
+    <li ng-if="vm.session.role !== 'APP_DEV' && vm.session.role !== 'APP_ADMIN'" ng-class="vm.setActive('/administrators')">
       <a href="/administrators"><span class="icon icon-admins"></span>Admins</a>
     </li>
-    <li ng-if="vm.profile.role !== 'APP_DEV' && vm.profile.role !== 'APP_ADMIN'" ng-class="vm.setActive('/billing')">
+    <li ng-if="vm.session.role !== 'APP_DEV' && vm.session.role !== 'APP_ADMIN'" ng-class="vm.setActive('/billing')">
       <a href="/billing"><span class="icon icon-billing"></span>Billing</a>
     </li>
     <li>

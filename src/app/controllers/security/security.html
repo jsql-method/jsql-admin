@@ -1,175 +1,96 @@
-<div class="content securityController">
-  <h2>{{ vm.application.name }} - security details</h2>
-  <div class="underline-title-card"></div>
-  <div class="row">
-    <div class="col">
-      <form ng-submit="vm.validateHashLength()">
-        <div class="form-group">
-          <label for="encodeQuery">Encode query</label>
-          <select
-            class="form-control"
-            ng-model="vm.encodeQuery"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="encodeQuery"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="encodingAlgorithm">Encoding algorithm</label>
-          <select
-            class="form-control"
-            ng-model="vm.encodingAlgorithm"
-            ng-options="option.value as option.name for option in vm.encodingAlgorithmOptions"
-            id="encodingAlgorithm"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="addSalt">Add salt</label>
-          <select
-            class="form-control"
-            ng-model="vm.addSalt"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="addSalt"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="saltAfter">Salt after</label>
-          <select
-            class="form-control"
-            ng-model="vm.saltAfter"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="saltAfter"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="saltBefore">Salt before</label>
-          <select
-            class="form-control"
-            ng-model="vm.saltBefore"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="saltBefore"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="salt">Salt</label>
-          <input
-            type="text"
-            class="form-control"
-            id="salt"
-            ng-model="vm.salt"
-          />
-          <button
-            type="button"
-            class="btn btn-primary mt-2"
-            ng-click="vm.generateRandomSalt()"
-          >
-            Generate
-          </button>
-        </div>
-        <div class="form-group">
-          <label for="randomSalt">Random salt</label>
-          <select
-            class="form-control"
-            ng-model="vm.randomSalt"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="randomSalt"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="hashLengthEqualToQuery">Hash length equal to query</label>
-          <select
-            class="form-control"
-            ng-model="vm.hashLengthEqualToQuery"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="hashLengthEqualToQuery"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="hashMinLength">Hash min length</label>
-          <input
-            type="number"
-            class="form-control"
-            id="hashMinLength"
-            ng-model="vm.hashMinLength"
-            ng-blur="vm.validateHashMinLength(true)"
-            ng-change="vm.validateHashMinLength()"
-          />
-          <div
-            class="text-danger-security"
-            ng-repeat="messages in vm.messages.hashMinLength track by $index"
-          >
-            {{ messages }}
-          </div>
-        </div>
+<div class="securityController subpage">
 
-        <div class="form-group">
-          <label for="hashMaxLength">Hash max length</label>
-          <input
-            type="number"
-            class="form-control"
-            id="hashMaxLength"
-            ng-model="vm.hashMaxLength"
-            ng-blur="vm.validateHashMaxLength(true)"
-            ng-change="vm.validateHashMaxLength()"
-          />
-          <div
-            class="text-danger-security"
-            ng-repeat="messages in vm.messages.hashMaxLength track by $index"
-          >
-            {{ messages }}
-          </div>
+    <div class="spinner" ng-show="vm.loading">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-
-        <div class="form-group">
-          <label for="removeQueriesAfterBuild"
-            >Remove queries after build</label
-          >
-          <select
-            class="form-control"
-            ng-model="vm.removeQueriesAfterBuild"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="removeQueriesAfterBuild"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="databaseDialect">Database dialect</label>
-          <select
-            class="form-control"
-            ng-model="vm.databaseDialect"
-            ng-options="option.value as option.name for option in vm.databaseDialectOptions"
-            id="databaseDialect"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="applicationLanguage">Application language</label>
-          <select
-            class="form-control"
-            ng-model="vm.applicationLanguage"
-            ng-options="option.value as option.name for option in vm.applicationLanguageOptions"
-            id="applicationLanguage"
-          >
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="plainQueriesAllowed">Plain queries allowed</label>
-          <select
-            class="form-control"
-            ng-model="vm.plainQueriesAllowed"
-            ng-options="is.value as is.name for is in vm.isTrue"
-            id="plainQueriesAllowed"
-          >
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
     </div>
-  </div>
+
+    <div ng-show="!vm.loading">
+        <h2>{{ vm.options.application.name }} - security options</h2>
+        <div class="underline-title-card"></div>
+        <div class="row">
+            <div class="col">
+
+                <form ng-submit="vm.submitOptions()">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="prod" ng-change="vm.warningProdMode()" ng-model="vm.options.prod">
+                            <label class="custom-control-label" for="prod">Production mode</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="encodingAlgorithm">Encoding algorithm</label>
+                        <select id="encodingAlgorithm" class="form-control" ng-model="vm.options.encodingAlgorithm" ng-options="option.value as option.name for option in vm.encodingAlgorithmValues" ng-disabled="vm.options.prod"></select>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="isSalt" ng-model="vm.options.isSalt" ng-disabled="vm.options.prod">
+                            <label class="custom-control-label" for="isSalt">Enable salt adding</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="saltAfter" ng-model="vm.options.saltAfter" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <label class="custom-control-label" for="saltAfter">Add salt after query</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="saltBefore" ng-model="vm.options.saltBefore" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <label class="custom-control-label" for="saltBefore">Add salt before query</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="salt">Salt</label>
+                        <input id="salt" type="text" class="form-control" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt"/>
+                        <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            Generate
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="saltRandomize" ng-model="vm.options.saltRandomize" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <label class="custom-control-label" for="saltRandomize">Generate random salt in-fly</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="hashLengthLikeQuery" ng-model="vm.options.hashLengthLikeQuery" ng-disabled="vm.options.prod">
+                            <label class="custom-control-label" for="hashLengthLikeQuery">Hash length should be equal to query length</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="hashMinLength">Hash min length</label>
+                        <input id="hashMinLength" type="number" class="form-control" ng-model="vm.options.hashMinLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="hashMaxLength">Hash max length</label>
+                        <input id="hashMaxLength" type="number" class="form-control" ng-model="vm.options.hashMaxLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="removeQueriesAfterBuild" ng-model="vm.options.removeQueriesAfterBuild" ng-disabled="vm.options.prod">
+                            <label class="custom-control-label" for="removeQueriesAfterBuild">Remove developer queries after build</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="databaseDialect">Database dialect</label>
+                        <select id="databaseDialect" class="form-control" ng-model="vm.options.databaseDialect" ng-options="option.value as option.name for option in vm.databaseDialectValues" ng-disabled="vm.options.prod"></select>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="plainQueriesAllowed" ng-model="vm.options.plainQueriesAllowed" ng-disabled="vm.options.prod">
+                            <label class="custom-control-label" for="plainQueriesAllowed">Disable hashing for development mode</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" ng-disabled="vm.options.prod">Save options</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>

@@ -1,25 +1,39 @@
-<div class="content applicationsController">
-  <h2>{{ vm.application.name }} - details</h2>
-  <div class="underline-title-card"></div>
-  <div class="row">
-    <div class="col">
-      <form>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" class="form-control" id="name" ng-value="vm.application.name" readonly/>
-        </div>
+<div class="applicationsController subpage">
 
-        <div class="form-group">
-          <label for="applicationKey">Application key</label>
-          <input type="text" class="form-control" id="applicationKey" id="applicationKey" readonly ng-value="vm.application.apiKey"/>
-        </div>
-        <button type="button" class="btn btn-primary" ng-click="vm.copyToClipboard()">
-          Copy to clipboard
-        </button>
-        <button ng-if="vm.role !== 'APP_DEV'" type="submit" class="btn btn-danger" ng-click="vm.openModalDeleteApplication()">
-          Delete
-        </button>
-      </form>
+  <div class="spinner" ng-show="vm.loading">
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  </div>
+
+  <div ng-show="!vm.loading">
+    <h2>{{ vm.application.name }} - application</h2>
+    <div class="underline-title-card"></div>
+    <div class="row">
+      <div class="col">
+
+        <form>
+
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" ng-value="vm.application.name" readonly/>
+          </div>
+
+          <div class="form-group">
+            <label for="applicationKey">Application key (apiKey)</label>
+            <input type="text" class="form-control" id="applicationKey" readonly ng-value="vm.application.apiKey"/>
+          </div>
+
+          <button type="button" class="btn btn-primary" ng-click="vm.copyApiKey()">
+            Copy to clipboard
+          </button>
+
+          <button ng-if="vm.role !== 'APP_DEV'" type="button" class="btn btn-danger" ng-click="vm.deleteApplication()" ng-disabled="vm.application.prod">
+            Delete
+          </button>
+
+        </form>
+
+      </div>
     </div>
   </div>
+
 </div>

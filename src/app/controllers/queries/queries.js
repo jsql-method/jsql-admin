@@ -71,7 +71,7 @@
             window.addEventListener("click", function () {
 
                 var selectors = document.getElementsByClassName("multiselect-contain");
-                for (let i = 0; i < selectors.length; i++) {
+                for (var i = 0; i < selectors.length; i++) {
                     selectors[i].style.display = "none";
                 }
             });
@@ -125,15 +125,15 @@
 
         function getQueries() {
 
-            let data = {
+            var data = {
                 applications: [vm.id],
                 members: [vm.profileId],
                 used: true,
                 dynamic: false
             };
 
-            let dateFrom = getData('dateFrom');
-            let dateTo = getData('dateTo');
+            var dateFrom = getData('dateFrom');
+            var dateTo = getData('dateTo');
 
             vm.dataFilterQueries.dateFrom = dateFrom;
             vm.dataFilterQueries.dateTo = dateTo;
@@ -149,8 +149,8 @@
 
         function getData(when) {
 
-            let data = new Date();
-            let dateOffset;
+            var data = new Date();
+            var dateOffset;
             if (when === 'dateFrom') {
                 dateOffset = (24 * 60 * 60 * 1000) * 7; //5 days
                 data.setTime(data.getTime() - dateOffset);
@@ -159,13 +159,13 @@
                 data.setTime(data.getTime() + dateOffset);
             }
 
-            let day = data.getDate();
+            var day = data.getDate();
 
             if (day < 10) {
                 day = '0' + day;
             }
 
-            let mounth = data.getMonth() + 1;
+            var mounth = data.getMonth() + 1;
 
             if (mounth < 10) {
                 mounth = '0' + mounth;
@@ -210,12 +210,12 @@
                 openModal('Hash max length 100!')
                 return;
             }
-            let data = {
+            var data = {
                 query: vm.valueQuery,
                 apiKey: vm.application.apiKey
             };
 
-            let dataQueries = {
+            var dataQueries = {
                 applications: [vm.id],
                 members: getIdMembers(),
                 used: vm.dataFilterQueries.used,
@@ -262,9 +262,9 @@
                 return;
             }
 
-            let dataTo = addDayForDataTo();
+            var dataTo = addDayForDataTo();
 
-            let data = {
+            var data = {
                 applications: [vm.id],
                 members: vm.dataFilterQueries.members,
                 used: vm.dataFilterQueries.used,
@@ -279,18 +279,18 @@
         }
 
         function addDayForDataTo() {
-            let dateTo = vm.dataFilterQueries.dateTo;
-            let data = new Date(parseInt(dateTo.substr(6)),parseInt(dateTo.substr(3,2)) - 1,parseInt(dateTo.substr(0,2)));
-            let dateOffset = (24 * 60 * 60 * 1000) * 1; //1 days
+            var dateTo = vm.dataFilterQueries.dateTo;
+            var data = new Date(parseInt(dateTo.substr(6)),parseInt(dateTo.substr(3,2)) - 1,parseInt(dateTo.substr(0,2)));
+            var dateOffset = (24 * 60 * 60 * 1000) * 1; //1 days
 
             data.setTime(data.getTime() + dateOffset);
 
-            let day = data.getDate();
+            var day = data.getDate();
             if (day < 10) {
                 day = '0' + day;
             }
 
-            let mounth = data.getMonth() + 1;
+            var mounth = data.getMonth() + 1;
             if (mounth < 10) {
                 mounth = '0' + mounth;
             }
@@ -418,7 +418,7 @@
                     return id === memberId;
                 })
             ) {
-                let index = vm.dataFilterQueries.members.indexOf(memberId);
+                var index = vm.dataFilterQueries.members.indexOf(memberId);
                 vm.dataFilterQueries.members.splice(index, 1);
             } else {
                 vm.dataFilterQueries.members.push(memberId);

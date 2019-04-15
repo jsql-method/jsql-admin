@@ -109,7 +109,7 @@
 
     function demoteAdmin() {
 
-      let data = {
+      var data = {
         password: "test123",
         email: vm.adminBody.email,
         firstName: vm.adminBody.firstName,
@@ -265,7 +265,7 @@
 
     function submitAddAdmin() {
 
-      let data = {
+      var data = {
         firstName: vm.firstName,
         lastName: vm.lastName,
         email: vm.email,

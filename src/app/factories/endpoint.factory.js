@@ -9,11 +9,13 @@
     function EndpointsFactory($http, ApiFactory, SERVER_URL) {
         return {
             login: login,
+            session: session,
             plan: plan,
             logout: logout,
             register: register,
             applications: applications,
-            generateApplication: generateApplication,
+            application: application,
+            createApplication: createApplication,
             deleteApplication: deleteApplication,
             stats: stats,
             profile: profile,
@@ -33,16 +35,22 @@
             addAdmin: addAdmin,
             getQueries: getQueries,
             getAllOptions: getAllOptions,
+            getOptions: getOptions,
             getOptionsValues: getOptionsValues,
             updateUserDetails: updateUserDetails,
             changePassword: changePassword,
             updateOptions: updateOptions,
             updateQuery: updateQuery,
-            getImage: getImage
+            getImage: getImage,
+            toggleProduction: toggleProduction
         };
 
         function login(loginRequest) {
             return ApiFactory.post(SERVER_URL + "/api/login", loginRequest);
+        }
+
+        function session(){
+            return ApiFactory.get(SERVER_URL + "/api/session");
         }
 
         function plan() {
@@ -86,12 +94,16 @@
             return ApiFactory.delete(SERVER_URL + "/api/user");
         }
 
+        function application(id){
+            return ApiFactory.get(SERVER_URL + "/api/application/"+id);
+        }
+
         function applications() {
             return ApiFactory.get(SERVER_URL + "/api/application");
         }
 
-        function generateApplication(name) {
-            return ApiFactory.post(SERVER_URL + "/api/application", name);
+        function createApplication(data) {
+            return ApiFactory.post(SERVER_URL + "/api/application", data);
         }
 
         function deleteApplication(id) {
@@ -157,12 +169,16 @@
             );
         }
 
+        function getOptions(id) {
+            return ApiFactory.get(SERVER_URL + "/api/options/"+id);
+        }
+
         function getOptionsValues() {
             return ApiFactory.get(SERVER_URL + "/api/options/values");
         }
 
-        function updateUserDetails(id, data) {
-            return ApiFactory.patch(SERVER_URL + "/api/user/" + id, data);
+        function updateUserDetails(data) {
+            return ApiFactory.patch(SERVER_URL + "/api/user/", data);
         }
 
         function changePassword(data) {
@@ -176,6 +192,10 @@
             );
         }
 
+        function toggleProduction(id, data){
+            return ApiFactory.patch(SERVER_URL + "/api/options/toggle-production/" + id, data);
+        }
+
         function updateQuery(id, request) {
             return ApiFactory.patch(SERVER_URL + "/api/request/query/" + id, request);
         }
@@ -183,5 +203,6 @@
         function getImage() {
             return ApiFactory.get(SERVER_URL + "/api/avatar");
         }
+
     }
 })(angular);
