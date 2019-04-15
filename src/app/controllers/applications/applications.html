@@ -26,7 +26,7 @@
             Copy to clipboard
           </button>
 
-          <button ng-if="vm.role !== 'APP_DEV'" type="button" class="btn btn-danger" ng-click="vm.deleteApplication()">
+          <button ng-if="vm.role !== 'APP_DEV'" type="button" class="btn btn-danger" ng-click="vm.deleteApplication()" ng-disabled="vm.application.prod">
             Delete
           </button>
 

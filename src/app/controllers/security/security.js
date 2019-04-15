@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function SecurityController(AuthService, $scope, $timeout, ApplicationService, $stateParams, UtilsService) {
+    function SecurityController(AuthService, $scope, $timeout, DictService, ApplicationService, EventEmitterService, $stateParams, UtilsService) {
         var vm = this;
 
         vm.loading = true;
@@ -14,6 +14,7 @@
         vm.id = parseInt($stateParams.id);
         vm.messages = {};
 
+        vm.toggleProduction = toggleProduction;
         vm.submitOptions = submitOptions;
         vm.generateRandomSalt = generateRandomSalt;
         vm.warningProdMode = warningProdMode;
@@ -32,11 +33,13 @@
                 vm.options.prod = false;
                 UtilsService.openModal(translation.confirmEnableProductionMode, true, 'Switch', 'warning', translation.productionMode, function () {
                     vm.options.prod = true;
+                    vm.toggleProduction();
                 });
             } else {
                 vm.options.prod = true;
                 UtilsService.openModal(translation.confirmDisableProductionMode, true, 'Disable', 'warning', translation.productionMode, function () {
                     vm.options.prod = false;
+                    vm.toggleProduction();
                 });
             }
 
@@ -57,6 +60,29 @@
                     });
 
                 })
+        }
+
+        function toggleProduction(){
+
+            ApplicationService.toggleProduction(vm.id, {
+                prod: vm.options.prod
+            })
+                .then(function (result) {
+
+                    if (UtilsService.hasGeneralError(result)) {
+                        UtilsService.openFailedModel(UtilsService.getGeneralError(result));
+                    } else {
+                        UtilsService.openSuccessModal(vm.options.prod ? translation.productionEnabled : translation.productionDisabled);
+
+                        DictService.refresh("applications");
+                        EventEmitterService.broadcast(
+                            EventEmitterService.namespace.APPLICATIONS
+                        );
+
+                    }
+
+                })
+
         }
 
         function submitOptions() {
@@ -83,7 +109,7 @@
                 return;
             }
 
-            ApplicationService.updateOptions(vm.id, _.without(vm.options, ['application', 'apiKey']))
+            ApplicationService.updateOptions(vm.id, _.without(vm.options, ['application', 'apiKey', 'prod']))
                 .then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {

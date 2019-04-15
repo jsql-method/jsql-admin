@@ -42,7 +42,12 @@
           <a href="/add-application">+ Add application</a>
         </li>
         <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/application/'+application.id)">
-          <a href="/application/{{ application.id }}">{{application.name }}</a>
+          <a href="/application/{{ application.id }}">
+            <span ng-if="application.prod" class="ion ion-arrow-right-b"></span>
+            <span ng-if="!application.prod" class="ion ion-code"></span>
+
+            {{application.name}}
+          </a>
         </li>
       </ul>
     </li>

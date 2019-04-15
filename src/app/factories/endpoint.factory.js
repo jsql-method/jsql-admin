@@ -41,7 +41,8 @@
             changePassword: changePassword,
             updateOptions: updateOptions,
             updateQuery: updateQuery,
-            getImage: getImage
+            getImage: getImage,
+            toggleProduction: toggleProduction
         };
 
         function login(loginRequest) {
@@ -191,6 +192,10 @@
             );
         }
 
+        function toggleProduction(id, data){
+            return ApiFactory.patch(SERVER_URL + "/api/options/toggle-production/" + id, data);
+        }
+
         function updateQuery(id, request) {
             return ApiFactory.patch(SERVER_URL + "/api/request/query/" + id, request);
         }
@@ -198,5 +203,6 @@
         function getImage() {
             return ApiFactory.get(SERVER_URL + "/api/avatar");
         }
+
     }
 })(angular);

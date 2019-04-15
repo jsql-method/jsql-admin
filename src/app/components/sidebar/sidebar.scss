@@ -35,6 +35,12 @@
     display: flex;
     align-items: center;
     width: 100%;
+
+    span {
+      font-size: 1rem;
+      width: 2rem;
+    }
+
   }
 
   ul li a .icon {

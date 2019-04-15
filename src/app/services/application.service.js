@@ -45,6 +45,10 @@
             return EndpointsFactory.updateOptions(id, data).$promise;
         };
 
+        provider.toggleProduction = function (id, data) {
+            return EndpointsFactory.toggleProduction(id, data).$promise;
+        };
+
         provider.updateQuery = function (id, data) {
             return EndpointsFactory.updateQuery(id, data).$promise;
         };
