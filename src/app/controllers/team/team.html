@@ -1,4 +1,4 @@
-<div class="myTeamController subpage" >
+<div class="myTeamController subpage">
 
     <div class="spinner" ng-show="vm.loading">
         <div class="lds-ellipsis">
@@ -15,7 +15,7 @@
         <div class="row mt-2">
             <div class="col-12">
                 <form class="form-inline">
-                    <button type="submit" class="btn btn-primary" ng-click="vm.section = 'add-developer'">
+                    <button type="submit" class="btn btn-primary" ng-click="vm.goToAddDeveloper()">
                         + Add developer
                     </button>
                 </form>
@@ -24,33 +24,44 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col">Developer name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="developer in vm.developers track by $index">
-                        <td class="description-overflow">
-                            {{ developer.firstName + " " + developer.lastName }}
-                        </td>
-                        <td class="description-overflow">{{ developer.email }}</td>
-                        <td>
-                            <form class="form-inline">
-                                <button type="button" class="btn btn-danger mr-2" ng-click="vm.deleteDeveloper(developer.id)">
-                                    Delete
-                                </button>
-                                <button type="button" class="btn btn-primary" ng-click="vm.getApplicationsDeveloper(developer.id)">
-                                    Applications privileges
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+
+                <div class="empty" ng-if="vm.developers.length === 0">
+                    You have not developers yet
+                </div>
+
+                <div class="table-flex" ng-if="vm.developers.length > 0">
+                    <!--<div class="tbody">-->
+                    <!--<div class="tr thead">-->
+                    <!--<div class="td">Developer</div>-->
+                    <!--<div class="td">Email</div>-->
+                    <!--<div class="td">&nbsp;</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class="tbody">
+                        <div ng-repeat="developer in vm.developers track by $index" class="tr">
+                            <div class="td">
+                                <img src="{{vm.getImage(developer.id)}}" class="rounded-circle"/>
+                                {{ developer.firstName + " " + developer.lastName }}
+                            </div>
+                            <div class="td">
+                                <span class="ion ion-email" ng-show="!developer.confirmed"></span>
+                                {{ developer.email }}
+                            </div>
+                            <div class="td">
+                                <form class="form-inline">
+                                    <button type="button" class="btn btn-danger mr-2"
+                                            ng-click="vm.deleteDeveloper(developer.id)">
+                                        Delete
+                                    </button>
+                                    <button type="button" class="btn btn-primary"
+                                            ng-click="vm.getApplicationsDeveloper(developer.id)">
+                                        Applications privileges
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -59,7 +70,7 @@
         <h2>New developer</h2>
         <div class="underline-title-card"></div>
         <div class="row mt-2">
-            <div class="col-12">
+            <div class="col">
                 <form class="form-inline">
                     <button type="submit" class="btn btn-primary" ng-click="vm.backToList()">
                         Back
@@ -69,12 +80,13 @@
         </div>
 
         <div class="row mt-2">
-            <div class="col-12">
+            <div class="col">
                 <form ng-submit="vm.addDeveloper()">
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control {{vm.messages.email ? 'is-invalid' : ''}}" id="email" ng-model="vm.developer.email"/>
+                        <input type="text" class="form-control {{vm.messages.email ? 'is-invalid' : ''}}" id="email"
+                               ng-model="vm.developer.email"/>
                         <div class="invalid-feedback" ng-show="vm.messages.email">
                             {{ vm.messages.email }}
                         </div>
@@ -82,7 +94,8 @@
 
                     <div class="form-group">
                         <label for="firstName">First name</label>
-                        <input type="text" class="form-control {{vm.messages.firstName ? 'is-invalid' : ''}}" id="firstName" ng-model="vm.developer.firstName"/>
+                        <input type="text" class="form-control {{vm.messages.firstName ? 'is-invalid' : ''}}"
+                               id="firstName" ng-model="vm.developer.firstName"/>
                         <div class="invalid-feedback" ng-show="vm.messages.firstName">
                             {{ vm.messages.firstName }}
                         </div>
@@ -90,7 +103,8 @@
 
                     <div class="form-group">
                         <label for="lastName">Last name</label>
-                        <input type="text" class="form-control {{vm.messages.lastName ? 'is-invalid' : ''}}" id="lastName" ng-model="vm.developer.lastName"/>
+                        <input type="text" class="form-control {{vm.messages.lastName ? 'is-invalid' : ''}}"
+                               id="lastName" ng-model="vm.developer.lastName"/>
                         <div class="invalid-feedback" ng-show="vm.messages.lastName">
                             {{ vm.messages.lastName }}
                         </div>
@@ -118,35 +132,33 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col">Application</th>
-                        <th scope="col">Assigned</th>
-                        <th scope="col">&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="application in vm.applications track by $index">
-                        <td class="description-overflow">{{ application.name }}</td>
-                        <td>
+                <div class="table-flex">
+                    <!--<div class="tbody">-->
+                    <!--<div class="tr">-->
+                    <!--<div class="td">Application</div>-->
+                    <!--<div class="td">Assigned</div>-->
+                    <!--<div class="td">&nbsp;</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class="tbody">
+                        <div ng-repeat="application in vm.applications track by $index" class="tr">
+                            <div class="td">{{ application.name }}</div>
+                            <div class="td">
                             <span class="{{application.assigned ? 'badge badge-primary' : 'badge badge-secondary'}}">
-                                {{ application.assigned ? "Yes" : "No"}}
+                                {{ application.assigned ? "Assigned" : "Not assigned"}}
                             </span>
-                        </td>
-                        <td>
-                            <form class="form-inline">
-                                <button type="button" class="btn btn-primary" ng-click="vm.assignDeveloper(application.id)">
-                                    Assign
-                                </button>
-                                <button type="button" class="vbtn btn-secondary" ng-click="vm.unassingDeveloper(application.id)">
-                                    Unassign
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            </div>
+                            <div class="td">
+                                <form class="form-inline">
+                                    <button type="button" class="btn btn-primary"
+                                            ng-click="application.assigned ? vm.unassingDeveloper(application) : vm.assignDeveloper(application)">
+                                        {{application.assigned ? 'Unassign' : 'Assign'}}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

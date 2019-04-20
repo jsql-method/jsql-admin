@@ -1,83 +1,113 @@
-<div ng-if="vm.section === 'list-admins'" class="content administatorsController">
-  <h2>Admins</h2>
-  <div class="underline-title-card"></div>
-  <div class="row mt-2">
-    <div class="col-12">
-      <form class="form-inline">
-        <button type="submit" class="btn btn-primary" ng-click="vm.section = 'add-admin'">
-          + Add admin
-        </button>
-      </form>
+<div class="administratorsController subpage">
+
+  <div class="spinner" ng-show="vm.loading">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
   </div>
 
-  <div class="row mt-2">
-    <div class="col-12">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Admin name</th>
-            <th scope="col">Email</th>
-            <th scope="col">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="admin in vm.admins track by $index">
-            <td class="description-overflow">
-              {{ admin.firstName + " " + admin.lastName }}
-            </td>
-            <td class="description-overflow">{{ admin.email }}</td>
-            <td>
-              <form class="form-inline">
-                <button style="margin: 5px;" type="button" class="btn btn-danger mr-2" ng-click="vm.deleteAdminOpenModal(admin.id)">
-                  Delete
-                </button>
-                <button style="margin: 5px;" type="button" class="btn btn-primary" ng-click="vm.demoteAdminOpenModal(admin)">
-                  Demote to developer
-                </button>
-              </form>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div ng-show="!vm.loading" ng-if="vm.section === 'list-admins'">
+    <h2>Admins</h2>
+    <div class="underline-title-card"></div>
+    <div class="row mt-2">
+      <div class="col-12">
+        <form class="form-inline">
+          <button type="submit" class="btn btn-primary" ng-click="vm.goToAddAdmin()">
+            + Add admin
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12">
+
+        <div class="empty" ng-if="vm.admins.length === 0">
+          You have not admins yet
+        </div>
+
+        <div class="table-flex" ng-if="vm.admins.length > 0">
+          <div class="tbody">
+            <div ng-repeat="admin in vm.admins track by $index" class="tr">
+              <div class="td">
+                <img src="{{vm.getImage(admin.id)}}" class="rounded-circle"/>
+                {{ admin.firstName + " " + admin.lastName }}
+              </div>
+              <div class="td">
+                <span class="ion ion-email" ng-show="!admin.confirmed"></span>
+                {{ admin.email }}
+              </div>
+              <div class="td">
+                <form class="form-inline">
+                  <button type="button" class="btn btn-danger mr-2"
+                          ng-click="vm.deleteAdmin(admin.id)">
+                    Delete
+                  </button>
+                  <button type="button" class="btn btn-primary"
+                          ng-click="vm.demoteAdmin(admin)">
+                    Demote to developer
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="content buildsController" ng-if="vm.section==='add-admin'">
-  <h2>Add admin</h2>
+  <div ng-show="!vm.loading" ng-if="vm.section==='add-admin'">
+    <h2>New admin</h2>
+    <div class="underline-title-card"></div>
+    <div class="row mt-2">
+      <div class="col">
+        <form class="form-inline">
+          <button type="submit" class="btn btn-primary" ng-click="vm.backToList()">
+            Back
+          </button>
+        </form>
+      </div>
+    </div>
 
-  <div class="row mt-2">
-    <div class="col-12">
-      <form ng-submit="vm.validateAddAdmin()">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" class="form-control" id="email" ng-model="vm.email" ng-blur="vm.validateEmail(true)" ng-change="vm.validateEmail()"/>
-          <p class="text-danger" ng-repeat="message in vm.messages.email track by $index">
-            {{ message }}
-          </p>
-        </div>
+    <div class="row mt-2">
+      <div class="col">
+        <form ng-submit="vm.addAdmin()">
 
-        <div class="form-group">
-          <label for="firstName">First name</label>
-          <input type="text" class="form-control" id="firstName" ng-model="vm.firstName" ng-blur="vm.validateFirstName(true)" ng-change="vm.validateFirstName()"/>
-          <p class="text-danger" ng-repeat="message in vm.messages.firstName track by $index">
-            {{ message }}
-          </p>
-        </div>
-        <div class="form-group">
-          <label for="lastName">Last Name</label>
-          <input type="text" class="form-control" id="lastName" ng-model="vm.lastName" ng-blur="vm.validateLastName(true)" ng-change="vm.validateLastName()"/>
-          <p class="text-danger" ng-repeat="message in vm.messages.lastName track by $index">
-            {{ message }}
-          </p>
-        </div>
-        <p class="text-danger">{{ vm.generalMessage }}</p>
-        <button type="submit" class="btn btn-primary">Add</button>
-        <button class="btn btn-secondary" ng-click="vm.backToListAdmins()">
-          Back
-        </button>
-      </form>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control {{vm.messages.email ? 'is-invalid' : ''}}" id="email"
+                   ng-model="vm.admin.email"/>
+            <div class="invalid-feedback" ng-show="vm.messages.email">
+              {{ vm.messages.email }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="firstName">First name</label>
+            <input type="text" class="form-control {{vm.messages.firstName ? 'is-invalid' : ''}}"
+                   id="firstName" ng-model="vm.admin.firstName"/>
+            <div class="invalid-feedback" ng-show="vm.messages.firstName">
+              {{ vm.messages.firstName }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input type="text" class="form-control {{vm.messages.lastName ? 'is-invalid' : ''}}"
+                   id="lastName" ng-model="vm.admin.lastName"/>
+            <div class="invalid-feedback" ng-show="vm.messages.lastName">
+              {{ vm.messages.lastName }}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add</button>
+
+        </form>
+      </div>
     </div>
   </div>
+
 </div>

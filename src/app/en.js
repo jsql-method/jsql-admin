@@ -1,3 +1,5 @@
+'use strict';
+
 var translation = {
     'unauthorized': "Wrong username or password",
     'error': 'Error name not resolved: {0}',
@@ -28,5 +30,11 @@ var translation = {
     'productionDisabled': 'Production mode has been disabled',
     'delete_developer' : 'Remove developer',
     'developer_deleted' : 'Developer has been removed',
-    'developer_created' : 'Developer has been created'
+    'developer_created' : 'Developer has been created',
+    'account_activated' : 'Your account has been activated',
+    'activation_failed' : 'Activation failed. Please contact support',
+    'delete_admin' : 'Remove administrator',
+    'admin_deleted' : 'Administrator has been removed',
+    'admin_created' : 'Administrator has been created',
+    'queryUpdated' : 'Query has been updated'
 };

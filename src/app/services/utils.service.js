@@ -9,25 +9,97 @@
     function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal) {
         var utils = {};
 
-        utils.without = function(map, arr){
+        utils.getPrimaryColor = function() {
+            return '#0a7cbe';
+        };
+
+
+        utils.getRandomColor = function() {
+            var letters = "0123456789ABCDEF";
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        };
+
+        utils.elementHeight = function (element) {
+            return element.clientHeight || element.offsetHeight;
+        };
+
+        utils.fillArray = function (length) {
+
+            var arr = [];
+
+            for (var i = 0; i < length; i++) {
+                arr.push(i);
+            }
+
+            return arr;
+
+        };
+
+        utils.applicationsToOptions = function (applications) {
+
+            var options = [];
+
+            for (var i = 0; i < applications.length; i++) {
+                options.push({
+                    id: applications[i].id,
+                    label: applications[i].name
+                });
+            }
+
+            return options;
+
+        };
+
+        utils.developersToOptions = function (developers) {
+
+            var options = [];
+
+            for (var i = 0; i < developers.length; i++) {
+                options.push({
+                    id: developers[i].id,
+                    label: developers[i].firstName + ' ' + developers[i].lastName
+                });
+            }
+
+            return options;
+
+        };
+
+        utils.getRandomArbitrary = function (min, max) {
+            return Math.random() * (max - min) + min;
+        };
+
+        utils.getRandomFloor = function (min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        };
+
+        utils.without = function (map, arr) {
 
             var map2 = {};
 
-            for(var prop in map){
-                if(arr.indexOf(prop) === -1){
-                    map2[prop] = map[prop];
+            for (var prop in map) {
+
+                if(map.hasOwnProperty(prop)){
+                    if (arr.indexOf(prop) === -1) {
+                        map2[prop] = map[prop];
+                    }
                 }
+
             }
 
             return map2;
 
         };
 
-        utils.openFailedModel = function(text){
+        utils.openFailedModal = function (text) {
             utils.openModal(text || translation.something_gone_wrong, false, 'Ok', 'error', 'Error', null);
         };
 
-        utils.openSuccessModal = function(text, callback){
+        utils.openSuccessModal = function (text, callback) {
             utils.openModal(text, false, 'Confirm', null, null, callback);
         };
 
@@ -62,11 +134,11 @@
 
         };
 
-        utils.getGeneralError = function(result){
+        utils.getGeneralError = function (result) {
             return result.data.errorMessage;
         };
 
-        utils.hasGeneralError = function(result){
+        utils.hasGeneralError = function (result) {
             return (result.status === 200 || result.status === 204) && result.data.errorMessage;
         };
 
@@ -78,7 +150,11 @@
             var errorData = result.data.messages;
             var messages = {};
             for (var field in errorData) {
-                messages[field] = translation[errorData[field]] || translation.error.replace('{0}', errorData[field]);
+
+                if(errorData.hasOwnProperty(field)){
+                    messages[field] = translation[errorData[field]] || translation.error.replace('{0}', errorData[field]);
+                }
+
             }
             return messages;
 
@@ -115,8 +191,13 @@
          * @returns {*}
          */
         utils.bindParams = function (str, params) {
+
             for (var paramName in params) {
-                str = str.replace(":" + paramName, params[paramName]);
+
+                if(params.hasOwnProperty(paramName)){
+                    str = str.replace(":" + paramName, params[paramName]);
+                }
+
             }
 
             return str;

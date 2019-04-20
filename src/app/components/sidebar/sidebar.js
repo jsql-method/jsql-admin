@@ -13,7 +13,7 @@
             templateUrl: "app/components/sidebar/sidebar.html",
             controllerAs: "vm",
             bindToController: true,
-            controller: function (SERVER_URL, DictService, $timeout, $state, EventEmitterService, AuthService, $location) {
+            controller: function ($rootScope, SERVER_URL, DictService, $timeout, $state, EventEmitterService, AuthService, $location, UtilsService) {
                 var vm = this;
 
                 vm.setActive = setActive;
@@ -25,15 +25,24 @@
                 vm.applications = [];
                 vm.plan = null;
 
+                $rootScope.$on("$stateChangeStart", function () {
+                    setStamp();
+                });
+
                 init();
 
                 function init() {
 
+                    setStamp();
                     getImage();
                     getSessionData();
                     getApplications();
                     getPlan();
 
+                }
+
+                function setStamp(){
+                    vm.stamp = UtilsService.getRandomFloor(50, 100);
                 }
 
                 function getImage() {
@@ -54,6 +63,7 @@
 
                         vm.session = AuthService.getSessionData();
                         vm.session.role = AuthService.beautifyRole(vm.session.role);
+                        vm.role =  AuthService.getRole();
 
                     });
 

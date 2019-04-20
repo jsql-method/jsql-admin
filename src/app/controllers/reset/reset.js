@@ -29,7 +29,7 @@
                 }).then(function (result) {
 
                     if(UtilsService.hasGeneralError(result)){
-                        UtilsService.openFailedModel();
+                        UtilsService.openFailedModal();
                     }else if (UtilsService.hasErrors(result)) {
                         vm.messages = UtilsService.getErrors(result);
                     } else {

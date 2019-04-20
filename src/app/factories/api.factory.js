@@ -18,29 +18,50 @@
          */
         provider.construct = function (fullUrl, method, request, params, urlParams) {
             if (params) {
+
                 for (var prop in params) {
-                    fullUrl = fullUrl.replace("{" + prop + "}", params[prop]);
+
+                    if(params.hasOwnProperty(prop)){
+                        fullUrl = fullUrl.replace("{" + prop + "}", params[prop]);
+                    }
+
                 }
+
             }
 
             if (urlParams) {
                 var urlParamsStr = "?";
                 for (var prop in urlParams) {
-                    urlParamsStr += "&" + prop + "=" + urlParams[prop];
+
+                    if(urlParams.hasOwnProperty(prop)){
+                        urlParamsStr += "&" + prop + "=" + urlParams[prop];
+                    }
+
                 }
 
                 urlParamsStr = urlParamsStr.replace("?&", "?");
                 fullUrl += urlParamsStr;
             }
+
+            var headers =  {
+                Session: $injector.get("AuthService").getToken() || "none",
+                "Content-Type": "application/json",
+                Accept: "application/json; charset=utf-8"
+            };
+
+
+            if(params){
+                if(params.page !== null && params.page !== undefined){
+                    headers['Page'] = params.page;
+                }
+            }
+
+
             var promise = $http({
                 url: fullUrl,
                 method: method,
                 dataType: "json",
-                headers: {
-                    Session: $injector.get("AuthService").getToken() || "none",
-                    "Content-Type": "application/json",
-                    Accept: "application/json; charset=utf-8"
-                },
+                headers: headers,
                 data: request
             }).then(function (result) {
 
@@ -56,8 +77,10 @@
 
             }).catch(function (err) {
 
+                console.error(err);
+
                 if (err.status !== 401) {
-                    $injector.get('UtilsService').openFailedModel();
+                    $injector.get('UtilsService').openFailedModal();
                 }
 
                 return err;

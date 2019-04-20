@@ -7,9 +7,9 @@
       <div class="name font-weight-bold">{{ vm.session.fullName }}</div>
       <!--<div class="type">{{ vm.session.role }}</div>-->
       <div class="company">{{ vm.session.companyName }}</div>
-      <!--<div ng-if="vm.session.role === 'COMPANY_ADMIN'">{{ vm.plan.name }}</div>-->
-      <!--<div ng-if="vm.session.role !== 'APP_DEV'"><span class="icon icon-apps"></span>{{vm.plan.usedApps + '/' + vm.plan.maxApps}}</div>-->
-      <!--<div ng-if="vm.session.role !== 'APP_DEV'"><span class="icon icon-users"></span> {{vm.plan.usedUsers + '/' + vm.plan.maxUsers}}</div>-->
+      <!--<div ng-if="vm.role === 'COMPANY_ADMIN'">{{ vm.plan.name }}</div>-->
+      <!--<div ng-if="vm.role !== 'APP_DEV'"><span class="icon icon-apps"></span>{{vm.plan.usedApps + '/' + vm.plan.maxApps}}</div>-->
+      <!--<div ng-if="vm.role !== 'APP_DEV'"><span class="icon icon-users"></span> {{vm.plan.usedUsers + '/' + vm.plan.maxUsers}}</div>-->
     </div>
   </div>
   <ul class="list-unstyled components">
@@ -19,30 +19,30 @@
       </a>
       <ul class="collapse list-unstyled" id="profile">
         <li ng-class="vm.setActive('/profile')">
-          <a href="/profile">Profile</a>
+          <a href="/profile?rf={{vm.stamp}}">Profile</a>
         </li>
         <li><a class="logout-sidebar" ng-click="vm.logout()">Logout</a></li>
       </ul>
     </li>
     <li>
-      <a ng-if="vm.profile.role === 'APP_DEV'" href="/developer-key" ng-class="vm.setActive('/developer-key')">
+      <a ng-if="vm.profile.role === 'APP_DEV'" href="/developer-key?rf={{vm.stamp}}" ng-class="vm.setActive('/developer-key')">
         <span class="icon icon-developer-key"></span>
         Developer key
       </a>
     </li>
     <li ng-class="vm.setActive('/builds')">
-      <a href="/builds"><span class="icon icon-builds"></span>Builds</a>
+      <a href="/builds?rf={{vm.stamp}}"><span class="icon icon-builds"></span>Builds</a>
     </li>
     <li class="{{ vm.setExpanded('applications') }}">
       <a href="javascript:void(0);" data-target="#applications" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
         <span class="icon icon-applications"></span> Applications
       </a>
       <ul class="collapse list-unstyled" id="applications">
-        <li ng-if="vm.session.role !== 'APP_DEV'" ng-class="vm.setActive('/add-application')">
-          <a href="/add-application">+ Add application</a>
+        <li ng-if="vm.role !== 'APP_DEV'" ng-class="vm.setActive('/add-application')">
+          <a href="/add-application?rf={{vm.stamp}}">+ Add application</a>
         </li>
         <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/application/'+application.id)">
-          <a href="/application/{{ application.id }}">
+          <a href="/application/{{ application.id }}?rf={{vm.stamp}}">
             <span ng-if="application.prod" class="ion ion-arrow-right-b"></span>
             <span ng-if="!application.prod" class="ion ion-code"></span>
 
@@ -58,31 +58,31 @@
       </a>
       <ul class="collapse list-unstyled" id="queries">
         <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/queries/'+application.id)">
-          <a href="/queries/{{ application.id }}">{{ application.name }}</a>
+          <a href="/queries/{{ application.id }}?rf={{vm.stamp}}">{{ application.name }}</a>
         </li>
       </ul>
     </li>
-    <li ng-if="vm.session.role !== 'APP_DEV'" class="{{ vm.setExpanded('security') }}">
+    <li ng-if="vm.role !== 'APP_DEV'" class="{{ vm.setExpanded('security') }}">
       <a href="javascript:void(0);" data-target="#security" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
         <span class="icon icon-security"></span> Security
       </a>
       <ul class="collapse list-unstyled" id="security">
         <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/security/'+application.id)">
-          <a href="/security/{{ application.id }}">{{ application.name }}</a>
+          <a href="/security/{{ application.id }}?rf={{vm.stamp}}">{{ application.name }}</a>
         </li>
       </ul>
     </li>
-    <li ng-if="vm.session.role !== 'APP_DEV'" ng-class="vm.setActive('/developers')">
-      <a href="/developers"><span class="icon icon-team"></span>Developers</a>
+    <li ng-if="vm.role !== 'APP_DEV'" ng-class="vm.setActive('/developers')">
+      <a href="/developers?rf={{vm.stamp}}"><span class="icon icon-team"></span>Developers</a>
     </li>
     <li ng-class="vm.setActive('/traffic')">
-      <a href="/traffic"><span class="icon icon-traffic"></span>Traffic</a>
+      <a href="/traffic?rf={{vm.stamp}}"><span class="icon icon-traffic"></span>Traffic</a>
     </li>
-    <li ng-if="vm.session.role !== 'APP_DEV' && vm.session.role !== 'APP_ADMIN'" ng-class="vm.setActive('/administrators')">
-      <a href="/administrators"><span class="icon icon-admins"></span>Admins</a>
+    <li ng-if="vm.role !== 'APP_DEV' && vm.role !== 'APP_ADMIN'" ng-class="vm.setActive('/administrators')">
+      <a href="/administrators?rf={{vm.stamp}}"><span class="icon icon-admins"></span>Admins</a>
     </li>
-    <li ng-if="vm.session.role !== 'APP_DEV' && vm.session.role !== 'APP_ADMIN'" ng-class="vm.setActive('/billing')">
-      <a href="/billing"><span class="icon icon-billing"></span>Billing</a>
+    <li ng-if="vm.role !== 'APP_DEV' && vm.role !== 'APP_ADMIN'" ng-class="vm.setActive('/billing')">
+      <a href="/billing?rf={{vm.stamp}}"><span class="icon icon-billing"></span>Billing</a>
     </li>
     <li>
       <a target="_blank" href="https://jsql.it/overview">

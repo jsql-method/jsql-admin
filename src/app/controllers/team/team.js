@@ -6,14 +6,15 @@
     /**
      * @ngInject
      */
-    function TeamController(AuthService, DeveloperService, UtilsService, DictService) {
+    function TeamController(AuthService, DeveloperService, UtilsService, DictService, SERVER_URL) {
         var vm = this;
 
         vm.loading = true;
 
         vm.messages = null;
-        vm.developer = null;
-        vm.applications = null;
+        vm.developer = {};
+        vm.developers = [];
+        vm.applications = [];
         vm.section = "list-developers";
 
         vm.addDeveloper = addDeveloper;
@@ -21,7 +22,9 @@
         vm.getApplicationsDeveloper = getApplicationsDeveloper;
         vm.assignDeveloper = assignDeveloper;
         vm.unassingDeveloper = unassingDeveloper;
+        vm.getImage = getImage;
         vm.backToList = backToList;
+        vm.goToAddDeveloper = goToAddDeveloper;
 
         init();
 
@@ -30,12 +33,29 @@
             getDevelopers();
         }
 
+        function goToAddDeveloper(){
+            vm.developer = {};
+            vm.section = 'add-developer'
+        }
+
+        var timestamp = new Date().getTime();
+        function getImage(hash) {
+            return SERVER_URL + '/api/avatar/hash/' + hash+'gfd3dsfs?t='+timestamp;
+        }
+
         function getApplicationsDeveloper(developerId) {
+
+            vm.developer = _.find(vm.developers, {id: developerId});
+            vm.loading = true;
 
             DictService.applications().then(function(result){
 
                 var applications = result;
                 DeveloperService.getDeveloperApplications(developerId).then(function (result) {
+
+                    vm.section = 'application-developer';
+                    vm.applications = mergeApplicationsPrivileges(applications, result.data);
+                    vm.loading = false;
 
                 });
 
@@ -43,9 +63,36 @@
 
         }
 
+        function mergeApplicationsPrivileges(allApplications, developerApplications){
+
+            var apps = [];
+
+            for(var i = 0; i < allApplications.length; i++){
+
+                var application = allApplications[i];
+                var assignedApp = _.find(developerApplications, { applicationId: application.id });
+
+                apps.push({
+                    id: application.id,
+                    assigned: !!assignedApp,
+                    name: application.name
+                });
+
+            }
+
+            return apps;
+
+        }
+
         function getDevelopers() {
+
+            vm.developer = {};
+            vm.loading = true;
+
+            DictService.refresh('developers');
             DictService.developers().then(function (result) {
                 vm.developers = result;
+                vm.loading = false;
             });
         }
 
@@ -58,17 +105,12 @@
 
             function deleteDeveloper(developerId) {
 
-                console.log('developerId', developerId);
-
                 DeveloperService.deleteDeveloper(developerId).then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {
-                        UtilsService.openFailedModel(UtilsService.getGeneralError(result));
-                    } else if (UtilsService.hasErrors(result)) {
-                        vm.messages = UtilsService.getErrors(result);
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else {
 
-                        DictService.refresh('developers');
                         getDevelopers();
                         backToList();
 
@@ -88,15 +130,18 @@
 
         function addDeveloper() {
 
-            DeveloperService.addDeveloper(vm.developer).then(function (result) {
+            DeveloperService.addDeveloper({
+                email: vm.developer.email,
+                firstName: vm.developer.firstName,
+                lastName: vm.developer.lastName
+            }).then(function (result) {
 
                 if (UtilsService.hasGeneralError(result)) {
-                    UtilsService.openFailedModel(UtilsService.getGeneralError(result));
+                    UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                 } else if (UtilsService.hasErrors(result)) {
                     vm.messages = UtilsService.getErrors(result);
                 } else {
 
-                    DictService.refresh('developers');
                     getDevelopers();
                     backToList();
 
@@ -106,43 +151,39 @@
             });
         }
 
-        /* -----------------------------------------------------------------------  */
+        function assignDeveloper(application){
 
-        /* Section manage applications developer */
+            DeveloperService.addDeveloperToApplication({
+                developer: vm.developer.id,
+                application: application.id
+            }).then(function (result) {
 
-
-        function checkAssignApplication(id) {
-            for (var i = 0; i < vm.developerApplication.length; i++) {
-                if (vm.developerApplication[i] === id) {
-                    return true;
+                if (UtilsService.hasGeneralError(result)) {
+                    UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                }else{
+                    application.assigned = true;
                 }
-            }
 
-            return false;
-        }
-
-        function addDeveloperToApplication(id) {
-            var data = {
-                developer: vm.developers[vm.editDeveloper].id,
-                application: id
-            };
-
-            DeveloperService.addDeveloperToApplication(data).then(function () {
-                getApplicationsDeveloper(vm.editDeveloper);
             });
+
         }
 
-        function deleteDeveloperWithApplication(id) {
-            var data = {
-                developer: vm.developers[vm.editDeveloper].id,
-                application: id
-            };
+        function unassingDeveloper(application) {
 
-            DeveloperService.deleteDeveloperWithApplication(data).then(function () {
-                getApplicationsDeveloper(vm.editDeveloper);
+            DeveloperService.deleteDeveloperWithApplication({
+                developer: vm.developer.id,
+                application: application.id
+            }).then(function (result) {
+
+                if (UtilsService.hasGeneralError(result)) {
+                    UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                }else{
+                    application.assigned = false;
+                }
+
             });
-        }
 
+        }
 
     }
 })(angular);

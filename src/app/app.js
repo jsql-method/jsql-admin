@@ -7,16 +7,15 @@ app.run([
     "$state",
     "EventEmitterService",
     "UtilsService",
-    "$location",
     function (
         $rootScope,
         DictService,
         AuthService,
         $state,
         EventEmitterService,
-        UtilsService,
-        $location
+        UtilsService
     ) {
+
         DictService.load();
 
         $rootScope.isLogged = AuthService.isLogged();
@@ -33,10 +32,10 @@ app.run([
         $rootScope.$on("$viewContentLoaded", function (event) {
             UtilsService.setTitle();
 
-            $(".selectize").selectize({
-                create: true,
-                sortField: "text"
-            });
+            // $(".selectize").selectize({
+            //     create: true,
+            //     sortField: "text"
+            // });
 
         });
 

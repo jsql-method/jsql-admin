@@ -10,7 +10,8 @@ var app = angular
         "ngStorage",
         "ngCookies",
         "ui.bootstrap",
-        "constants"
+        "constants",
+        "angularjs-dropdown-multiselect"
     ])
     .config([
         "$httpProvider",
@@ -48,7 +49,7 @@ var app = angular
 
     }])
     .config(['$qProvider', function ($qProvider) {
-        $qProvider.errorOnUnhandledRejections(false);
+        $qProvider.errorOnUnhandledRejections(true);
     }])
     .config([
         "$stateProvider",
@@ -206,7 +207,7 @@ var app = angular
                     }
                 })
                 .state("activate", {
-                    url: "/activate/:id",
+                    url: "/activate/:token",
                     templateUrl: "app/controllers/activate/activate.html",
                     controller: "ActivateController",
                     controllerAs: "vm",
@@ -241,11 +242,21 @@ var app = angular
             $urlRouterProvider.otherwise('/');
         }
     ])
+    .constant("months", [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ])
     .constant("dateFormat", {
-        dateFormat: "yyyy-MM-dd HH:mm",
-        defaultTime: "00:00:00",
-        html5Types: {
-            date: "dd-MM-yyyy"
-        }
+        format: "dd-MM-yyyy"
     });
 

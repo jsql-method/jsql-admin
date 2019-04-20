@@ -21,6 +21,10 @@
       return EndpointsFactory.demoteAdmin(data).$promise;
     };
 
+      provider.deleteAdmin = function(data) {
+          return EndpointsFactory.deleteAdmin(data).$promise;
+      };
+
     return provider;
   }
 })(angular);

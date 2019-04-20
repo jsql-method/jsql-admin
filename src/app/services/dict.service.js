@@ -39,8 +39,9 @@
             dict.data[endpoint].loading = false;
             return result.data;
           })
-          .catch(function(err) {
-            console.log(err);
+          .catch(function(err, x) {
+            console.log('err', err);
+              console.log('x', x);
             return err;
           });
 

@@ -32,6 +32,7 @@ var options = {
         './node_modules/ui-bootstrap4/dist/ui-bootstrap.js',
         './node_modules/ui-bootstrap4/dist/ui-bootstrap-tpls.js',
         './bower_components/selectize/dist/js/standalone/selectize.min.js',
+        './bower_components/angularjs-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js'
     ],
 
     libsCssFiles: [

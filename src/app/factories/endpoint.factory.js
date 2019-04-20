@@ -17,7 +17,7 @@
             application: application,
             createApplication: createApplication,
             deleteApplication: deleteApplication,
-            stats: stats,
+            queries: queries,
             profile: profile,
             developers: developers,
             admins: admins,
@@ -28,12 +28,14 @@
             deactivateAccount: deactivateAccount,
             addDeveloper: addDeveloper,
             deleteDeveloper: deleteDeveloper,
+            deleteAdmin: deleteAdmin,
             getDeveloperApplications: getDeveloperApplications,
             addDeveloperToApplication: addDeveloperToApplication,
             deleteDeveloperWithApplication: deleteDeveloperWithApplication,
             demoteAdmin: demoteAdmin,
             addAdmin: addAdmin,
-            getQueries: getQueries,
+            builds: builds,
+            requests: requests,
             getAllOptions: getAllOptions,
             getOptions: getOptions,
             getOptionsValues: getOptionsValues,
@@ -42,7 +44,10 @@
             updateOptions: updateOptions,
             updateQuery: updateQuery,
             getImage: getImage,
-            toggleProduction: toggleProduction
+            toggleProduction: toggleProduction,
+            buildsChart: buildsChart,
+            requestsChart: requestsChart,
+            queriesChart: queriesChart
         };
 
         function login(loginRequest) {
@@ -110,8 +115,28 @@
             return ApiFactory.patch(SERVER_URL + "/api/application/" + id);
         }
 
-        function stats(dateFrom, dateTo, data) {
-            return ApiFactory.post(SERVER_URL + "/api/builds/" + dateFrom + '/' + dateTo, data);
+        function builds(page, data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/builds/", data, { page: page });
+        }
+
+        function buildsChart(data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/chart/builds/", data);
+        }
+
+        function requestsChart(data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/chart/requests/", data);
+        }
+
+        function queriesChart(data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/chart/queries/", data);
+        }
+
+        function requests(page, data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/requests/", data, { page: page });
+        }
+
+        function queries(page, data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/queries/", data, { page: page });
         }
 
         function profile() {
@@ -132,6 +157,10 @@
 
         function deleteDeveloper(id) {
             return ApiFactory.delete(SERVER_URL + "/api/app-dev/" + id);
+        }
+
+        function deleteAdmin(id){
+            return ApiFactory.delete(SERVER_URL + "/api/app-admin/" + id);
         }
 
         function getDeveloperApplications(id) {
@@ -157,10 +186,6 @@
 
         function demoteAdmin(id) {
             return ApiFactory.patch(SERVER_URL + "/api/app-admin", id);
-        }
-
-        function getQueries(dateFrom, dateTo, data) {
-            return ApiFactory.post(SERVER_URL + "/api/queries/" + dateFrom + "/" + dateTo, data);
         }
 
         function getAllOptions(id) {
@@ -197,7 +222,7 @@
         }
 
         function updateQuery(id, request) {
-            return ApiFactory.patch(SERVER_URL + "/api/request/query/" + id, request);
+            return ApiFactory.patch(SERVER_URL + "/api/query/query/" + id, request);
         }
 
         function getImage() {

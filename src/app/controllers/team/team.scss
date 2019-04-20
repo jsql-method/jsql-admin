@@ -4,4 +4,96 @@
     max-width: 28rem;
   }
 
+  .empty {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    justify-content: center;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .badge {
+    font-size: 0.9rem;
+  }
+
+  .table-flex {
+    display: flex;
+    flex-direction: column;
+
+    .tbody {
+      display: flex;
+      flex-direction: column;
+
+      .tr {
+        display: flex;
+        flex-direction: row;
+
+        &.thead {
+          font-weight: bold;
+        }
+
+        &:not(.thead):last-child{
+
+          .td {
+
+            &:first-child {
+              border-bottom-left-radius: 6px;
+            }
+
+            &:last-child {
+              border-bottom-right-radius: 6px;
+            }
+
+          }
+
+        }
+
+        &:not(.thead):first-child{
+
+          .td {
+
+            &:first-child {
+              border-top-left-radius: 6px;
+            }
+
+            &:last-child {
+              border-top-right-radius: 6px;
+            }
+
+          }
+
+        }
+
+        .td {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          justify-content: left;
+          line-height: 2rem;
+          border: 1px solid #dee2e6;
+          padding: .5rem;
+          margin-top: -1px;
+          margin-left: -1px;
+        }
+
+        .td > img {
+          width: 3rem;
+          height: 3rem;
+          margin-right: 1rem;
+          background: #b9b9b9;
+        }
+
+        .td > span.ion {
+          color: #007bff;
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
+        }
+
+      }
+
+    }
+
+  }
+
 }

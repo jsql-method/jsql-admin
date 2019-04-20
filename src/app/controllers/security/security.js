@@ -70,7 +70,7 @@
                 .then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {
-                        UtilsService.openFailedModel(UtilsService.getGeneralError(result));
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else {
                         UtilsService.openSuccessModal(vm.options.prod ? translation.productionEnabled : translation.productionDisabled);
 
@@ -113,7 +113,7 @@
                 .then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {
-                        UtilsService.openFailedModel(UtilsService.getGeneralError(result));
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else if (UtilsService.hasErrors(result)) {
                         vm.messages = UtilsService.getErrors(result);
                     } else {
@@ -127,10 +127,6 @@
 
         function generateRandomSalt() {
 
-            function getRandomArbitrary(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
             function makeid(length) {
                 var text = "";
                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -142,7 +138,7 @@
             }
 
 
-            vm.options.salt = makeid(getRandomArbitrary(20, 50));
+            vm.options.salt = makeid(UtilsService.getRandomArbitrary(20, 50));
         }
 
     }
