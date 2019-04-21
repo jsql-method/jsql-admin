@@ -582,6 +582,13 @@ h2 {
 .spinner {
   text-align: center;
   padding: 2rem;
+
+  &.white {
+    .lds-ellipsis div {
+      background: #fff;
+    }
+  }
+
 }
 
 .glyphicon, .glyphicon-ok:before, glyphicon-remove:before {
@@ -701,4 +708,9 @@ h2 {
 
 .clickable {
   cursor: pointer;
+}
+
+.form-control:disabled,  .form-control[readonly] {
+  background-color: #ececec;
+  cursor: not-allowed;
 }

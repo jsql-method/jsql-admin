@@ -13,6 +13,7 @@
         vm.options = null;
         vm.id = parseInt($stateParams.id);
         vm.messages = {};
+        vm.securityInfo = translation.securityInfo;
 
         vm.toggleProduction = toggleProduction;
         vm.submitOptions = submitOptions;

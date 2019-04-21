@@ -21,6 +21,7 @@
                 vm.logout = logout;
                 vm.toggle = toggle;
 
+                vm.loading = true;
                 vm.session = null;
                 vm.applications = [];
                 vm.plan = null;
@@ -35,9 +36,12 @@
 
                     setStamp();
                     getImage();
-                    getSessionData();
-                    getApplications();
-                    getPlan();
+                    getSessionData().then(function(){
+                        getApplications().then(function(){
+                            getPlan();
+                            vm.loading = false;
+                        });
+                    });
 
                 }
 
@@ -51,7 +55,7 @@
 
                 function getApplications() {
 
-                    DictService.applications().then(function (result) {
+                    return DictService.applications().then(function (result) {
                         vm.applications = result;
                     });
 
@@ -59,7 +63,7 @@
 
                 function getSessionData() {
 
-                    AuthService.refreshSession(function(){
+                    return AuthService.refreshSession(function(){
 
                         vm.session = AuthService.getSessionData();
                         vm.session.role = AuthService.beautifyRole(vm.session.role);

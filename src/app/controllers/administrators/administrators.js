@@ -47,15 +47,20 @@
 
             DictService.refresh('admins');
             DictService.admins().then(function (result) {
-                vm.admins = result;
+                vm.admins = filterCurrentAdminAndCompanyAdmin(result);
                 vm.loading = false;
             });
+        }
+
+        function filterCurrentAdminAndCompanyAdmin(admins){
+            admins =  _.filter(admins, function(it){ return it.id !== AuthService.getSessionData().id });
+            return _.filter(admins, function(it){ return it.isCompanyAdmin === false });
         }
 
         function deleteAdmin(adminId) {
 
             UtilsService.openModal(translation.are_you_sure, true,
-                translation.delete_admin, 'warnning',
+                translation.delete_admin, 'warning',
                 translation.delete_admin, deleteAdmin.bind(this, adminId)
             );
 
@@ -109,13 +114,9 @@
 
         function demoteAdmin(admin) {
 
-            console.log(admin);
-
             AdminService.demoteAdmin({
                 email: admin.email
             }).then(function (result) {
-
-                console.log(result);
 
                 if (UtilsService.hasGeneralError(result)) {
                     UtilsService.openFailedModal(UtilsService.getGeneralError(result));

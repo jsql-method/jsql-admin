@@ -48,6 +48,11 @@ var app = angular
         }
 
     }])
+    .config(['$uibTooltipProvider', function ($uibTooltipProvider) {
+        $uibTooltipProvider.options({
+            appendToBody: true
+        });
+    }])
     .config(['$qProvider', function ($qProvider) {
         $qProvider.errorOnUnhandledRejections(true);
     }])
@@ -74,7 +79,6 @@ var app = angular
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
-                        roles: ['ADMIN', 'COMPANY_ADMIN', 'APP_ADMIN', 'APP_DEV'],
                         title: 'JSQL - Profile',
                         shortTitle: 'Profile'
                     }
@@ -86,7 +90,6 @@ var app = angular
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
-                        roles: ['APP_DEV'],
                         title: 'JSQL - Developer key',
                         shortTitle: 'Developer key'
                     }

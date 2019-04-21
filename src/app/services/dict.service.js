@@ -40,8 +40,6 @@
             return result.data;
           })
           .catch(function(err, x) {
-            console.log('err', err);
-              console.log('x', x);
             return err;
           });
 

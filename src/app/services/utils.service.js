@@ -9,12 +9,47 @@
     function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal) {
         var utils = {};
 
-        utils.getPrimaryColor = function() {
+        utils.copyToClipboard = function (elementId, modalMessage) {
+
+            try {
+                var copyText = document.getElementById(elementId);
+                copyText.select();
+                var successful = document.execCommand("copy");
+                if (!successful) throw successful;
+                copyText.setSelectionRange(0, 0);
+                UtilsService.openSuccessModal(modalMessage);
+            } catch (e) {
+                console.log(e);
+            }
+
+        };
+
+        utils.saveToFile = function (data, filename) {
+
+            var file = new Blob([data]);
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                var a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
+
+        };
+
+        utils.getPrimaryColor = function () {
             return '#0a7cbe';
         };
 
 
-        utils.getRandomColor = function() {
+        utils.getRandomColor = function () {
             var letters = "0123456789ABCDEF";
             var color = "#";
             for (var i = 0; i < 6; i++) {
@@ -83,7 +118,7 @@
 
             for (var prop in map) {
 
-                if(map.hasOwnProperty(prop)){
+                if (map.hasOwnProperty(prop)) {
                     if (arr.indexOf(prop) === -1) {
                         map2[prop] = map[prop];
                     }
@@ -135,7 +170,7 @@
         };
 
         utils.getGeneralError = function (result) {
-            return result.data.errorMessage;
+            return translation[result.data.errorMessage] || result.data.errorMessage;
         };
 
         utils.hasGeneralError = function (result) {
@@ -151,7 +186,7 @@
             var messages = {};
             for (var field in errorData) {
 
-                if(errorData.hasOwnProperty(field)){
+                if (errorData.hasOwnProperty(field)) {
                     messages[field] = translation[errorData[field]] || translation.error.replace('{0}', errorData[field]);
                 }
 
@@ -194,7 +229,7 @@
 
             for (var paramName in params) {
 
-                if(params.hasOwnProperty(paramName)){
+                if (params.hasOwnProperty(paramName)) {
                     str = str.replace(":" + paramName, params[paramName]);
                 }
 

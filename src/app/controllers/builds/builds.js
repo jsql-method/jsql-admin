@@ -50,10 +50,19 @@
         function init() {
 
             getApplications().then(function () {
-                getDevelopers().then(function () {
+
+                if (vm.role !== 'APP_DEV') {
+
+                    getDevelopers().then(function () {
+                        vm.loading = false;
+                        getStats();
+                    });
+
+                }else{
                     vm.loading = false;
                     getStats();
-                });
+                }
+
             });
 
         }
@@ -113,26 +122,22 @@
             vm.chartType = chartType;
 
             var chartData = null;
-            var options = {};
+            var options = {
+                datasetLabel: 'Builds number per day'
+            };
 
             switch (chartType) {
                 case 'BASIC' :
                     chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'hashingDate', 'queriesCount');
-                    options = {
-                        type: 'BASIC'
-                    };
+                    options.type = 'BASIC';
                     break;
                 case 'APPLICATIONS' :
                     chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'applicationName', 'hashingDate', 'queriesCount');
-                    options = {
-                        type: 'MULTI'
-                    };
+                    options.type = 'MULTI';
                     break;
                 case 'DEVELOPERS' :
                     chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'developerName', 'hashingDate', 'queriesCount');
-                    options = {
-                        type: 'MULTI'
-                    };
+                    options.type = 'MULTI';
                     break;
             }
 

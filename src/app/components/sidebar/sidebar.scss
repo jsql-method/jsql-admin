@@ -99,4 +99,21 @@
   .logout-sidebar:hover {
     cursor: pointer;
   }
+
+  .dropdown-toggle {
+
+    &.is-empty {
+      &:after {
+        display: none;
+      }
+    }
+
+    span.tooltip-icon {
+      font-size: 1.2rem;
+      flex: 1;
+      text-align: right;
+    }
+
+  }
+
 }

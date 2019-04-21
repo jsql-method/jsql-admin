@@ -95,8 +95,6 @@
             EndpointsFactory.requestsChart(request).$promise.then(function (result) {
                 vm.rawChartData = result.data;
 
-                console.log('vm.rawChartData', vm.rawChartData);
-
                 if(vm.rawChartData.length > 0){
                     vm.createChart(vm.chartType);
                 }
@@ -109,20 +107,18 @@
             vm.chartType = chartType;
 
             var chartData = null;
-            var options = {};
+            var options = {
+                datasetLabel: 'Requests number per day'
+            };
 
             switch (chartType) {
                 case 'BASIC' :
                     chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'requestDate', 'requestsCount');
-                    options = {
-                        type: 'BASIC'
-                    };
+                    options.type = 'BASIC';
                     break;
                 case 'APPLICATIONS' :
                     chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'applicationName', 'requestDate', 'requestsCount');
-                    options = {
-                        type: 'MULTI'
-                    };
+                    options.type = 'MULTI';
                     break;
             }
 

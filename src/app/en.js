@@ -36,5 +36,13 @@ var translation = {
     'delete_admin' : 'Remove administrator',
     'admin_deleted' : 'Administrator has been removed',
     'admin_created' : 'Administrator has been created',
-    'queryUpdated' : 'Query has been updated'
+    'queryUpdated' : 'Query has been updated',
+    'developerKeyCopiedToClipboard': 'Developer key copied to clipboard',
+    'yourDeveloperKeyForDevelopment' : 'This is your developer key for development purposes',
+    'onlyDevelopmentKeyProductionKeyForApp': 'This is your developer key for development purposes. For production purposes, use production key from application details',
+    'applicationInProduction' : 'Application is in production, cannot delete and use for development purposes',
+    'productionKeyCopiedToClipboard' : 'Production key copied to clipboard',
+    'productionKeyInfo' : 'This is production key for production purposes. For development purposes, use your development key',
+    'securityInfo' : 'By default, security settings are balanced between performance and data security',
+    'username_unavailable' : 'Provided first name and last name is already in use in this company'
 };

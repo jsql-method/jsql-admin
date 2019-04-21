@@ -53,10 +53,17 @@
         //--------
         function init() {
 
-            getDevelopers().then(function () {
+            if(vm.role !== 'APP_DEV'){
+
+                getDevelopers().then(function () {
+                    vm.loading = false;
+                    getStats();
+                });
+
+            }else{
                 vm.loading = false;
                 getStats();
-            });
+            }
 
         }
 
@@ -107,8 +114,8 @@
                 dateTo: UtilsService.formatDate(vm.filter.dateTo, 'dd-MM-yyyy'),
                 applications: vm.filter.applications,
                 developers: _.flatMap(vm.selectedDevelopers, floatId),
-                used: vm.filter.used,
-                dynamic: vm.filter.dynamic,
+                used: vm.filter.used ? vm.filter.used : null,
+                dynamic: vm.filter.dynamic ? vm.filter.dynamic : null,
                 search: vm.filter.search
             };
 
@@ -117,15 +124,13 @@
                 vm.data = result.data;
                 vm.data.pagination.pages = UtilsService.fillArray(vm.data.pagination.totalPages - 1);
 
-                console.log('vm.data', vm.data);
-
                 vm.fixedHeight = 'height: 0';
                 vm.loadingTable = false;
 
             });
 
             EndpointsFactory.queriesChart(request).$promise.then(function (result) {
-                vm.rawChartData = result.data;
+                vm.rawChartData = prepareRawChartData(result.data);
 
                 if (vm.rawChartData.length > 0) {
                     vm.createChart(vm.chartType);
@@ -135,24 +140,46 @@
 
         }
 
+        function prepareRawChartData(rawData){
+
+            var data = [];
+            rawData = _.groupBy(rawData, 'developerName');
+            for(var devName in rawData){
+
+                rawData[devName] = _.groupBy(rawData[devName], 'queryDate');
+
+                for(var queryDate in rawData[devName]){
+
+                    data.push({
+                        developerName: devName,
+                        queryDate: queryDate,
+                        queriesCount: rawData[devName][queryDate].length
+                    });
+
+                }
+
+            }
+
+            return data;
+
+        }
+
         function createChart(chartType) {
             vm.chartType = chartType;
 
             var chartData = null;
-            var options = {};
+            var options = {
+                datasetLabel: 'Queries prepared per day'
+            };
 
             switch (chartType) {
                 case 'BASIC' :
-                    chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'hashingDate', 'queriesCount');
-                    options = {
-                        type: 'BASIC'
-                    };
+                    chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'queryDate', 'queriesCount');
+                    options.type = 'BASIC';
                     break;
                 case 'DEVELOPERS' :
-                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'developerName', 'hashingDate', 'queriesCount');
-                    options = {
-                        type: 'MULTI'
-                    };
+                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'developerName', 'queryDate', 'queriesCount');
+                    options.type = 'MULTI';
                     break;
             }
 

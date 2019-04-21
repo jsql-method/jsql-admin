@@ -8,15 +8,18 @@
     /**
      * @ngInject
      */
-    function ApplicationsController(AuthService, UtilsService, DictService, $location, $stateParams, EventEmitterService, ApplicationService, $uibModal, $state) {
+    function ApplicationsController(AuthService, UtilsService, DictService, $location, $stateParams, EventEmitterService, ApplicationService) {
         var vm = this;
 
         vm.loading = true;
         vm.id = parseInt($stateParams.id);
         vm.application = null;
+        vm.productionInfo = translation.applicationInProduction;
+        vm.productionKeyInfo = translation.productionKeyInfo;
 
-        vm.copyApiKey = copyApiKey;
+        vm.copyKey = copyKey;
         vm.deleteApplication = deleteApplication;
+        vm.saveToFile = saveToFile;
 
         init();
 
@@ -35,19 +38,12 @@
 
         }
 
-        function copyApiKey() {
+        function copyKey(id) {
+            UtilsService.copyToClipboard(id, id === 'applicationKey' ? translation.apiKeyCopiedToClipboard : translation.productionKeyCopiedToClipboard);
+        }
 
-            try {
-                var copyText = document.getElementById("applicationKey");
-                copyText.select();
-                var successful = document.execCommand("copy");
-                if (!successful) throw successful;
-                copyText.setSelectionRange(0, 0);
-                UtilsService.openSuccessModal(translation.apiKeyCopiedToClipboard);
-            } catch (e) {
-                console.log(e);
-            }
-
+        function saveToFile(){
+            UtilsService.saveToFile(vm.developerKey, 'jsql');
         }
 
         function deleteApplication() {
@@ -80,9 +76,9 @@
 
             }
 
-
-
         }
+
+
 
     }
 })(angular);

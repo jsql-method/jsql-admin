@@ -51,9 +51,6 @@
 
         provider.createChart = function (chartData, options) {
 
-            console.log('chartData', chartData);
-            console.log('options', options);
-
             document.getElementById('chart').innerHTML = '<canvas id="canvas-build" class="canvas-build"></canvas>';
             var config = provider.createConfig(chartData, options);
             var ctx = document.getElementById("canvas-build").getContext("2d");
@@ -196,7 +193,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Builds number by day',
+                        label: options.datasetLabel,
                         backgroundColor: UtilsService.getPrimaryColor(),
                         borderColor: UtilsService.getPrimaryColor(),
                         data: data,
