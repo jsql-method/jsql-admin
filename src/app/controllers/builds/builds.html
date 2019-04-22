@@ -1,205 +1,158 @@
-<div class="content buildsController">
-  <h2>Builds</h2>
-  <div class="underline-title-card"></div>
-  <div class="stats">
-    <div class="col">
-      <span>{{ vm.mainBuildsStats.buildsToday }}</span>
-      <span>Today builds</span>
-      <span class="ion ion-ios-refresh-outline"></span>
-    </div>
-    <div class="col">
-      <span>{{ vm.mainBuildsStats.hashingToday }}</span>
-      <span>Today requests</span>
-      <span class="ion ion-ios-speedometer-outline"></span>
-    </div>
-    <div class="col">
-      <span>{{ vm.mainBuildsStats.buildsTotal }}</span>
-      <span>Total builds</span>
-      <span class="ion ion-ios-refresh-outline"></span>
-    </div>
-    <div class="col">
-      <span>{{ vm.mainBuildsStats.hashingTotal }}</span>
-      <span>Total requests</span>
-      <span class="ion ion-ios-speedometer-outline"></span>
-    </div>
-  </div>
+<div class="buildsController subpage">
 
-  <div class="row mt-2">
-    <form class="form-inline">
-      <div class="container-form">
-        <label class="mr-2 label-filter">Applications:</label>
-        <input
-          class="form-control text-center filter-input"
-          placeholder="--Applications--"
-          ng-model="vm.applicationValue"
-          ng-change="vm.setFilterApplications(vm.applicationValue)"
-          ng-focus="vm.showMultiSelect(0)"
-          ng-click="$event.stopPropagation();vm.hideMultiSelect(1);"
-        />
-        <div ng-click="$event.stopPropagation();" class="multiselect-contain">
-          <div>
-            <div class="empty-check"></div>
-            <p style="color:#999;">Choose your applications</p>
-          </div>
-          <div>
-            <input ng-click="vm.chooseAllApplications($event)" class="inp-cbx" id="cbx-application-1" type="checkbox" style="display: none;"/>
-            <label class="cbx" for="cbx-application-1"><span>
-                <svg width="12px" height="10px" viewbox="0 0 12 10">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                </svg></span></label>
-                <p>All applications</p>
-          </div>
-          <div ng-repeat="application in vm.applications">
-            <input
-              ng-click="vm.addOrRemoveApplication(application.id)"
-              ng-checked="vm.checkChoosenApplication(application.id)"
-              class="inp-cbx" id="{{ 'cbx-application-' + ($index + 2) }}"
-              type="checkbox"
-              style="display: none;"/>
-            <label class="cbx" for="{{ 'cbx-application-' + ($index + 2) }}"><span>
-                <svg width="12px" height="10px" viewbox="0 0 12 10">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                </svg></span></label>
-                <p>{{ application.name }}</p>
-          </div>
+    <div class="spinner" ng-show="vm.loading">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-      </div>
-      <div ng-if="vm.role !== 'APP_DEV'" class="container-form">
-        <label class="mr-2 label-filter">Members:</label>
-        <input
-          class="form-control text-center filter-input"
-          placeholder="--Members--"
-          ng-model="vm.memberValue"
-          ng-change="vm.setFilterMembers(vm.members)"
-          ng-focus="vm.showMultiSelect(1)"
-          ng-click="$event.stopPropagation();vm.hideMultiSelect(0);"
-        />
-        <div ng-click="$event.stopPropagation();" class="multiselect-contain">
-          <div>
-            <div class="empty-check"></div>
-            <p style="color:#999;">Choose your members</p>
-          </div>
-          <div>
-            <input ng-click="vm.chooseAllMembers($event)" class="inp-cbx" id="cbx-member-1" type="checkbox" style="display: none;"/>
-            <label class="cbx" for="cbx-member-1"><span>
-                <svg width="12px" height="10px" viewbox="0 0 12 10">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                </svg></span></label>
-                <p>All members</p>
-          </div>
-          <div ng-repeat="member in vm.members">
-            <input
-              class="inp-cbx"
-              id="{{ 'cbx-member-' + ($index + 2) }}"
-              type="checkbox"
-              style="display: none;"
-              ng-click="vm.addOrRemoveMember(member.id)"
-              ng-checked="vm.checkChoosenMember(member.id)"
-            />
-            <label class="cbx" for="{{ 'cbx-member-' + ($index + 2) }}"><span>
-                <svg width="12px" height="10px" viewbox="0 0 12 10">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                </svg></span></label>
-                <p>{{ member.firstName + ' ' + member.lastName }}</p>
-          </div>
+    </div>
+
+    <div ng-show="!vm.loading">
+        <h2>Builds</h2>
+        <div class="underline-title-card"></div>
+        <div class="row">
+            <div class="col-12">
+
+                <form class="form-inline" ng-submit="vm.getStatsForPage(0)">
+
+                    <div class="form-group" ng-if="vm.role !== 'APP_DEV'">
+                        <label>Developers</label>
+                        <div ng-dropdown-multiselect="" options="vm.developers"
+                             selected-model="vm.selectedDevelopers"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Applications</label>
+                        <div ng-dropdown-multiselect="" options="vm.applications"
+                             selected-model="vm.selectedApplications"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateFrom">Date from</label>
+                        <div class="input-group">
+                            <input id="dateFrom" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
+                                   ng-model="vm.filter.dateFrom" is-open="vm.datePickerOpen.dateFrom" ng-required="true"
+                                   close-text="Close" alt-input-formats="[vm.format]"/>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" ng-click="vm.open('dateFrom')">
+                                    <span class="ion-android-calendar"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateTo">Date to</label>
+                        <div class="input-group">
+                            <input id="dateTo" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
+                                   ng-model="vm.filter.dateTo" is-open="vm.datePickerOpen.dateTo" ng-required="true"
+                                   close-text="Close" alt-input-formats="[vm.format]"/>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" ng-click="vm.open('dateTo')">
+                                    <span class="ion-android-calendar"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="col-12">
+
+                <form class="form-inline pull-right">
+
+                    <div class="form-group">
+                        <label>Chart type</label>
+                        <button type="button" class="btn btn-primary {{vm.chartType === 'BASIC' ? 'active' : ''}}" ng-click="vm.createChart('BASIC')">Basic</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary {{vm.chartType === 'APPLICATIONS' ? 'active' : ''}}" ng-click="vm.createChart('APPLICATIONS')">Applications</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary {{vm.chartType === 'DEVELOPERS' ? 'active' : ''}}" ng-click="vm.createChart('DEVELOPERS')">Developers</button>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="chart-field" id="chart"></div>
+
+            <div class="col-12 mt-5" id="table">
+
+                <div class="spinner" ng-show="vm.loadingTable" style="{{vm.fixedHeight}}">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div class="empty" ng-if="vm.data.list.builds.length === 0">
+                    No data
+                </div>
+
+                <div class="table-flex" ng-if="!vm.loadingTable && vm.data.list.builds.length > 0">
+                    <div class="tbody">
+                        <div class="tr thead">
+                            <div class="td">Application</div>
+                            <div class="td">Developer</div>
+                            <div class="td">Hashing date</div>
+                            <div class="td">Queries No</div>
+                        </div>
+                    </div>
+                    <div class="tbody">
+                        <div ng-repeat="build in vm.data.list.builds track by $index" class="tr">
+                            <div class="td clickable" ng-click="vm.showInput('application', build)">
+                                <span ng-show="!build.applicationInput">{{ build.applicationName }}</span>
+                                <input ng-show="build.applicationInput" type="text" class="form-control" value="{{build.applicationName}}" readonly=""/>
+                            </div>
+                            <div class="td clickable" ng-click="vm.showInput('developer', build)">
+                                <span ng-show="!build.developerInput">{{ build.developerName }}</span>
+                                <input ng-show="build.developerInput" type="text" class="form-control" value="{{build.developerName}}" readonly=""/>
+                            </div>
+                            <div class="td">
+                                {{ build.hashingDate }}
+                            </div>
+                            <div class="td">
+                                {{ build.queriesCount }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav ng-if="vm.data.list.builds.length > 0" class="mt-2">
+                    <ul class="pagination">
+                        <li class="page-item {{vm.page > 0 ? '' : 'disabled'}}"
+                            ng-if="vm.data.pagination.totalPages > 1">
+                            <a class="page-link" href="" ng-click="vm.getStatsForPage(vm.page - 1)">Previous</a>
+                        </li>
+
+                        <li class="page-item {{vm.page == page ? 'active' : ''}}"
+                            ng-repeat="page in vm.data.pagination.pages">
+                            <a class="page-link" href="" ng-click="vm.getStatsForPage(page)">{{page+1}}</a>
+                        </li>
+
+                        <li class="page-item {{vm.page+2 == vm.data.pagination.totalPages ? 'disabled' : ''}}"
+                            ng-if="vm.data.pagination.totalPages > 1">
+                            <a class="page-link" href="" ng-click="vm.getStatsForPage(vm.page + 1)">Next</a>
+                        </li>
+
+                    </ul>
+                </nav>
+
+            </div>
+
         </div>
-      </div>
-      <div class="container-form">
-        <label for="dateFrom" class="mr-2 label-filter">Date from:</label>
-        <input
-          id="dateFrom"
-          type="text"
-          class="form-control filter-input"
-          uib-datepicker-popup="{{ vm.format }}"
-          ng-model="vm.dataFilterBuilds.dateFrom"
-          is-open="vm.popup1.opened"
-          datepicker-options="dateOptions"
-          ng-required="true"
-          close-text="Close"
-          alt-input-formats="altInputFormats"
-        />
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-secondary" ng-click="vm.open1()">
-            <i class="fa-svg-icon">
-              <svg
-                width="1792"
-                height="1792"
-                viewBox="0 0 1792 1792"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"
-                />
-              </svg>
-            </i>
-          </button>
-        </span>
-      </div>
-      <div class="container-form">
-        <label for="dateTo" class="mr-2 label-filter">Date to:</label>
-        <input
-          id="dateTo"
-          type="text"
-          class="form-control filter-input"
-          uib-datepicker-popup="{{ vm.format }}"
-          ng-model="vm.dataFilterBuilds.dateTo"
-          is-open="vm.popup2.opened"
-          datepicker-options="dateOptions"
-          ng-required="true"
-          close-text="Close"
-          alt-input-formats="altInputFormats"
-        />
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-secondary" ng-click="vm.open2()">
-            <i class="fa-svg-icon">
-              <svg
-                width="1792"
-                height="1792"
-                viewBox="0 0 1792 1792"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"
-                />
-              </svg>
-            </i>
-          </button>
-        </span>
-      </div>
-      <div class="container-form">
-        <button type="submit" class="btn btn-primary mb-2 submit-filter">Show</button>
-        <button type="submit" class="btn btn-secondary mb-2">Clear</button>
-      </div>
-    </form>
-    <div style="width:100%;">
-      <canvas id="canvas-build" height="150"></canvas>
+
     </div>
-    <table class="table table-bordered" ng-if="vm.builds.length > 0">
-      <thead>
-        <tr>
-          <th scope="col">Application</th>
-          <th scope="col">Member</th>
-          <th scope="col">Date and time</th>
-        </tr>
-      </thead>
-      <tbody ng-if="vm.getElements()">
-        <tr ng-repeat="data in vm.getElements() track by $index">
-          <!--<th scope="row"><i class="icofont icofont-tick-mark"></i></th>-->
-          <td class="description-overflow">{{ data.applicationName }}</td>
-          <td class="description-overflow">{{ data.buildOwner }}</td>
-          <td class="description-overflow">{{ data.hashingTime }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="text-danger-my-team">{{ vm.generalMessage }}</p>
-    <div ng-if="vm.builds">
-      <button
-        ng-click="vm.showMore()"
-        class="btn btn-primary"
-        ng-if="start+10 < vm.builds.length"
-      >
-        More...
-      </button>
-    </div>
-  </div>
+</div>
 </div>

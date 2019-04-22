@@ -1,222 +1,146 @@
-(function(angular) {
-  "use strict";
+(function (angular) {
+    "use strict";
 
-  angular.module("jsql").controller("SecurityController", SecurityController);
+    angular.module("jsql").controller("SecurityController", SecurityController);
 
-  /**
-   * @ngInject
-   */
-  function SecurityController(
-    AuthService,
-    ApplicationService,
-    $stateParams,
-    DictService,
-    $uibModal
-  ) {
-    var vm = this;
-    vm.application = null;
-    vm.security = null;
-    vm.id = parseInt($stateParams.id);
-    vm.isTrue = [{ value: true, name: "Yes" }, { value: false, name: "No" }];
-    vm.updateOptions = updateOptions;
-    vm.genNumber = genNumber;
-    vm.genCharArray = genCharArray;
-    vm.generateRandomSalt = generateRandomSalt;
-    init();
+    /**
+     * @ngInject
+     */
+    function SecurityController(AuthService, $scope, $timeout, DictService, ApplicationService, EventEmitterService, $stateParams, UtilsService) {
+        var vm = this;
 
-    //--------
-    function init() {
-      getOptionsValues();
-      getApplications();
-    }
+        vm.loading = true;
+        vm.options = null;
+        vm.id = parseInt($stateParams.id);
+        vm.messages = {};
+        vm.securityInfo = translation.securityInfo;
 
-    function getApplications() {
-      DictService.applications().then(function(result) {
-        vm.application = _.find(result, { id: vm.id });
-        getOptions();
-      });
-    }
+        vm.toggleProduction = toggleProduction;
+        vm.submitOptions = submitOptions;
+        vm.generateRandomSalt = generateRandomSalt;
+        vm.warningProdMode = warningProdMode;
 
-    function getOptionsValues() {
-      ApplicationService.getOptionsValues()
-        .then(function(result) {
-          vm.optionsValues = result.data.data[0];
-          vm.encodingAlgorithmOptions =
-            vm.optionsValues.encodingAlgorithmValues;
-          vm.databaseDialectOptions = vm.optionsValues.databaseDialectValues;
-          vm.applicationLanguageOptions =
-            vm.optionsValues.applicationLanguageValues;
-        })
-    }
+        init();
 
-    function getOptions() {
-      ApplicationService.getAllOptions(vm.application.id)
-        .then(function(result) {
-          vm.security = result.data;
-          vm.encodeQuery = vm.security.encodeQuery;
-          vm.encodingAlgorithm = vm.security.encodingAlgorithm;
-          vm.addSalt = vm.security.isSalt;
-          vm.saltAfter = vm.security.saltAfter;
-          vm.saltBefore = vm.security.saltBefore;
-          vm.salt = vm.security.salt;
-          vm.randomSalt = vm.security.saltRandomize;
-          vm.hashLengthEqualToQuery = vm.security.hashLengthLikeQuery;
-          vm.hashMinLength = vm.security.hashMinLength;
-          vm.hashMaxLength = vm.security.hashMaxLenght;
-          vm.removeQueriesAfterBuild = vm.security.removeQueriesAfterBuild;
-          vm.databaseDialect = vm.security.databaseDialect;
-          vm.applicationLanguage = vm.security.applicationLanguage;
-          vm.plainQueriesAllowed = vm.security.allowedPlainQueries;
-        })
-    }
-
-    /* Validate Hash min max length */
-    var onTouchHashMinLength = false;
-    var onTouchHashMaxLength = false;
-
-    vm.generalMessage = "";
-
-    vm.messages = {
-      hashMinLength: [],
-      hashMaxLength: []
-    };
-
-    vm.validateHashLength = function() {
-      onTouchHashMinLength = true;
-      onTouchHashMaxLength = true;
-      vm.generalMessage = "";
-
-      vm.validateHashMinLength();
-
-      for (var messagesValidate in vm.messages) {
-        if (vm.messages[messagesValidate].length > 0) {
-          return;
+        //--------
+        function init() {
+            getOptions();
         }
-      }
 
-      updateOptions();
-    };
+        function warningProdMode() {
 
-    vm.validateHashMinLength = function(result) {
-      if (result !== undefined) {
-        onTouchHashMinLength = result;
-      }
 
-      if (!onTouchHashMinLength) {
-        return;
-      }
+            if (vm.options.prod) {
+                vm.options.prod = false;
+                UtilsService.openModal(translation.confirmEnableProductionMode, true, 'Switch', 'warning', translation.productionMode, function () {
+                    vm.options.prod = true;
+                    vm.toggleProduction();
+                });
+            } else {
+                vm.options.prod = true;
+                UtilsService.openModal(translation.confirmDisableProductionMode, true, 'Disable', 'warning', translation.productionMode, function () {
+                    vm.options.prod = false;
+                    vm.toggleProduction();
+                });
+            }
 
-      vm.messages.hashMinLength = [];
 
-      if (vm.hashMinLength < 10) {
-        vm.messages.hashMinLength.push("Min hash length required 10");
-      }
-
-      vm.validateHashMaxLength();
-    };
-
-    vm.validateHashMaxLength = function(result) {
-      if (result !== undefined) {
-        onTouchHashMaxLength = result;
-      }
-
-      if (!onTouchHashMaxLength) {
-        return;
-      }
-
-      vm.messages.hashMaxLength = [];
-
-      if (vm.hashMaxLength <= vm.hashMinLength) {
-        vm.messages.hashMaxLength.push(
-          "Max hash length must be bigger than min hash"
-        );
-      }
-
-      if (vm.hashMaxLength > 500) {
-        vm.messages.hashMaxLength.push("Max hash value 500");
-      }
-    };
-
-    function updateOptions() {
-      let data = {
-        encodeQuery: vm.encodeQuery,
-        encodingAlgorithm: vm.encodingAlgorithm,
-        isSalt: vm.addSalt,
-        salt: vm.salt,
-        saltBefore: vm.saltBefore,
-        saltAfter: vm.saltAfter,
-        saltRandomize: vm.randomSalt,
-        hashLengthLikeQuery: vm.hashLengthEqualToQuery,
-        hashMinLength: vm.hashMinLength,
-        hashMaxLength: vm.hashMaxLength,
-        removeQueriesAfterBuild: vm.removeQueriesAfterBuild,
-        databaseDialect: vm.databaseDialect,
-        applicationLanguage: vm.applicationLanguage,
-        allowedPlainQueries: vm.plainQueriesAllowed
-      };
-
-      ApplicationService.updateOptions(vm.id, data)
-        .then(function(result) {
-          if (result.data.code === 200) {
-            openModal();
-          }
-        })
-    }
-
-    function generateRandomSalt() {
-      let chars = [];
-      let genNumber = vm.genNumber();
-      let genCharArray = vm.genCharArray("a", "z");
-      let salt = "";
-
-      for (let i = 0; i < genNumber.length; i++) {
-        chars.push(genNumber[i]);
-      }
-
-      for (let i = 0; i < genCharArray.length; i++) {
-        chars.push(genCharArray[i]);
-      }
-
-      for (let i = 0; i < 10; i++) {
-        salt += chars[Math.floor(Math.random() * chars.length)];
-      }
-      vm.salt = salt;
-    }
-
-    function genCharArray(charA, charZ) {
-      let a = [],
-        i = charA.charCodeAt(0),
-        j = charZ.charCodeAt(0);
-      for (; i <= j; ++i) {
-        a.push(String.fromCharCode(i));
-      }
-      return a;
-    }
-
-    function genNumber() {
-      let number = [];
-      for (let i = 0; i < 10; i++) {
-        number.push(i.toString());
-      }
-      return number;
-    }
-
-    function openModal() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: "app/modals/message/message.html",
-        controller: "MessageController",
-        controllerAs: "vm",
-        resolve: {
-          Data: function() {
-            return {
-              clazz: "success",
-              title: "Save",
-              message: "Options value has been updated successfully"
-            };
-          }
         }
-      });
+
+        function getOptions() {
+            ApplicationService.getOptions(vm.id)
+                .then(function (result) {
+                    vm.options = result.data;
+
+                    ApplicationService.getOptionsValues().then(function (result) {
+
+                        vm.encodingAlgorithmValues = result.data.encodingAlgorithmValues;
+                        vm.databaseDialectValues = result.data.databaseDialectValues;
+                        vm.loading = false;
+
+                    });
+
+                })
+        }
+
+        function toggleProduction(){
+
+            ApplicationService.toggleProduction(vm.id, {
+                prod: vm.options.prod
+            })
+                .then(function (result) {
+
+                    if (UtilsService.hasGeneralError(result)) {
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                    } else {
+                        UtilsService.openSuccessModal(vm.options.prod ? translation.productionEnabled : translation.productionDisabled);
+
+                        DictService.refresh("applications");
+                        EventEmitterService.broadcast(
+                            EventEmitterService.namespace.APPLICATIONS
+                        );
+
+                    }
+
+                })
+
+        }
+
+        function submitOptions() {
+
+            vm.messages = {};
+
+            if (!vm.options.hashLengthLikeQuery) {
+
+                if (vm.options.hashMinLength < 10) {
+                    vm.messages.hashMinLength = translation.hash_length_min_value;
+                    return;
+                } else if (vm.options.hashMaxLength > 500) {
+                    vm.messages.hashMaxLength = translation.hash_length_max_value;
+                    return;
+                } else if (vm.options.hashMinLength > vm.options.hashMaxLength) {
+                    vm.messages.hashMinLength = translation.hash_length_min_higher;
+                    return;
+                }
+
+            }
+
+            if (!vm.options.saltRandomize && vm.options.salt.trim().length === 0) {
+                vm.messages.salt = translation.salt_required;
+                return;
+            }
+
+            ApplicationService.updateOptions(vm.id, UtilsService.without(vm.options, ['application', 'apiKey', 'prod']))
+                .then(function (result) {
+
+                    if (UtilsService.hasGeneralError(result)) {
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                    } else if (UtilsService.hasErrors(result)) {
+                        vm.messages = UtilsService.getErrors(result);
+                    } else {
+
+                        UtilsService.openSuccessModal(translation.optionsUpdated);
+
+                    }
+
+                })
+        }
+
+        function generateRandomSalt() {
+
+            function makeid(length) {
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                for (var i = 0; i < length; i++)
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                return text;
+            }
+
+
+            vm.options.salt = makeid(UtilsService.getRandomArbitrary(20, 50));
+        }
+
     }
-  }
 })(angular);

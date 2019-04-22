@@ -9,40 +9,53 @@
     function EndpointsFactory($http, ApiFactory, SERVER_URL) {
         return {
             login: login,
+            session: session,
             plan: plan,
             logout: logout,
             register: register,
             applications: applications,
-            generateApplication: generateApplication,
+            application: application,
+            createApplication: createApplication,
             deleteApplication: deleteApplication,
-            stats: stats,
+            queries: queries,
             profile: profile,
-            members: members,
+            developers: developers,
             admins: admins,
             forgotPassword: forgotPassword,
             reset: reset,
             activateAccount: activateAccount,
             reactivateAccount: reactivateAccount,
             deactivateAccount: deactivateAccount,
-            addMember: addMember,
-            deleteMember: deleteMember,
-            getMemberApplications: getMemberApplications,
-            addMemberToApplication: addMemberToApplication,
-            deleteMemberWithApplication: deleteMemberWithApplication,
+            addDeveloper: addDeveloper,
+            deleteDeveloper: deleteDeveloper,
+            deleteAdmin: deleteAdmin,
+            getDeveloperApplications: getDeveloperApplications,
+            addDeveloperToApplication: addDeveloperToApplication,
+            deleteDeveloperWithApplication: deleteDeveloperWithApplication,
             demoteAdmin: demoteAdmin,
             addAdmin: addAdmin,
-            getQueries: getQueries,
+            builds: builds,
+            requests: requests,
             getAllOptions: getAllOptions,
+            getOptions: getOptions,
             getOptionsValues: getOptionsValues,
             updateUserDetails: updateUserDetails,
             changePassword: changePassword,
             updateOptions: updateOptions,
             updateQuery: updateQuery,
-            getImage: getImage
+            getImage: getImage,
+            toggleProduction: toggleProduction,
+            buildsChart: buildsChart,
+            requestsChart: requestsChart,
+            queriesChart: queriesChart
         };
 
         function login(loginRequest) {
             return ApiFactory.post(SERVER_URL + "/api/login", loginRequest);
+        }
+
+        function session(){
+            return ApiFactory.get(SERVER_URL + "/api/session");
         }
 
         function plan() {
@@ -86,27 +99,51 @@
             return ApiFactory.delete(SERVER_URL + "/api/user");
         }
 
+        function application(id){
+            return ApiFactory.get(SERVER_URL + "/api/application/"+id);
+        }
+
         function applications() {
             return ApiFactory.get(SERVER_URL + "/api/application");
         }
 
-        function generateApplication(name) {
-            return ApiFactory.post(SERVER_URL + "/api/application", name);
+        function createApplication(data) {
+            return ApiFactory.post(SERVER_URL + "/api/application", data);
         }
 
         function deleteApplication(id) {
             return ApiFactory.patch(SERVER_URL + "/api/application/" + id);
         }
 
-        function stats(dateFrom, dateTo, data) {
-            return ApiFactory.post(SERVER_URL + "/api/builds/" + dateFrom + '/' + dateTo, data);
+        function builds(page, data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/builds/", data, { page: page });
+        }
+
+        function buildsChart(data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/chart/builds/", data);
+        }
+
+        function requestsChart(data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/chart/requests/", data);
+        }
+
+        function queriesChart(data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/chart/queries/", data);
+        }
+
+        function requests(page, data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/requests/", data, { page: page });
+        }
+
+        function queries(page, data) {
+            return ApiFactory.post(SERVER_URL + "/api/stats/queries/", data, { page: page });
         }
 
         function profile() {
             return ApiFactory.get(SERVER_URL + "/api/user");
         }
 
-        function members() {
+        function developers() {
             return ApiFactory.get(SERVER_URL + "/api/app-dev");
         }
 
@@ -114,28 +151,32 @@
             return ApiFactory.get(SERVER_URL + "/api/app-admin");
         }
 
-        function addMember(memberRequest) {
-            return ApiFactory.post(SERVER_URL + "/api/app-dev", memberRequest);
+        function addDeveloper(developerRequest) {
+            return ApiFactory.post(SERVER_URL + "/api/app-dev", developerRequest);
         }
 
-        function deleteMember(id) {
+        function deleteDeveloper(id) {
             return ApiFactory.delete(SERVER_URL + "/api/app-dev/" + id);
         }
 
-        function getMemberApplications(id) {
+        function deleteAdmin(id){
+            return ApiFactory.delete(SERVER_URL + "/api/app-admin/" + id);
+        }
+
+        function getDeveloperApplications(id) {
             return ApiFactory.get(
                 SERVER_URL + "/api/app-dev/application/" + id
             );
         }
 
-        function addMemberToApplication(data) {
+        function addDeveloperToApplication(data) {
             return ApiFactory.post(
                 SERVER_URL + "/api/app-dev/application",
                 data
             );
         }
 
-        function deleteMemberWithApplication(data) {
+        function deleteDeveloperWithApplication(data) {
             return ApiFactory.post(SERVER_URL + "/api/app-dev/application/unassign", data);
         }
 
@@ -147,22 +188,22 @@
             return ApiFactory.patch(SERVER_URL + "/api/app-admin", id);
         }
 
-        function getQueries(dateFrom, dateTo, data) {
-            return ApiFactory.post(SERVER_URL + "/api/queries/" + dateFrom + "/" + dateTo, data);
-        }
-
         function getAllOptions(id) {
             return ApiFactory.get(
                 SERVER_URL + "/api/options/" + id
             );
         }
 
+        function getOptions(id) {
+            return ApiFactory.get(SERVER_URL + "/api/options/"+id);
+        }
+
         function getOptionsValues() {
             return ApiFactory.get(SERVER_URL + "/api/options/values");
         }
 
-        function updateUserDetails(id, data) {
-            return ApiFactory.patch(SERVER_URL + "/api/user/" + id, data);
+        function updateUserDetails(data) {
+            return ApiFactory.patch(SERVER_URL + "/api/user/", data);
         }
 
         function changePassword(data) {
@@ -176,12 +217,17 @@
             );
         }
 
+        function toggleProduction(id, data){
+            return ApiFactory.patch(SERVER_URL + "/api/options/toggle-production/" + id, data);
+        }
+
         function updateQuery(id, request) {
-            return ApiFactory.patch(SERVER_URL + "/api/request/query/" + id, request);
+            return ApiFactory.patch(SERVER_URL + "/api/query/query/" + id, request);
         }
 
         function getImage() {
             return ApiFactory.get(SERVER_URL + "/api/avatar");
         }
+
     }
 })(angular);

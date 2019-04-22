@@ -7,16 +7,15 @@ app.run([
     "$state",
     "EventEmitterService",
     "UtilsService",
-    "$location",
     function (
         $rootScope,
         DictService,
         AuthService,
         $state,
         EventEmitterService,
-        UtilsService,
-        $location
+        UtilsService
     ) {
+
         DictService.load();
 
         $rootScope.isLogged = AuthService.isLogged();
@@ -33,10 +32,11 @@ app.run([
         $rootScope.$on("$viewContentLoaded", function (event) {
             UtilsService.setTitle();
 
-            $(".selectize").selectize({
-                create: true,
-                sortField: "text"
-            });
+            // $(".selectize").selectize({
+            //     create: true,
+            //     sortField: "text"
+            // });
+
         });
 
         $rootScope.$on("$stateChangeStart", function (
@@ -58,7 +58,7 @@ app.run([
                 }
 
                 if (toState.data.roles) {
-                    let role = localStorage.getItem('_mRole');
+                    var role = AuthService.getRole();
                     if (toState.data.roles.indexOf(role) > -1) {
                         return;
                     }

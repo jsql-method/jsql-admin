@@ -1,129 +1,63 @@
-(function(angular) {
-  "use strict";
+(function (angular) {
+    "use strict";
 
-  angular
-    .module("jsql")
-    .controller("AddApplicationController", AddApplicationController);
+    angular
+        .module("jsql")
+        .controller("AddApplicationController", AddApplicationController);
 
-  /**
-   * @ngInject
-   */
-  function AddApplicationController(AuthService, ApplicationService, DictService, EventEmitterService, $uibModal) {
+    /**
+     * @ngInject
+     */
+    function AddApplicationController(AuthService, ApplicationService, DictService, EventEmitterService, UtilsService, $location) {
 
-    var vm = this;
-    var flag = true;
-    var onTouchName = false;
+        var vm = this;
 
-    vm.name = "";
-    vm.message = [];
+        function init(){
 
-    vm.validateAddApplication = validateAddApplication;
-    vm.validateName = validateName;
-
-
-    function validateAddApplication() {
-
-      onTouchName = true;
-      validateName();
-
-      if (vm.message.length === 0) {
-        submitAddApplication();
-      }
-
-    }
-
-    function validateName(result) {
-
-      vm.message = [];
-
-      if (result !== undefined) {
-        onTouchName = result;
-      }
-
-      if (!onTouchName) {
-        return;
-      }
-
-      if (vm.name.length === 0) {
-        vm.message.push("Name application can't be blank!");
-      }
-
-      if (vm.name.length > 100) {
-        vm.message.push("Max length number of characters 100!");
-      }
-
-    }
-
-    function submitAddApplication() {
-
-      let data = {
-        name: vm.name
-      };
-
-      if(flag === false) {
-        return;
-      }
-
-      flag = false;
-
-      ApplicationService.generateApplication(data)
-        .then(function(result) {
-
-          if (result.data.code === 200) {
-            openModal("Your application has been added successfully.");
-            DictService.refresh("applications");
-            EventEmitterService.broadcast(
-              EventEmitterService.namespace.APPLICATIONS
-            );
-          } else {
-            openModal(result.data.description);
-          }
-          flag = true;
-
-        })
-        .catch(function () {
-
-          flag = true;
-
-        })
-
-    }
-
-    function openModal(text) {
-
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: "app/modals/message/message.html",
-        controller: "MessageController",
-        controllerAs: "vm",
-        resolve: {
-          Data: function() {
-
-            return {
-              clazz: "success",
-              title: "Add new application!",
-              message: text
+            vm.application = {
+                name: ''
             };
 
-          }
         }
-      });
 
-      modalInstance.result.then(
-          function () {
+        init();
 
-            vm.name = "";
-            onTouchName = false;
+        vm.messages = null;
 
-          },
-          function () {
+        vm.submitApplication = submitApplication;
 
-            vm.name = "";
-            onTouchName = false;
+        function submitApplication() {
 
-          }
-      );
+            vm.messages = null;
+
+            ApplicationService.createApplication(vm.application)
+                .then(function (result) {
+
+                    if (UtilsService.hasGeneralError(result)) {
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                    } else if (UtilsService.hasErrors(result)) {
+                        vm.messages = UtilsService.getErrors(result);
+                    } else {
+
+                        init();
+
+                        DictService.refresh("applications");
+                        EventEmitterService.broadcast(
+                            EventEmitterService.namespace.APPLICATIONS
+                        );
+
+                        var applicationId = result.data.message;
+
+                        UtilsService.openSuccessModal(translation.applicationCreated, function(){
+
+                            $location.path('/application/'+applicationId);
+                        });
+                    }
+
+
+                });
+
+        }
 
     }
-  }
 })(angular);
