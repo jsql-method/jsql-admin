@@ -14,10 +14,9 @@
          * @type {string}
          */
         provider.SESSION_STORAGE = "_session";
-        provider.KEY_STORAGE = "_keychain";
-        provider.SHOP_STORAGE = "_s";
-        provider.MEMBER_KEY = "_mKey";
-        provider.LOGIN_ROLE = "_loginRole";
+        provider.KEY_STORAGE = "_sdch";
+        provider.SESSION_DATA = "_sd";
+        provider.DEV_KEY_STORAGE = '_kdch';
 
         provider.SALT = "vsdFSDFsdfvdfsdvGdfgcdvfgvdscsfd";
 
@@ -28,37 +27,68 @@
          * @param successCallback
          * @param errorCallback
          */
-        provider.login = function (user, successCallback, errorCallback) {
+        provider.login = function (user, callback) {
             EndpointsFactory.login(user)
                 .$promise.then(function (result) {
 
-                if (successCallback !== undefined) {
-                    successCallback(result);
+                if (callback !== undefined) {
+                    callback(result);
                 }
-                provider.setSession(
-                    result.data.data.sessionToken,
-                    result.data.data.memberKey,
-                    result.data.data.auth
-                );
 
-                provider.setCookie('auth_expire', 60);
+                if (result.status === 200) {
 
-                if (result.data.code === 200) {
-                    localStorage.setItem('_mRole', result.data.data.role);
-                    localStorage.setItem('_mCompany', result.data.data.companyName);
-                    EndpointsFactory.plan(user)
-                        .$promise.then(function (result) {
-                            provider.setPlan(result.data.data);
+                    provider.setSession(result.data);
+
+                    if(provider.getRole() === 'APP_DEV'){
+                        $state.go('builds');
+                    }else {
+                        EndpointsFactory.plan().$promise.then(function (result) {
+                            provider.setPlan(result.data);
                             $state.go('builds');
                         });
-                }
-                return result;
-            })
-                .catch(function (data, status) {
-                    if (errorCallback !== undefined) {
-                        errorCallback();
                     }
-                });
+
+                }
+
+                return result;
+
+            }).catch(function (err) {
+                if (callback !== undefined && err) {
+                    callback(err.data);
+                }
+            });
+        };
+
+        provider.refreshSession = function(callback){
+
+            return EndpointsFactory.session().$promise.then(function (result) {
+
+                if (result.status === 200) {
+                    provider.setSession(result.data);
+
+                    if(provider.getRole() === 'APP_DEV'){
+
+                        if(callback){
+                            callback();
+                        }
+
+                    }else{
+
+                        EndpointsFactory.plan().$promise.then(function (result) {
+                            provider.setPlan(result.data);
+                            if(callback){
+                                callback();
+                            }
+                        });
+
+                    }
+
+                }
+
+                return result;
+
+            })
+
         };
 
         /**
@@ -83,8 +113,8 @@
             return EndpointsFactory.forgotPassword(user).$promise;
         };
 
-        provider.reset = function(token, data) {
-            return EndpointsFactory.reset(token,data).$promise;
+        provider.reset = function (token, data) {
+            return EndpointsFactory.reset(token, data).$promise;
         };
 
         /**
@@ -105,7 +135,7 @@
             var session = sessionStorage.getItem(provider.SESSION_STORAGE);
             var key = sessionStorage.getItem(provider.KEY_STORAGE);
 
-            if(cookies === false) {
+            if (cookies === false) {
                 provider.removeCookies();
                 provider.deleteSession();
             }
@@ -118,50 +148,131 @@
             return false;
         };
 
+        provider.beautifyRole = function(role){
+
+            switch (role) {
+                case 'COMPANY_ADMIN':
+                    return 'Company manager';
+                case 'APP_ADMIN':
+                    return 'Administrator';
+                case 'APP_DEV':
+                    return 'Developer';
+            }
+
+        };
+
         /**
          * Usuwa zapisaną sesję w przeglądarce
          */
         provider.deleteSession = function () {
+
             sessionStorage.removeItem(provider.SESSION_STORAGE);
             sessionStorage.removeItem(provider.KEY_STORAGE);
-            sessionStorage.removeItem(provider.MEMBER_KEY);
-            sessionStorage.removeItem(provider.LOGIN_ROLE);
+            sessionStorage.removeItem(provider.SESSION_DATA);
+            sessionStorage.removeItem(provider.DEV_KEY_STORAGE);
+
+            window.localStorage.clear();
+            provider.removeCookies();
         };
 
         /**
          * Koduje i ustawia hash sesji w przeglądarce
          * @param token
-         * @param memberKey
+         * @param developerKey
          * @param loginRole
          * @param role
          */
-        provider.setSession = function (token, memberKey, loginRole) {
-            var role = "USER";
+        provider.setSession = function (sessionData) {
+
+            var role = provider.SALT;
             var session = "";
             var key = [];
 
             var r = role.length - 1;
-            for (var i = 0; i < token.length; i++) {
+            for (var i = 0; i < sessionData.sessionToken.length; i++) {
                 if (i % 3 === 0 && r >= 0) {
                     session += role[r];
                     key.push({r: i});
                     r--;
-                    key.push({s: token[i]});
+                    key.push({s: sessionData.sessionToken[i]});
                 } else {
-                    session += token[i];
+                    session += sessionData.sessionToken[i];
                 }
             }
 
-            sessionStorage.setItem(provider.LOGIN_ROLE, loginRole);
             sessionStorage.setItem(provider.SESSION_STORAGE, session);
             sessionStorage.setItem(provider.KEY_STORAGE, JSON.stringify(key));
-            sessionStorage.setItem(provider.MEMBER_KEY, memberKey);
+            sessionStorage.setItem(provider.SESSION_DATA, JSON.stringify({
+                id: sessionData.id,
+                companyName: sessionData.companyName,
+                developerKey: provider.hashDeveloperKey(sessionData.developerKey),
+                fullName: sessionData.fullName,
+                role: sessionData.role
+            }));
+
+            provider.setCookie('auth_expire', 60);
+
         };
 
-        /**
-         * Pobiera token autoryzacyjny dekodując hash sesji
-         * @returns {string}
-         */
+        provider.getSessionData = function () {
+            return JSON.parse(sessionStorage.getItem(provider.SESSION_DATA)) || {};
+        };
+
+        provider.hashDeveloperKey = function (developerKey) {
+
+            var role = provider.SALT;
+            var session = "";
+            var key = [];
+
+            var r = role.length - 1;
+            for (var i = 0; i < developerKey.length; i++) {
+                if (i % 3 === 0 && r >= 0) {
+                    session += role[r];
+                    key.push({r: i});
+                    r--;
+                    key.push({s: developerKey[i]});
+                } else {
+                    session += developerKey[i];
+                }
+            }
+
+            sessionStorage.setItem(provider.DEV_KEY_STORAGE, JSON.stringify(key));
+
+            return session;
+
+
+        };
+
+        provider.unhashDeveloperKey = function (developerKey) {
+
+            var session = developerKey
+            var key = JSON.parse(sessionStorage.getItem(provider.DEV_KEY_STORAGE));
+
+            if (!session || !key) {
+                return "";
+            }
+
+            var token = session;
+            var splitted;
+            var splitIndex;
+            for (var i = 0; i < key.length; i++) {
+                if (key[i].r !== undefined) {
+                    splitted = token.split("");
+                    splitIndex = key[i].r;
+                }
+                if (key[i].s !== undefined) {
+                    splitted[splitIndex] = key[i].s;
+                    token = splitted
+                        .toString()
+                        .split(",")
+                        .join("");
+                }
+            }
+
+            return token;
+
+        }
+
         provider.getToken = function () {
             var session = sessionStorage.getItem(provider.SESSION_STORAGE);
             var key = JSON.parse(sessionStorage.getItem(provider.KEY_STORAGE));
@@ -190,41 +301,34 @@
             return token;
         };
 
-        /**
-         * Pobiera Rolę zalogowanego użytkownika
-         * @returns {string}
-         */
-        provider.getLoginRole = function () {
-            var loginRole = sessionStorage.getItem(provider.LOGIN_ROLE);
-            loginRole = loginRole.toString();
-
-            return loginRole;
+        provider.getRole = function () {
+            var sessionData = provider.getSessionData();
+            return sessionData.role;
         };
 
-        /**
-         * Pobiera MemberKey z sesji
-         * @returns {string}
-         */
-        provider.getMemberKey = function () {
-            var memberKey = sessionStorage.getItem(provider.MEMBER_KEY);
-            memberKey = memberKey.toString();
-
-            return memberKey;
+        provider.getDeveloperKey = function () {
+            var sessionData = provider.getSessionData();
+            return provider.unhashDeveloperKey(sessionData.developerKey);
         };
 
-        provider.updateUserDetails = function (id, data) {
-            return EndpointsFactory.updateUserDetails(id, data).$promise;
+        provider.getPlan = function () {
+            var sessionData = provider.getSessionData();
+            return sessionData.plan;
+        };
+
+        provider.updateUserDetails = function (data) {
+            return EndpointsFactory.updateUserDetails(data).$promise;
         };
 
         provider.changePassword = function (data) {
             return EndpointsFactory.changePassword(data).$promise;
         };
 
-        provider.activateAccount = function(token) {
+        provider.activateAccount = function (token) {
             return EndpointsFactory.activateAccount(token).$promise;
         };
 
-        provider.reactivateAccount = function(data) {
+        provider.reactivateAccount = function (data) {
             return EndpointsFactory.reactivateAccount(data).$promise
         };
 
@@ -232,7 +336,7 @@
             return EndpointsFactory.deactivateAccount().$promise;
         };
 
-        provider.getImage = function() {
+        provider.getImage = function () {
             return EndpointsFactory.getImage().$promise;
         };
 
@@ -242,26 +346,17 @@
          */
 
         provider.setPlan = function (plan) {
-            window.localStorage.setItem("_mPlan", plan.name);
-            window.localStorage.setItem("_mUsers", hashUserPlan(plan.maxUsers));
-            window.localStorage.setItem("_mApps", hashUserPlan(plan.maxApps));
 
-            function hashUserPlan(value) {
-                let numberText = "";
-                for (let i = 0; i < 5; i++) {
-                    if (i === 2) {
-                        numberText += value;
-                        continue;
-                    }
-                    numberText += Math.floor(Math.random() * 9) + 1;
-                }
-                return numberText;
-            }
+            var sessionData = provider.getSessionData();
+            sessionData.plan = plan;
+
+            sessionStorage.setItem(provider.SESSION_DATA, JSON.stringify(sessionData));
+
         };
 
         provider.setCookie = function (cname, exminutes) {
             var d = new Date();
-            var expire_time = d.setTime(d.getTime() + (exminutes  * 1000 + (3600 * 1000)));
+            var expire_time = d.setTime(d.getTime() + (exminutes * 1000 + (3600 * 1000)));
             var expires = d.toUTCString();
 
             window.document.cookie = cname + "=" + expire_time.valueOf() + ";expires=" + expires + ";path=/";
@@ -272,8 +367,10 @@
             var fresh_time = d.getTime();
 
             if (document.cookie.split(';')
-                .filter(function(item) { return item.includes(cname + '=') === true })
-                .length && parseInt(provider.readCookie(cname)) > fresh_time.valueOf()) {
+                    .filter(function (item) {
+                        return item.includes(cname + '=') === true
+                    })
+                    .length && parseInt(provider.readCookie(cname)) > fresh_time.valueOf()) {
                 return true;
             } else {
                 return false;
@@ -285,13 +382,13 @@
             var nameEQ = cname + "=";
             var ca = document.cookie.split(';');
 
-            for(var i=0;i < ca.length;i++) {
+            for (var i = 0; i < ca.length; i++) {
                 var c = ca[i];
                 while (c.charAt(0) === ' ') {
-                    c = c.substring(1,c.length);
+                    c = c.substring(1, c.length);
                 }
                 if (c.indexOf(nameEQ) === 0) {
-                    return c.substring(nameEQ.length,c.length);
+                    return c.substring(nameEQ.length, c.length);
                 }
             }
             return null;
@@ -301,12 +398,12 @@
         provider.removeCookies = function () {
             var res = document.cookie;
             var multiple = res.split(";");
-            for(var i = 0; i < multiple.length; i++) {
+            for (var i = 0; i < multiple.length; i++) {
                 var key = multiple[i].split("=");
-                document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+                document.cookie = key[0] + " =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
             }
         };
-        
+
         return provider;
     }
 })(angular);

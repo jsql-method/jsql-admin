@@ -10,7 +10,8 @@ var app = angular
         "ngStorage",
         "ngCookies",
         "ui.bootstrap",
-        "constants"
+        "constants",
+        "angularjs-dropdown-multiselect"
     ])
     .config([
         "$httpProvider",
@@ -47,6 +48,14 @@ var app = angular
         }
 
     }])
+    .config(['$uibTooltipProvider', function ($uibTooltipProvider) {
+        $uibTooltipProvider.options({
+            appendToBody: true
+        });
+    }])
+    .config(['$qProvider', function ($qProvider) {
+        $qProvider.errorOnUnhandledRejections(true);
+    }])
     .config([
         "$stateProvider",
         "$urlRouterProvider",
@@ -70,7 +79,6 @@ var app = angular
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
-                        roles: ['ADMIN', 'COMPANY_ADMIN', 'APP_ADMIN', 'APP_DEV'],
                         title: 'JSQL - Profile',
                         shortTitle: 'Profile'
                     }
@@ -82,7 +90,6 @@ var app = angular
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
-                        roles: ['APP_DEV'],
                         title: 'JSQL - Developer key',
                         shortTitle: 'Developer key'
                     }
@@ -110,8 +117,8 @@ var app = angular
                         shortTitle: 'Add application'
                     }
                 })
-                .state("applications", {
-                    url: "/applications/:id",
+                .state("application", {
+                    url: "/application/:id",
                     templateUrl: "app/controllers/applications/applications.html",
                     controller: "ApplicationsController",
                     controllerAs: "vm",
@@ -156,15 +163,15 @@ var app = angular
                     }
                 })
                 .state("team", {
-                    url: "/team",
+                    url: "/developers",
                     templateUrl: "app/controllers/team/team.html",
                     controller: "TeamController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
                         roles: ['ADMIN', 'COMPANY_ADMIN', 'APP_ADMIN'],
-                        title: 'JSQL - Team',
-                        shortTitle: 'Team'
+                        title: 'JSQL - Developers',
+                        shortTitle: 'Developers'
                     }
                 })
                 .state("administrators", {
@@ -192,7 +199,7 @@ var app = angular
                     }
                 })
                 .state("login", {
-                    url: "/auth/login",
+                    url: "/login",
                     templateUrl: "app/controllers/login/login.html",
                     controller: "LoginController",
                     controllerAs: "vm",
@@ -202,19 +209,8 @@ var app = angular
                         shortTitle: 'Sign in'
                     }
                 })
-                .state("register", {
-                    url: "/auth/register",
-                    templateUrl: "app/controllers/register/register.html",
-                    controller: "RegisterController",
-                    controllerAs: "vm",
-                    data: {
-                        requiresLogin: false,
-                        title: 'JSQL - Sign up',
-                        shortTitle: 'Sign up'
-                    }
-                })
                 .state("activate", {
-                    url: "/auth/activate/:id",
+                    url: "/activate/:token",
                     templateUrl: "app/controllers/activate/activate.html",
                     controller: "ActivateController",
                     controllerAs: "vm",
@@ -224,19 +220,19 @@ var app = angular
                         shortTitle: 'Activate'
                     }
                 })
-                .state("resetPassword", {
-                    url: "/auth/reset-password",
+                .state("forgotPassword", {
+                    url: "/forgot-password",
                     templateUrl: "app/controllers/resetPassword/resetPassword.html",
                     controller: "ResetPasswordController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: false,
-                        title: 'JSQL - Reset password',
-                        shortTitle: 'Reset password'
+                        title: 'JSQL - Forgot password',
+                        shortTitle: 'Forgot password'
                     }
                 })
                 .state("reset", {
-                    url: "/auth/reset/:id",
+                    url: "/reset-password/:token",
                     templateUrl: "app/controllers/reset/reset.html",
                     controller: "ResetController",
                     controllerAs: "vm",
@@ -249,10 +245,21 @@ var app = angular
             $urlRouterProvider.otherwise('/');
         }
     ])
+    .constant("months", [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ])
     .constant("dateFormat", {
-        dateFormat: "yyyy-MM-dd HH:mm",
-        defaultTime: "00:00:00",
-        html5Types: {
-            date: "dd-MM-yyyy"
-        }
+        format: "dd-MM-yyyy"
     });
+

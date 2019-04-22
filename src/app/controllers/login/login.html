@@ -1,103 +1,73 @@
-<section class="sign-card loginController">
-  <!-- starts -->
-  <div class="sign-contain">
-    <div class="sign-information">
-      <div class="contain-picture-logo">
-        <img
-          src="./images/auth/jsql-logo-alfa.png"
-          alt="JSQL Admin"
-          class="picture-logo"
-        />
-      </div>
-    </div>
-    <div class="sign-form">
-      <form ng-submit="vm.validateLoginForm()">
-        <div class="title-sign"><b>Login</b></div>
-        <div class="form-sign">
-          <div class="icon-sign"><i class="fa fa-envelope"></i></div>
-          <label class="field-resize field a-field a-field_a1 page__field">
-            <input
-              type="text"
-              placeholder="Email"
-              class="field__input a-field__input"
-              ng-model="vm.email"
-              ng-blur="vm.validateEmail(true)"
-              ng-change="vm.validateEmail()"
-            />
-            <span class="a-field__label-wrap">
-              <span class="a-field__label"> Email </span>
-            </span>
-          </label>
-          <div
-            class="text-danger"
-            ng-repeat="messages in vm.messages.email track by $index"
-          >
-            {{ messages }}
-          </div>
-        </div>
-        <div class="form-sign">
-          <div class="icon-sign"><i class="fa fa-unlock-alt"></i></div>
-          <label class="field-resize field a-field a-field_a1 page__field">
-            <input
-              type="password"
-              placeholder="Password"
-              class="field__input a-field__input"
-              ng-model="vm.password"
-              ng-blur="vm.validatePassword(true)"
-              ng-change="vm.validatePassword()"
-            />
-            <span class="a-field__label-wrap">
-              <span class="a-field__label"> Password </span>
-            </span>
-          </label>
-          <div
-            class="text-danger"
-            ng-repeat="messages in vm.messages.password track by $index"
-          >
-            {{ messages }}
-          </div>
-        </div>
-        <div class="form-sign">
-          <a
-            class="text-right text-inverse"
-            style="text-decoration: underline"
-            href="/auth/reset-password"
-          >
-            Forgot your password? Click here
-          </a>
-          <div class="contain-validation-contain">
-            {{ vm.generalMessage }}
-          </div>
-        </div>
+<section class="loginController">
 
-        <div class="contain-submit">
-          <button
-            type="submit"
-            class="btn btn-primary waves-effect text-center button-sign btn-sign"
-          >
-            Login
-          </button>
+    <div class="login-form">
+
+        <h5>
+            Client portal - sign in
+        </h5>
+
+        <div class="form-wrapper">
+
+            <div class="logo-container">
+                <div class="logo"></div>
+            </div>
+
+            <div class="form-container">
+
+                <div class="logo-container">
+                    <div class="logo"></div>
+                </div>
+
+                <form ng-submit="vm.submitLogin()">
+
+                    <div class="form-group {{vm.generalMessage ? 'visible' : 'invisible'}}">
+                        <div class="invalid-feedback d-block">
+                            {{ vm.generalMessage }}&nbsp;
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control {{vm.messages.email ? 'is-invalid' : ''}}" id="email" ng-model="vm.email" autocomplete="on">
+                        <div class="invalid-feedback" ng-show="vm.messages.email">
+                            {{ vm.messages.email }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control {{vm.messages.password ? 'is-invalid' : ''}}" id="password" ng-model="vm.password" autocomplete="on">
+                        <div class="invalid-feedback" ng-show="vm.messages.password">
+                            {{ vm.messages.password }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+
+                    <div class="forgot-password">
+                        <a href="/forgot-password">Forgot password?</a>
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
-      </form>
-      <div class="support-information">
-        <div class="sign-underline"></div>
-        <p class="text-inverse text-support">
-          Thank you and enjoy our website
-        </p>
-        <p class="text-inverse text-support-team">
-          <b>Your JSQL Team</b>
-        </p>
-        <div class="logo-support">
-          <img
-            src="./images/auth/jsql-logo-alfa.png"
-            alt="JSQL Admin"
-            width="60"
-            height="60"
-          />
+
+        <div class="friendly-information">
+            <div class="underline"></div>
+
+            <div class="info-row">
+                <div class="desc">
+                    <p class="text-left">Thank you and enjoy our solution</p>
+                    <p class="text-left">Your JSQL Team</p>
+                </div>
+                <div class="logo-container">
+                    <div class="logo"></div>
+                </div>
+            </div>
+
         </div>
-      </div>
+
     </div>
-  </div>
-  <!-- end of -->
+
 </section>

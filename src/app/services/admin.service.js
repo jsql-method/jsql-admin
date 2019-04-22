@@ -10,7 +10,7 @@
     var provider = {};
 
     /**
-     * Funkcja dodaje membera
+     * Funkcja dodaje developera
      */
 
     provider.addAdmin = function(data) {
@@ -20,6 +20,10 @@
     provider.demoteAdmin = function(data) {
       return EndpointsFactory.demoteAdmin(data).$promise;
     };
+
+      provider.deleteAdmin = function(data) {
+          return EndpointsFactory.deleteAdmin(data).$promise;
+      };
 
     return provider;
   }

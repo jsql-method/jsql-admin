@@ -9,7 +9,7 @@
         <p style="text-align: center; color: black;">{{vm.message}}</p>
     </div>
     <div class="modal-footer" style="justify-content: center;">
-        <button type="button" style="width: 100px;" class="btn btn-primary" ng-click="vm.closeModal(true)">{{ vm.submit ? vm.submit : 'Ok' }}</button>
-        <button type="button" ng-if="vm.vissibleButtonDelete" style="width: 100px;" ng-click="vm.closeModal(false)" class="btn btn-warning">No</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.closeModal(true)">{{ vm.submit ? vm.submit : 'Ok' }}</button>
+        <button type="button" ng-if="vm.vissibleButtonDelete" ng-click="vm.closeModal(false)" class="btn btn-warning">No</button>
     </div>
 </div>

@@ -6,20 +6,17 @@
   max-width: 250px;
   color: #fff;
   transition: all 0.3s;
-  background: linear-gradient(
-    180deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(10, 124, 190, 1) 0%,
-    rgba(23, 109, 179, 1) 100%
-  );
+  background: linear-gradient(180deg,#176db3 0,#0a7cbe 0,#176db3 100%);
 
   .sidebar-header {
-    padding: 1rem 0.5rem;
+    padding: 1rem .5rem;
     display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   ul.components {
-    padding: 20px 0;
+    padding: 0;
   }
 
   ul p {
@@ -33,6 +30,12 @@
     display: flex;
     align-items: center;
     width: 100%;
+
+    span {
+      font-size: 1rem;
+      width: 2rem;
+    }
+
   }
 
   ul li a .icon {
@@ -61,24 +64,27 @@
   }
 
   .sidebar-header .avatar {
-    width: 80px;
-    height: 80px;
-    float: left;
+    width: 50%;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .sidebar-header .avatar img {
     border: 3px solid #fff;
-    height: 80px;
-    width: 80px;
+    height: 5rem;
+    width: 5rem;
     border-radius: 50%;
   }
 
   .sidebar-header .details {
-    padding-left: 1rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    float: left;
-    width: calc(100% - 80px);
+    flex: 1;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
   }
 
   .sidebar-header .type {
@@ -93,4 +99,21 @@
   .logout-sidebar:hover {
     cursor: pointer;
   }
+
+  .dropdown-toggle {
+
+    &.is-empty {
+      &:after {
+        display: none;
+      }
+    }
+
+    span.tooltip-icon {
+      font-size: 1.2rem;
+      flex: 1;
+      text-align: right;
+    }
+
+  }
+
 }
