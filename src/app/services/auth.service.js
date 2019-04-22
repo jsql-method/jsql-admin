@@ -38,10 +38,15 @@
                 if (result.status === 200) {
 
                     provider.setSession(result.data);
-                    EndpointsFactory.plan().$promise.then(function (result) {
-                        provider.setPlan(result.data);
+
+                    if(provider.getRole() === 'APP_DEV'){
                         $state.go('builds');
-                    });
+                    }else {
+                        EndpointsFactory.plan().$promise.then(function (result) {
+                            provider.setPlan(result.data);
+                            $state.go('builds');
+                        });
+                    }
 
                 }
 
@@ -56,16 +61,28 @@
 
         provider.refreshSession = function(callback){
 
-            EndpointsFactory.session().$promise.then(function (result) {
+            return EndpointsFactory.session().$promise.then(function (result) {
 
                 if (result.status === 200) {
                     provider.setSession(result.data);
-                    EndpointsFactory.plan().$promise.then(function (result) {
-                        provider.setPlan(result.data);
+
+                    if(provider.getRole() === 'APP_DEV'){
+
                         if(callback){
                             callback();
                         }
-                    });
+
+                    }else{
+
+                        EndpointsFactory.plan().$promise.then(function (result) {
+                            provider.setPlan(result.data);
+                            if(callback){
+                                callback();
+                            }
+                        });
+
+                    }
+
                 }
 
                 return result;
@@ -186,6 +203,7 @@
             sessionStorage.setItem(provider.SESSION_STORAGE, session);
             sessionStorage.setItem(provider.KEY_STORAGE, JSON.stringify(key));
             sessionStorage.setItem(provider.SESSION_DATA, JSON.stringify({
+                id: sessionData.id,
                 companyName: sessionData.companyName,
                 developerKey: provider.hashDeveloperKey(sessionData.developerKey),
                 fullName: sessionData.fullName,

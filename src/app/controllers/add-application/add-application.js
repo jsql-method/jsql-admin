@@ -34,7 +34,7 @@
                 .then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {
-                        UtilsService.openFailedModel(UtilsService.getGeneralError(result));
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else if (UtilsService.hasErrors(result)) {
                         vm.messages = UtilsService.getErrors(result);
                     } else {

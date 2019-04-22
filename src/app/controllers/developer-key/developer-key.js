@@ -1,55 +1,44 @@
-(function(angular) {
-  "use strict";
+(function (angular) {
+    "use strict";
 
-  angular
-    .module("jsql")
-    .controller("DeveloperKeyController", DeveloperKeyController);
+    angular
+        .module("jsql")
+        .controller("DeveloperKeyController", DeveloperKeyController);
 
-  /**
-   * @ngInject
-   */
-  function DeveloperKeyController(AuthService, $uibModal) {
-    var vm = this;
+    /**
+     * @ngInject
+     */
+    function DeveloperKeyController(AuthService, UtilsService) {
+        var vm = this;
 
-    init();
+        vm.keyType = '';
+        vm.developerKey = '';
+        vm.role = AuthService.getRole();
 
-    vm.copyToClipboard = function() {
-      try {
-        var copyText = document.getElementById("developerKey");
-        copyText.select();
-        var successful = document.execCommand("copy");
-        if (!successful) throw successful;
-        copyText.setSelectionRange(0, 0);
-        openModal("Copied to clipboard!");
-      } catch (e) {
-        openModal(
-          "There was an error copying to the clipboard.  Select the text to copy and use Ctrl+C."
-        );
-      }
-    };
+        vm.copyDeveloperKey = copyDeveloperKey;
+        vm.saveToFile = saveToFile
 
-    //--------
-    function init() {
-      vm.developerKey = AuthService.getDeveloperKey();
-      vm.loginRole = localStorage.getItem('_mRole');
-    }
+        init();
 
-    function openModal(text) {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: "app/modals/message/message.html",
-        controller: "MessageController",
-        controllerAs: "vm",
-        resolve: {
-          Data: function() {
-            return {
-              clazz: "success",
-              title: "Copy!",
-              message: text
-            };
-          }
+        function init() {
+
+            vm.developerKey = AuthService.getDeveloperKey();
+
+            if(vm.role === 'APP_DEV'){
+                vm.keyType = translation.yourDeveloperKeyForDevelopment;
+            }else if(vm.role === 'COMPANY_ADMIN' || vm.role === 'APP_ADMIN'){
+                vm.keyType = translation.onlyDevelopmentKeyProductionKeyForApp;
+            }
+
         }
-      });
+
+        function copyDeveloperKey() {
+            UtilsService.copyToClipboard("developerKey", translation.developerKeyCopiedToClipboard);
+        }
+
+        function saveToFile(){
+            UtilsService.saveToFile(vm.developerKey, 'jsql');
+        }
+
     }
-  }
 })(angular);

@@ -80,7 +80,6 @@
             APPLICATIONS: "APPLICATIONS",
             SESSION: 'SESSION',
             VISIT_PAGE: "VISIT_PAGE",
-            USERS: "USERS",
             PROFILE: "PROFILE",
             AVATAR: "AVATAR",
             DELETE_APPLICATION: "DELETE_APPLICATION"

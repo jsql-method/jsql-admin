@@ -10,7 +10,8 @@ var app = angular
         "ngStorage",
         "ngCookies",
         "ui.bootstrap",
-        "constants"
+        "constants",
+        "angularjs-dropdown-multiselect"
     ])
     .config([
         "$httpProvider",
@@ -47,8 +48,13 @@ var app = angular
         }
 
     }])
+    .config(['$uibTooltipProvider', function ($uibTooltipProvider) {
+        $uibTooltipProvider.options({
+            appendToBody: true
+        });
+    }])
     .config(['$qProvider', function ($qProvider) {
-        $qProvider.errorOnUnhandledRejections(false);
+        $qProvider.errorOnUnhandledRejections(true);
     }])
     .config([
         "$stateProvider",
@@ -73,7 +79,6 @@ var app = angular
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
-                        roles: ['ADMIN', 'COMPANY_ADMIN', 'APP_ADMIN', 'APP_DEV'],
                         title: 'JSQL - Profile',
                         shortTitle: 'Profile'
                     }
@@ -85,7 +90,6 @@ var app = angular
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
-                        roles: ['APP_DEV'],
                         title: 'JSQL - Developer key',
                         shortTitle: 'Developer key'
                     }
@@ -159,15 +163,15 @@ var app = angular
                     }
                 })
                 .state("team", {
-                    url: "/team",
+                    url: "/developers",
                     templateUrl: "app/controllers/team/team.html",
                     controller: "TeamController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: true,
                         roles: ['ADMIN', 'COMPANY_ADMIN', 'APP_ADMIN'],
-                        title: 'JSQL - Team',
-                        shortTitle: 'Team'
+                        title: 'JSQL - Developers',
+                        shortTitle: 'Developers'
                     }
                 })
                 .state("administrators", {
@@ -206,7 +210,7 @@ var app = angular
                     }
                 })
                 .state("activate", {
-                    url: "/activate/:id",
+                    url: "/activate/:token",
                     templateUrl: "app/controllers/activate/activate.html",
                     controller: "ActivateController",
                     controllerAs: "vm",
@@ -241,11 +245,21 @@ var app = angular
             $urlRouterProvider.otherwise('/');
         }
     ])
+    .constant("months", [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ])
     .constant("dateFormat", {
-        dateFormat: "yyyy-MM-dd HH:mm",
-        defaultTime: "00:00:00",
-        html5Types: {
-            date: "dd-MM-yyyy"
-        }
+        format: "dd-MM-yyyy"
     });
 

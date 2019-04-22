@@ -13,7 +13,7 @@
             templateUrl: "app/components/sidebar/sidebar.html",
             controllerAs: "vm",
             bindToController: true,
-            controller: function (SERVER_URL, DictService, $timeout, $state, EventEmitterService, AuthService, $location) {
+            controller: function ($rootScope, SERVER_URL, DictService, $timeout, $state, EventEmitterService, AuthService, $location, UtilsService) {
                 var vm = this;
 
                 vm.setActive = setActive;
@@ -21,19 +21,32 @@
                 vm.logout = logout;
                 vm.toggle = toggle;
 
+                vm.loading = true;
                 vm.session = null;
                 vm.applications = [];
                 vm.plan = null;
+
+                $rootScope.$on("$stateChangeStart", function () {
+                    setStamp();
+                });
 
                 init();
 
                 function init() {
 
+                    setStamp();
                     getImage();
-                    getSessionData();
-                    getApplications();
-                    getPlan();
+                    getSessionData().then(function(){
+                        getApplications().then(function(){
+                            getPlan();
+                            vm.loading = false;
+                        });
+                    });
 
+                }
+
+                function setStamp(){
+                    vm.stamp = UtilsService.getRandomFloor(50, 100);
                 }
 
                 function getImage() {
@@ -42,7 +55,7 @@
 
                 function getApplications() {
 
-                    DictService.applications().then(function (result) {
+                    return DictService.applications().then(function (result) {
                         vm.applications = result;
                     });
 
@@ -50,10 +63,11 @@
 
                 function getSessionData() {
 
-                    AuthService.refreshSession(function(){
+                    return AuthService.refreshSession(function(){
 
                         vm.session = AuthService.getSessionData();
                         vm.session.role = AuthService.beautifyRole(vm.session.role);
+                        vm.role =  AuthService.getRole();
 
                     });
 

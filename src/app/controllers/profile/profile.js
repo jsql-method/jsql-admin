@@ -131,7 +131,7 @@
                 .then(function (result) {
 
                     if(UtilsService.hasGeneralError(result)){
-                        UtilsService.openFailedModel();
+                        UtilsService.openFailedModal();
                     }else if (UtilsService.hasErrors(result)) {
                         vm.messagesChangePassword = UtilsService.getErrors(result);
                     } else {
@@ -170,7 +170,7 @@
                 .then(function (result) {
 
                     if(UtilsService.hasGeneralError(result)){
-                        UtilsService.openFailedModel();
+                        UtilsService.openFailedModal();
                     }else if (UtilsService.hasErrors(result)) {
                         vm.messagesChangePassword = UtilsService.getErrors(result);
                     } else {
@@ -198,7 +198,7 @@
                     if (result.status === 200) {
 
                         if(UtilsService.hasGeneralError(result)){
-                            UtilsService.openFailedModel(UtilsService.getGeneralError(result));
+                            UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                             return;
                         }
 

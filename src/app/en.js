@@ -1,3 +1,5 @@
+'use strict';
+
 var translation = {
     'unauthorized': "Wrong username or password",
     'error': 'Error name not resolved: {0}',
@@ -25,5 +27,22 @@ var translation = {
     'confirmEnableProductionMode': 'Are you sure to switch to production mode? You will not be able to modify settings and queries during this mode',
     'confirmDisableProductionMode': 'Are you sure to disable production mode? This can switch off your applications using JSQL',
     'productionEnabled': 'Production mode has been enabled',
-    'productionDisabled': 'Production mode has been disabled'
+    'productionDisabled': 'Production mode has been disabled',
+    'delete_developer' : 'Remove developer',
+    'developer_deleted' : 'Developer has been removed',
+    'developer_created' : 'Developer has been created',
+    'account_activated' : 'Your account has been activated',
+    'activation_failed' : 'Activation failed. Please contact support',
+    'delete_admin' : 'Remove administrator',
+    'admin_deleted' : 'Administrator has been removed',
+    'admin_created' : 'Administrator has been created',
+    'queryUpdated' : 'Query has been updated',
+    'developerKeyCopiedToClipboard': 'Developer key copied to clipboard',
+    'yourDeveloperKeyForDevelopment' : 'This is your developer key for development purposes',
+    'onlyDevelopmentKeyProductionKeyForApp': 'This is your developer key for development purposes. For production purposes, use production key from application details',
+    'applicationInProduction' : 'Application is in production, cannot delete and use for development purposes',
+    'productionKeyCopiedToClipboard' : 'Production key copied to clipboard',
+    'productionKeyInfo' : 'This is production key for production purposes. For development purposes, use your development key',
+    'securityInfo' : 'By default, security settings are balanced between performance and data security',
+    'username_unavailable' : 'Provided first name and last name is already in use in this company'
 };

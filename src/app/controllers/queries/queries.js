@@ -6,445 +6,206 @@
     /**
      * @ngInject
      */
-    function QueriesController(AuthService, ApplicationService, DictService, $stateParams, $uibModal, dateFormat) {
-
+    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $location) {
         var vm = this;
 
-        vm.id = parseInt($stateParams.id);
-        vm.queries;
-        vm.applications;
-        vm.application;
-        vm.role = localStorage.getItem('_mRole');
-        vm.indexVissible = -1;
-        vm.profileId = -1;
-        vm.valueQueryOrHash = "";
-        vm.vissibleEdit = false;
-        vm.numberEdit = -1;
-        vm.valueQuery = "";
-        vm.copyQueries = [];
-        vm.format = dateFormat.html5Types.date;
-        vm.members = [];
-        vm.copyMembers = [];
-        vm.popup1 = {
-            opened: false
-        };
-        vm.popup2 = {
-            opened: false
-        };
-        vm.dateTo;
-        vm.dateFrom;
-        vm.altInputFormats = ['M!/d!/yyyy'];
-        vm.memberValue = "";
-        vm.dataFilterQueries = {
-            members: [],
-            dateFrom: "",
-            dateTo: "",
-            used: false,
-            dynamic: false
+        vm.chartType = 'BASIC';
+        vm.role = AuthService.getRole();
+        vm.loadingTable = true;
+        vm.loading = true;
+        vm.developers = [];
+        vm.selectedDevelopers = [];
+
+        vm.format = dateFormat.format;
+
+        vm.datePickerOpen = {
+            dateFrom: false,
+            dateTo: false
         };
 
-        vm.setDateFrom = setDateFrom;
-        vm.setDateTo = setDateTo;
-        vm.submitFilterQueries = submitFilterQueries;
-        vm.clearData = clearData;
-        vm.open1 = open1;
-        vm.open2 = open2;
-        vm.showMultiSelect = showMultiSelect;
-        vm.hideMultiSelect = hideMultiSelect;
-        vm.setFilterMembers = setFilterMembers;
-        vm.chooseUserId = chooseUserId;
-        vm.chooseAllMembers = chooseAllMembers;
-        vm.checkChoosenMember = checkChoosenMember;
-        vm.addOrRemoveMember = addOrRemoveMember;
+        vm.filter = {
+            applications: [
+                parseInt($stateParams.id)
+            ],
+            developers: [],
+            dateFrom: new Date(),
+            dateTo: new Date(),
+            used: null,
+            dynamic: null,
+            search: null
+        };
+
+        vm.page = 0;
+        vm.data = null;
+        vm.rawChartData = null;
+
+        vm.fixedHeight = 'height: 0';
+
+        vm.open = open;
+        vm.getStats = getStats;
+        vm.getStatsForPage = getStatsForPage;
+        vm.createChart = createChart;
+        vm.showInput = showInput;
+        vm.updateQuery = updateQuery;
 
         init();
 
         //--------
         function init() {
 
-            DictService.profile()
-                .then(function (result) {
-                    vm.profileId = result.id;
-                    getMembers();
+            if(vm.role !== 'APP_DEV'){
+
+                getDevelopers().then(function () {
+                    vm.loading = false;
+                    getStats();
                 });
 
-            window.addEventListener("click", function () {
+            }else{
+                vm.loading = false;
+                getStats();
+            }
 
-                var selectors = document.getElementsByClassName("multiselect-contain");
-                for (var i = 0; i < selectors.length; i++) {
-                    selectors[i].style.display = "none";
+        }
+
+        function showInput(type, query, $event){
+            query[type+'Input'] = true;
+        }
+
+        function updateQuery(query, $event){
+            $event.stopPropagation();
+            query.queryInput = false;
+
+            EndpointsFactory.updateQuery(query.id, {
+                query: query.query,
+                applicationId: query.applicationId
+            }).$promise.then(function(result){
+
+                if (UtilsService.hasGeneralError(result)) {
+                    UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                } else {
+                    UtilsService.openSuccessModal(translation.queryUpdated);
                 }
+
             });
-        }
-
-        function getMembers() {
-
-            DictService.members()
-                .then(function (result) {
-                    if (result) {
-                        vm.members = angular.copy(result);
-                    }
-                    getAdmins();
-                })
 
         }
 
-        function getAdmins() {
+        function getStatsForPage(page) {
 
-            DictService.admins()
-                .then(function (result) {
-                    if (result) {
-                        if (result.length > 0) {
-                            result.forEach(function (admin) {
-                                vm.members.push(admin);
-                            });
-                            vm.members = vm.members.filter(function (member) {
-                               if(member.id !== vm.profileId) {
-                                   return true;
-                               }
-                               return false;
-                            });
-                            vm.copyMembers = vm.members.slice();
-                        }
-                    }
-                    getApplications();
-                })
+            if (page >= 0) {
+                vm.page = page;
+                getStats();
+            }
 
         }
 
-        function getApplications() {
+        function getStats() {
 
-            DictService.applications()
-                .then(function (result) {
-                    vm.applications = result;
-                    vm.application = _.find(result, {id: vm.id});
-                   getQueries();
-                })
+            var height = UtilsService.elementHeight(document.getElementById('table'));
+            vm.fixedHeight = 'height: ' + height + 'px';
+            vm.loadingTable = true;
 
-        }
+            function floatId(o) {
+                return [o.id];
+            }
 
-        function getQueries() {
-
-            var data = {
-                applications: [vm.id],
-                members: [vm.profileId],
-                used: true,
-                dynamic: false
+            var request = {
+                dateFrom: UtilsService.formatDate(vm.filter.dateFrom, 'dd-MM-yyyy'),
+                dateTo: UtilsService.formatDate(vm.filter.dateTo, 'dd-MM-yyyy'),
+                applications: vm.filter.applications,
+                developers: _.flatMap(vm.selectedDevelopers, floatId),
+                used: vm.filter.used ? vm.filter.used : null,
+                dynamic: vm.filter.dynamic ? vm.filter.dynamic : null,
+                search: vm.filter.search
             };
 
-            var dateFrom = getData('dateFrom');
-            var dateTo = getData('dateTo');
+            EndpointsFactory.queries(vm.page, request).$promise.then(function (result) {
 
-            vm.dataFilterQueries.dateFrom = dateFrom;
-            vm.dataFilterQueries.dateTo = dateTo;
-            vm.dataFilterQueries.members = [vm.profileId];
+                vm.data = result.data;
+                vm.data.pagination.pages = UtilsService.fillArray(vm.data.pagination.totalPages - 1);
 
-            ApplicationService.getQueries(dateFrom, dateTo, data)
-                .then(function (result) {
-                    vm.queries = result.data.data;
-                    vm.copyQueries = vm.queries.slice();
-                })
+                vm.fixedHeight = 'height: 0';
+                vm.loadingTable = false;
 
-        }
-
-        function getData(when) {
-
-            var data = new Date();
-            var dateOffset;
-            if (when === 'dateFrom') {
-                dateOffset = (24 * 60 * 60 * 1000) * 7; //5 days
-                data.setTime(data.getTime() - dateOffset);
-            } else {
-                dateOffset = (24 * 60 * 60 * 1000) * 1; //1 days
-                data.setTime(data.getTime() + dateOffset);
-            }
-
-            var day = data.getDate();
-
-            if (day < 10) {
-                day = '0' + day;
-            }
-
-            var mounth = data.getMonth() + 1;
-
-            if (mounth < 10) {
-                mounth = '0' + mounth;
-            }
-
-            return day + '-' + mounth + '-' + data.getFullYear();
-
-        }
-
-        function open1() {
-
-            vm.popup1.opened = true;
-
-        }
-
-        function open2() {
-
-            vm.popup2.opened = true;
-
-        }
-
-        /**
-         *  Section edit Query
-         * */
-
-        vm.setEdit = function (index, value) {
-            if (vm.role === "COMPANY_ADMIN" || vm.role === "ADMIN") {
-                return;
-            }
-
-            vm.indexVissible = index;
-            vm.vissibleEdit = true;
-            vm.valueQuery = value;
-
-            setTimeout(function () {
-                document.getElementById("input-edit-query").focus();
             });
-        };
 
-        vm.saveQuery = function (queries) {
-            if(vm.valueQuery.length > 100) {
-                openModal('Hash max length 100!')
-                return;
+            EndpointsFactory.queriesChart(request).$promise.then(function (result) {
+                vm.rawChartData = prepareRawChartData(result.data);
+
+                if (vm.rawChartData.length > 0) {
+                    vm.createChart(vm.chartType);
+                }
+
+            });
+
+        }
+
+        function prepareRawChartData(rawData){
+
+            var data = [];
+            rawData = _.groupBy(rawData, 'developerName');
+            for(var devName in rawData){
+
+                rawData[devName] = _.groupBy(rawData[devName], 'queryDate');
+
+                for(var queryDate in rawData[devName]){
+
+                    data.push({
+                        developerName: devName,
+                        queryDate: queryDate,
+                        queriesCount: rawData[devName][queryDate].length
+                    });
+
+                }
+
             }
-            var data = {
-                query: vm.valueQuery,
-                apiKey: vm.application.apiKey
+
+            return data;
+
+        }
+
+        function createChart(chartType) {
+            vm.chartType = chartType;
+
+            var chartData = null;
+            var options = {
+                datasetLabel: 'Queries prepared per day'
             };
 
-            var dataQueries = {
-                applications: [vm.id],
-                members: getIdMembers(),
-                used: vm.dataFilterQueries.used,
-                dynamic: vm.dataFilterQueries.dynamic
-            };
+            switch (chartType) {
+                case 'BASIC' :
+                    chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'queryDate', 'queriesCount');
+                    options.type = 'BASIC';
+                    break;
+                case 'DEVELOPERS' :
+                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'developerName', 'queryDate', 'queriesCount');
+                    options.type = 'MULTI';
+                    break;
+            }
 
-            ApplicationService.updateQuery(
-                queries.id,
-                data
-            )
-                .then(function (result) {
-                    if (result.data.code !== 200) {
-                        vm.valueQuery = queries.query;
-                        openModal(result.data.data);
+            ChartService.createChart(chartData, options);
 
-                    } else {
-                        openModal('Hash changed successfully!');
-                        ApplicationService.getQueries(vm.dataFilterQueries.dateFrom, vm.dataFilterQueries.dateTo, dataQueries)
-                            .then(function (result) {
-                                vm.queries = result.data.data;
-                                vm.copyQueries = vm.queries.slice();
-                            })
-                    }
+        }
+
+        function getDevelopers() {
+
+            if (vm.role !== 'APP_DEV') {
+
+                return DictService.developers().then(function (developers) {
+
+                    DictService.admins().then(function (admins) {
+                        vm.developers = UtilsService.developersToOptions(developers).concat(UtilsService.developersToOptions(admins));
+                    });
+
                 });
-            vm.vissibleEdit = false;
-        };
 
-        /**
-         * Filter Queries from Api
-         * */
-
-        function setDateFrom() {
-            vm.dataFilterQueries.dateFrom = document.getElementById('dateFrom').value;
-        }
-
-        function setDateTo() {
-            vm.dataFilterQueries.dateTo = document.getElementById('dateTo').value;
-        }
-
-        function submitFilterQueries() {
-
-            if(vm.dataFilterQueries.members.length === 0) {
-                openModal("Minimum one user required");
-                return;
             }
 
-            var dataTo = addDayForDataTo();
-
-            var data = {
-                applications: [vm.id],
-                members: vm.dataFilterQueries.members,
-                used: vm.dataFilterQueries.used,
-                dynamic: vm.dataFilterQueries.dynamic
-            };
-
-            ApplicationService.getQueries(vm.dataFilterQueries.dateFrom, dataTo, data)
-                .then(function (result) {
-                    vm.queries = result.data.data;
-                    vm.copyQueries = vm.queries.slice();
-                })
         }
 
-        function addDayForDataTo() {
-            var dateTo = vm.dataFilterQueries.dateTo;
-            var data = new Date(parseInt(dateTo.substr(6)),parseInt(dateTo.substr(3,2)) - 1,parseInt(dateTo.substr(0,2)));
-            var dateOffset = (24 * 60 * 60 * 1000) * 1; //1 days
-
-            data.setTime(data.getTime() + dateOffset);
-
-            var day = data.getDate();
-            if (day < 10) {
-                day = '0' + day;
-            }
-
-            var mounth = data.getMonth() + 1;
-            if (mounth < 10) {
-                mounth = '0' + mounth;
-            }
-
-            return day + '-' + mounth + '-' + data.getFullYear();
+        function open(picker) {
+            vm.datePickerOpen[picker] = !vm.datePickerOpen[picker];
         }
 
-        function clearData() {
-            vm.dataFilterQueries = {
-                members: [],
-                dateFrom: "",
-                dateTo: "",
-                used: false,
-                dynamic: false
-            };
-
-            vm.dateTo = null;
-            vm.dateFrom = null;
-        }
-
-        /**
-         *  Filter Hash or Query
-         * */
-
-        vm.setFilterQueryOrHash = function (value) {
-            vm.valueQueryOrHash = value;
-            vm.filterData();
-        };
-
-        vm.filterData = function () {
-            vm.queries = vm.copyQueries.filter(row => {
-                if (vm.valueQueryOrHash === "") {
-                    return true;
-                } else if (
-                    row.hash.toLowerCase().includes(vm.valueQueryOrHash.toLowerCase()) ||
-                    row.query.toLowerCase().includes(vm.valueQueryOrHash.toLowerCase())
-                ) {
-                    return true;
-                }
-                return false;
-            });
-        };
-
-
-        /**
-         * Multiselect
-         */
-
-        function showMultiSelect(index) {
-            var selector = document.getElementsByClassName("multiselect-contain")[
-                index
-                ];
-            selector.style.display = "block";
-        }
-
-        function hideMultiSelect(index) {
-            var selector = document.getElementsByClassName("multiselect-contain")[
-                index
-                ];
-            selector.style.display = "none";
-        }
-
-        function setFilterMembers(value) {
-            vm.membersValue = value;
-            filterMembers();
-        }
-
-        function filterMembers() {
-            vm.members = vm.copyMembers.filter(member => {
-                if (vm.memberValue === "") {
-                    return true;
-                } else if (
-                    (
-                        member.firstName.toLowerCase() +
-                        " " +
-                        member.lastName.toLowerCase()
-                    ).includes(vm.memberValue.toLowerCase())
-                ) {
-                    return true;
-                }
-                return false;
-            });
-        }
-
-        function chooseUserId(event) {
-            if (event.target.checked === true) {
-                vm.dataFilterQueries.members.push(vm.profileId);
-            } else {
-                vm.dataFilterQueries.members = vm.dataFilterQueries.members.filter(function (member) {
-                    if(member !== vm.profileId) {
-                        return true;
-                    }
-                    return false;
-                })
-            }
-        }
-
-        function chooseAllMembers(event) {
-            if (event.target.checked === true) {
-                vm.dataFilterQueries.members = vm.members.map(function (
-                    member
-                ) {
-                    return member.id;
-                });
-                vm.dataFilterQueries.members.push(vm.profileId);
-            } else {
-                vm.dataFilterQueries.members = [];
-            }
-        }
-
-        function checkChoosenMember(memberId) {
-            if (
-                vm.dataFilterQueries.members.find(function (id) {
-                    return id === memberId;
-                })
-            ) {
-                return true;
-            }
-            return false;
-        }
-
-        function addOrRemoveMember(memberId) {
-            if (
-                vm.dataFilterQueries.members.find(function (id) {
-                    return id === memberId;
-                })
-            ) {
-                var index = vm.dataFilterQueries.members.indexOf(memberId);
-                vm.dataFilterQueries.members.splice(index, 1);
-            } else {
-                vm.dataFilterQueries.members.push(memberId);
-            }
-        }
-
-        /**
-         *  Modal
-         * */
-
-        function openModal(text) {
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: "app/modals/message/message.html",
-                controller: "MessageController",
-                controllerAs: "vm",
-                resolve: {
-                    Data: function () {
-                        return {
-                            clazz: "success",
-                            title: "Update query!",
-                            message: text
-                        };
-                    }
-                }
-            });
-        }
     }
 })(angular);

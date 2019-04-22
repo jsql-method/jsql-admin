@@ -1,40 +1,24 @@
-<div class="content developerKeyController">
+<div class="developerKeyController subpage">
   <h2>Developer key</h2>
   <div class="underline-title-card"></div>
   <div class="row">
     <div class="col">
       <form>
+
+        <div class="alert alert-info" role="alert">
+          {{ vm.keyType }}
+        </div>
+
         <div class="form-group">
           <label for="developerKey">Your developer key</label>
-          <input
-            type="text"
-            class="form-control"
-            id="developerKey"
-            readonly
-            ng-model="vm.developerKey"
-          />
+          <input type="text" class="form-control" id="developerKey" readonly ng-model="vm.developerKey"/>
         </div>
-        <button
-          type="button"
-          class="btn btn-primary"
-          ng-click="vm.copyToClipboard()"
-        >
-          Copy to clipboard
-        </button>
-      </form>
-    </div>
-    <div class="col">
-      <form>
+
         <div class="form-group">
-          <label for="role">Your role</label>
-          <input
-            type="text"
-            class="form-control"
-            id="role"
-            readonly
-            ng-model="vm.loginRole"
-          />
+         <button type="button" class="btn btn-primary" ng-click="vm.copyDeveloperKey()">Copy to clipboard</button>
+         <button type="button" class="btn btn-primary" ng-click="vm.saveToFile()">Download key</button>
         </div>
+
       </form>
     </div>
   </div>

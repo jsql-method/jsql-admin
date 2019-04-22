@@ -12,7 +12,7 @@
     dict.data = {
       profile: null,
       applications: null,
-      members: null,
+      developers: null,
       admins: null
     };
 
@@ -39,8 +39,7 @@
             dict.data[endpoint].loading = false;
             return result.data;
           })
-          .catch(function(err) {
-            console.log(err);
+          .catch(function(err, x) {
             return err;
           });
 
