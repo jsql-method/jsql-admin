@@ -17,7 +17,8 @@
     "bootstrap": "^4.2.1",
     "jquery": "^3.3.1",
     "selectize": "^0.12.6",
-    "angularjs-dropdown-multiselect": "^1.11.8"
+    "angularjs-dropdown-multiselect": "^1.11.8",
+    "chart.js": "chartjs#^2.8.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.7.5"
