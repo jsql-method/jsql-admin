@@ -16,6 +16,7 @@ var options = {
     ],
 
     libsJsFiles: [
+        './bower_components/chart.js/dist/Chart.bundle.min.js',
         './bower_components/js-cookie/src/js.cookie.js',
         './bower_components/angular/angular.js',
         './bower_components/jquery/dist/jquery.min.js',
