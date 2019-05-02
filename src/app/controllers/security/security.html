@@ -10,7 +10,7 @@
     </div>
 
     <div ng-show="!vm.loading">
-        <h2>{{ vm.options.application.name }} - security options</h2>
+        <h2>{{ vm.application.name }} - security options</h2>
         <div class="underline-title-card"></div>
         <div class="row">
             <div class="col">
@@ -62,11 +62,11 @@
                     </div>
                     <div class="form-group">
                         <label for="salt">Salt</label>
-                        <input id="salt" type="text" class="form-control {{vm.messages.isSalt ? 'is-invalid' : ''}}" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt"/>
+                        <input id="salt" type="text" class="form-control {{vm.messages.isSalt ? 'is-invalid' : ''}}" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt || vm.options.saltRandomize"/>
                         <div class="invalid-feedback" ng-show="vm.messages.isSalt">
                             {{ vm.messages.isSalt }}
                         </div>
-                        <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                        <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.prod || vm.options.saltRandomize">
                             Generate
                         </button>
                     </div>
@@ -115,6 +115,7 @@
                         <label for="databaseDialect">Database dialect</label>
                         <select id="databaseDialect" class="form-control" ng-model="vm.options.databaseDialect" ng-options="option.value as option.name for option in vm.databaseDialectValues" ng-disabled="vm.options.prod"></select>
                     </div>
+
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input {{vm.messages.plainQueriesAllowed ? 'is-invalid' : ''}}" id="plainQueriesAllowed" ng-model="vm.options.plainQueriesAllowed" ng-disabled="vm.options.prod">
@@ -124,6 +125,93 @@
                             {{ vm.messages.plainQueriesAllowed }}
                         </div>
                     </div>
+
+                    <div class="outer-form-group">
+                        <h6>Production database settings</h6>
+
+                        <div class="alert alert-info" role="alert">
+                            Connection URL should have JDBC syntax:
+                            <br/>
+                            jdbc:[postgresql;mysql]://[database_host]:[port]/[database_name]
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productionDatabaseOptions.databaseConnectionUrl">Connection URL</label>
+                            <input id="productionDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionUrl">
+                                {{ vm.messages.productionDatabaseOptions.databaseConnectionUrl }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productionDatabaseOptions.databaseConnectionUsername">Username</label>
+                            <input id="productionDatabaseOptions.databaseConnectionUsername" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUsername ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUsername" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionUsername">
+                                {{ vm.messages.productionDatabaseOptions.databaseConnectionUsername }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productionDatabaseOptions.databaseConnectionPassword">Password</label>
+                            <input id="productionDatabaseOptions.databaseConnectionPassword" type="password" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionPassword ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionPassword" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionPassword">
+                                {{ vm.messages.productionDatabaseOptions.databaseConnectionPassword }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productionDatabaseOptions.databaseConnectionTimeout">Connection timeout (sec)</label>
+                            <input id="productionDatabaseOptions.databaseConnectionTimeout" type="number" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionTimeout ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionTimeout" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionTimeout">
+                                {{ vm.messages.productionDatabaseOptions.databaseConnectionTimeout }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="outer-form-group">
+                        <h6>Developers database settings</h6>
+
+                        <div class="alert alert-info" role="alert">
+                            Connection URL should have JDBC syntax:
+                            <br/>
+                            jdbc:[postgresql;mysql]://[database_host]:[port]/[database_name]
+                        </div>
+
+                        <div class="form-group">
+                            <label for="developerDatabaseOptions.databaseConnectionUrl">Connection URL</label>
+                            <input id="developerDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionUrl">
+                                {{ vm.messages.developerDatabaseOptions.databaseConnectionUrl }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="developerDatabaseOptions.databaseConnectionUsername">Username</label>
+                            <input id="developerDatabaseOptions.databaseConnectionUsername" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUsername ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUsername" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionUsername">
+                                {{ vm.messages.developerDatabaseOptions.databaseConnectionUsername }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="developerDatabaseOptions.databaseConnectionPassword">Password</label>
+                            <input id="developerDatabaseOptions.databaseConnectionPassword" type="password" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionPassword ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionPassword" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionPassword">
+                                {{ vm.messages.developerDatabaseOptions.databaseConnectionPassword }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="developerDatabaseOptions.databaseConnectionTimeout">Connection timeout (sec)</label>
+                            <input id="developerDatabaseOptions.databaseConnectionTimeout" type="number" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionTimeout ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionTimeout" ng-disabled="vm.options.prod"/>
+                            <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionTimeout">
+                                {{ vm.messages.developerDatabaseOptions.databaseConnectionTimeout }}
+                            </div>
+                        </div>
+
+                    </div>
+
                     <button type="submit" class="btn btn-primary" ng-disabled="vm.options.prod">Save options</button>
                 </form>
             </div>

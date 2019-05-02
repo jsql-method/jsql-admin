@@ -23,13 +23,16 @@
             dateTo: false
         };
 
+        var tomorrowDate = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
         vm.filter = {
             applications: [
                 parseInt($stateParams.id)
             ],
             developers: [],
             dateFrom: new Date(),
-            dateTo: new Date(),
+            dateTo: tomorrowDate,
             used: null,
             dynamic: null,
             search: null

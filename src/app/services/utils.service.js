@@ -17,7 +17,7 @@
                 var successful = document.execCommand("copy");
                 if (!successful) throw successful;
                 copyText.setSelectionRange(0, 0);
-                UtilsService.openSuccessModal(modalMessage);
+                utils.openSuccessModal(modalMessage);
             } catch (e) {
                 console.log(e);
             }

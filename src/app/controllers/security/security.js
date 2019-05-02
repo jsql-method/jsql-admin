@@ -12,8 +12,12 @@
         vm.loading = true;
         vm.options = null;
         vm.id = parseInt($stateParams.id);
-        vm.messages = {};
+        vm.messages = {
+            developerDatabaseOptions: {},
+            productionDatabaseOptions: {}
+        };
         vm.securityInfo = translation.securityInfo;
+        vm.application = null;
 
         vm.toggleProduction = toggleProduction;
         vm.submitOptions = submitOptions;
@@ -24,7 +28,16 @@
 
         //--------
         function init() {
+            getApplications();
             getOptions();
+        }
+
+        function getApplications(){
+
+            DictService.applications().then(function (result) {
+                vm.application = _.find(result, { id: vm.id });
+            });
+
         }
 
         function warningProdMode() {
