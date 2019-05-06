@@ -28,7 +28,7 @@
 
             var file = new Blob([data]);
             if (window.navigator.msSaveOrOpenBlob) // IE10+
-                window.navigator.msSaveOrOpenBlob(file, filename);
+                window.navigator.msSaveOrOpenBlob(file, filename+'.key');
             else { // Others
                 var a = document.createElement("a"),
                     url = URL.createObjectURL(file);
