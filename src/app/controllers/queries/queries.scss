@@ -110,6 +110,18 @@
             font-size: 1.5rem
           }
 
+          &.small-size {
+            max-width: 6rem;
+          }
+
+          &.medium-size {
+            max-width: 11rem;
+          }
+
+          &.large-size {
+            max-width: 20rem;
+          }
+
           > .form-group {
             text-align: center;
 

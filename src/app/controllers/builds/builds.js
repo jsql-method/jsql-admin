@@ -25,11 +25,14 @@
             dateTo: false
         };
 
+        var tomorrowDate = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
         vm.filter = {
             applications: [],
             developers: [],
             dateFrom: new Date(),
-            dateTo: new Date()
+            dateTo: tomorrowDate
         };
 
         vm.page = 0;

@@ -1,7 +1,13 @@
 .securityController {
 
   .col {
-    max-width: 28rem;
+    max-width: 38rem;
+  }
+
+  .outer-form-group {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
 
 }
