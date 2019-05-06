@@ -211,13 +211,13 @@ var app = angular
                 })
                 .state("activate", {
                     url: "/activate/:token",
-                    templateUrl: "app/controllers/activate/activate.html",
-                    controller: "ActivateController",
+                    templateUrl: "app/controllers/reset/reset.html",
+                    controller: "ResetController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: false,
-                        title: 'JSQL - Activate',
-                        shortTitle: 'Activate'
+                        title: 'JSQL - Activation',
+                        shortTitle: 'Activation'
                     }
                 })
                 .state("forgotPassword", {
