@@ -33,6 +33,7 @@
             addDeveloperToApplication: addDeveloperToApplication,
             deleteDeveloperWithApplication: deleteDeveloperWithApplication,
             demoteAdmin: demoteAdmin,
+            advanceDeveloper: advanceDeveloper,
             addAdmin: addAdmin,
             builds: builds,
             requests: requests,
@@ -195,6 +196,10 @@
 
         function addAdmin(data) {
             return ApiFactory.post(SERVER_URL + "/api/app-admin", data);
+        }
+
+        function advanceDeveloper(id) {
+            return ApiFactory.patch(SERVER_URL + "/api/app-dev", id);
         }
 
         function demoteAdmin(id) {

@@ -118,6 +118,8 @@
 
                 if(vm.rawChartData.length > 0){
                     vm.createChart(vm.chartType);
+                }else{
+                    ChartService.eraseChart();
                 }
 
             });
