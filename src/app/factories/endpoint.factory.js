@@ -47,8 +47,21 @@
             toggleProduction: toggleProduction,
             buildsChart: buildsChart,
             requestsChart: requestsChart,
-            queriesChart: queriesChart
+            queriesChart: queriesChart,
+            feedback: feedback,
+            verify: verify
         };
+
+        function verify(token){
+            return ApiFactory.post(SERVER_URL + "/api/payment/verify/" + token);
+        }
+
+        function feedback(token, data){
+            return ApiFactory.post(
+                SERVER_URL + "/api/user/feedback/" + token,
+                data
+            );
+        }
 
         function login(loginRequest) {
             return ApiFactory.post(SERVER_URL + "/api/login", loginRequest);

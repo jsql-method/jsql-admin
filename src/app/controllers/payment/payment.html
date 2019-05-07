@@ -1,0 +1,65 @@
+<section class="paymentController">
+
+  <div class="reset-password-form">
+
+    <h5>
+      {{vm.info.active ? 'Successful' : 'Unsuccessful' }} payment
+    </h5>
+
+    <div class="form-wrapper">
+
+      <div class="logo-container">
+        <div class="logo"></div>
+      </div>
+
+      <div class="form-container">
+
+        <div class="logo-container">
+          <div class="logo"></div>
+        </div>
+
+        <form>
+
+          <div class="form-group">
+
+            <div class="alert alert-danger" ng-if="!vm.info.active">
+              Something gone wrong, payment is not successful
+            </div>
+
+            <div class="alert alert-success" ng-if="vm.info.active">
+              We received you payment
+            </div>
+
+          </div>
+
+          <div class="form-group" ng-if="vm.info.active">
+
+            <p>Your plan is {{vm.info.plan}}</p>
+            <p>Payment {{vm.info.price}} received</p>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <div class="friendly-information">
+      <div class="underline"></div>
+
+      <div class="info-row">
+        <div class="desc">
+          <p class="text-left">Thank you and enjoy our solution</p>
+          <p class="text-left">Your JSQL Team</p>
+        </div>
+        <div class="logo-container">
+          <div class="logo"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
