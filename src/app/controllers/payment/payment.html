@@ -20,7 +20,7 @@
 
         <form>
 
-          <div class="form-group">
+          <div class="form-group" ng-if="vm.info">
 
             <div class="alert alert-danger" ng-if="!vm.info.active">
               Something gone wrong, payment is not successful
