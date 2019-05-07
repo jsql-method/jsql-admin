@@ -1,9 +1,8 @@
 .sidebarComponent {
-  min-width: 250px;
+  width: 250px;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  max-width: 250px;
   color: #fff;
   transition: all 0.3s;
   background: linear-gradient(180deg,#176db3 0,#0a7cbe 0,#176db3 100%);

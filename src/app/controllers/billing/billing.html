@@ -2,13 +2,43 @@
   <h2>Billing</h2>
   <div class="underline-title-card"></div>
   <div class="row">
-    <div class="col-12 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
-      <p>
+
+    <div class="col">
+
+      <p class="alert alert-info text-center">
+        Your current plan is <b>{{vm.plan.name}}</b>
+        <br/>
+        Your plan is <b>{{vm.plan.active ? 'active' : 'unactive'}}</b>
+      </p>
+
+      <label>Used apps</label>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{vm.appPercentage}}%;" aria-valuenow="{{vm.appPercentage}}" aria-valuemin="0" aria-valuemax="100">
+          {{vm.plan.usedApps + '/' + vm.plan.maxApps}}
+        </div>
+      </div>
+
+      <label>Used users</label>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{vm.devPercentage}}%;" aria-valuenow="{{vm.devPercentage}}" aria-valuemin="0" aria-valuemax="100">
+          {{vm.plan.usedUsers + '/' + vm.plan.maxUsers}}
+        </div>
+      </div>
+
+      <p class="alert alert-info">
+        You can change your plan in <b>Billing portal</b>
+      </p>
+
+    </div>
+
+    <div class="col text-center">
+      <p class="alert alert-info text-left">
         In order to ensure the highest quality of services, JSQL has a separate
         portal where the customer has access to his company data, payments,
         subscriptions and invoices.
       </p>
-      <p>
+
+      <p class="alert alert-info text-left">
         To use the portal you should accept the invitation that came to the
         email when you purchased the product and follow the instructions.
       </p>
@@ -20,5 +50,6 @@
         >Billing portal</a
       >
     </div>
+
   </div>
 </div>

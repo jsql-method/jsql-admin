@@ -157,7 +157,7 @@ a.article:hover {
 ----------------------------------------------------- */
 
 #content {
-  width: 100%;
+  flex: 1;
   min-height: 100vh;
   transition: all 0.3s;
 }
