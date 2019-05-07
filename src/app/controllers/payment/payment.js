@@ -11,6 +11,8 @@
     function PaymentController(AuthService, UtilsService, $state) {
         var vm = this;
 
+        vm.info = null;
+
         vm.submitFeedback = function () {
 
             var token = $state.params.hostedpage;
@@ -19,7 +21,7 @@
                 if(UtilsService.hasGeneralError(result)){
                     UtilsService.openFailedModal();
                 }else {
-                    console.log('result', result);
+                    vm.info = result.data;
                 }
 
 
