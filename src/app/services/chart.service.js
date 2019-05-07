@@ -49,6 +49,10 @@
 
         };
 
+        provider.eraseChart = function(){
+            document.getElementById('chart').innerHTML = '';
+        };
+
         provider.createChart = function (chartData, options) {
 
             document.getElementById('chart').innerHTML = '<canvas id="canvas-build" class="canvas-build"></canvas>';

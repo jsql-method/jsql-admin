@@ -16,12 +16,12 @@
             controller: function (StorageService, EventEmitterService, UtilsService) {
 
                 var vm = this;
-                var vissibleSidebar = false;
+             //   var vissibleSidebar = false;
                 var sidebar = null;
                 var footerSidebar = null;
-                var sidebarWidth = null;
+               // var sidebarWidth = null;
                 var zeroWidth = "0px";
-                var unsetWidth = "unset";
+             //   var unsetWidth = "unset";
 
                 vm.mostVisited =
                     StorageService.get(StorageService.namespace.LAST_PAGES) || [];
@@ -30,9 +30,9 @@
 
                 function init() {
 
-                    if (window.innerWidth > 768) {
-                        vissibleSidebar = true;
-                    }
+                    // if (window.innerWidth > 768) {
+                    //     vissibleSidebar = true;
+                    // }
 
                     function isVisited(pageName) {
 
@@ -86,25 +86,24 @@
 
                 vm.setVisibleSidebar = function () {
 
-                    vissibleSidebar = !vissibleSidebar;
+                 //   vissibleSidebar = !vissibleSidebar;
                     if (!sidebar || !footerSidebar) {
                         sidebar = document.getElementById("sidebar-custom");
                         footerSidebar = document.getElementById("footer-sidebar");
-                        sidebarWidth = sidebar.style.minWidth;
+                       // sidebarWidth = sidebar.style.minWidth;
                     }
 
+                    console.log('x');
+
                     if (sidebar.style.width !== zeroWidth) {
-                        sidebar.style.minWidth = zeroWidth;
-                        sidebar.style.width = zeroWidth;
-
-                        footerSidebar.style.minWidth = zeroWidth;
-                        footerSidebar.style.width = zeroWidth;
+                        sidebar.style = 'width:'+zeroWidth;
+                        footerSidebar.style = 'width:'+zeroWidth+';min-width:'+zeroWidth+';';
                     } else {
-                        sidebar.style.minWidth = sidebarWidth;
-                        sidebar.style.width = unsetWidth;
+                        sidebar.style = '';
+                        footerSidebar.style = '';
 
-                        footerSidebar.style.minWidth = sidebarWidth;
-                        footerSidebar.style.width = unsetWidth;
+                      // footerSidebar.style.minWidth = sidebarWidth;
+                      //  footerSidebar.style.width = unsetWidth;
                     }
 
                 };

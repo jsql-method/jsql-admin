@@ -26,7 +26,11 @@
               Something gone wrong, payment is not successful
             </div>
 
-            <div class="alert alert-success" ng-if="vm.info.active">
+            <div class="alert alert-success" ng-if="vm.info.active && vm.info.price == 0">
+              Your free account is created
+            </div>
+
+            <div class="alert alert-success" ng-if="vm.info.active && vm.info.price > 0">
               We received you payment
             </div>
 
@@ -34,10 +38,16 @@
 
           <div class="form-group" ng-if="vm.info.active">
 
-            <p>Your plan is {{vm.info.plan}}</p>
-            <p>Payment {{vm.info.price}} received</p>
+            <p>Your plan is <b>{{vm.info.plan}}</b></p>
+            <p ng-if="vm.info.price > 0">Payment <b>{{vm.info.price}}</b> received</p>
+
+            <p>
+              <b>Check your email to finish activation process</b>
+            </p>
 
           </div>
+
+
 
         </form>
 

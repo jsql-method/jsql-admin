@@ -59,7 +59,7 @@
               <div class="input-group">
                 <input id="dateFrom" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
                        ng-model="vm.filter.dateFrom" is-open="vm.datePickerOpen.dateFrom" ng-required="true"
-                       close-text="Close" alt-input-formats="[vm.format]"/>
+                       close-text="Close" alt-input-formats="[vm.format]" placeholder="dd-MM-yyyy" readonly/>
                 <div class="input-group-append">
                   <button type="button" class="btn btn-primary" ng-click="vm.open('dateFrom')">
                     <span class="ion-android-calendar"></span>
@@ -73,7 +73,7 @@
               <div class="input-group">
                 <input id="dateTo" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
                        ng-model="vm.filter.dateTo" is-open="vm.datePickerOpen.dateTo" ng-required="true"
-                       close-text="Close" alt-input-formats="[vm.format]"/>
+                       close-text="Close" alt-input-formats="[vm.format]" placeholder="dd-MM-yyyy" readonly/>
                 <div class="input-group-append">
                   <button type="button" class="btn btn-primary" ng-click="vm.open('dateTo')">
                     <span class="ion-android-calendar"></span>
@@ -128,9 +128,9 @@
           <div class="tbody">
             <div class="tr thead">
               <div class="td">SQL</div>
-              <div class="td medium-size">Hash</div>
+              <div class="td medium-size">Hash<span class="ion ion-ios-copy-outline"></span></div>
               <div class="td medium-size">Date</div>
-              <div class="td large-size">Developer</div>
+              <div class="td large-size">Developer<span class="ion ion-ios-copy-outline"></span></div>
               <div class="td small-size">Used</div>
               <div class="td small-size">Dynamic</div>
             </div>
@@ -150,18 +150,16 @@
 
               </div>
 
-              <div class="td medium-size clickable" ng-click="vm.showInput('hash', query)">
-                  <span ng-show="!query.hashInput">{{ query.hash }}</span>
-                  <input ng-show="query.hashInput" type="text" class="form-control" value="{{query.hash}}" readonly/>
+              <div class="td medium-size clickable" ng-click="vm.copyToClipboard(query.hash)">
+                  {{ query.hash }}
               </div>
 
               <div class="td medium-size">
                   {{ query.queryDate | date : 'dd-MM-yyyy hh:mm:ss' }}
               </div>
 
-              <div class="td large-size clickable" ng-click="vm.showInput('developerName', query)">
-                  <span ng-show="!query.developerNameInput">{{ query.developerName }}</span>
-                  <input ng-show="query.developerNameInput" type="text" class="form-control" value="{{query.developerName}}" readonly/>
+              <div class="td large-size clickable" ng-click="vm.copyToClipboard(query.developerName)">
+                  {{ query.developerName }}
               </div>
 
               <div class="td boolean small-size">
@@ -176,7 +174,7 @@
           </div>
         </div>
 
-        <nav ng-if="vm.data.list.builds.length > 0" class="mt-2">
+        <nav ng-if="vm.data.list.queries.length > 0" class="mt-2">
           <ul class="pagination">
             <li class="page-item {{vm.page > 0 ? '' : 'disabled'}}"
                 ng-if="vm.data.pagination.totalPages > 1">

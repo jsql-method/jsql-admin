@@ -6,8 +6,52 @@
     /**
      * @ngInject
      */
-    function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal) {
+    function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal, NotificationService) {
         var utils = {};
+
+         utils.isValidDate = function(date){
+            var day = parseInt(date.substring(0,2));
+            var month = parseInt(date.substring(3,5));
+            var year = parseInt(date.substring(6, 10));
+
+            if(day > 31 || day === 0){
+                return false;
+            }
+
+            if(month > 12 || month === 0){
+                return false;
+            }
+
+            if(year < 1900 || year === 0 || year > 2100){
+                return false;
+            }
+
+            return true;
+
+        };
+
+         utils.copyToClipboardText = function(text){
+
+             try {
+
+                 var copyText = document.createElement("textarea");
+                 // to avoid breaking orgain page when copying more words
+                 // cant copy when adding below this code
+                 // dummy.style.display = 'none'
+                 document.body.appendChild(copyText);
+                 copyText.value = text;
+                 copyText.select();
+                 var successful = document.execCommand("copy");
+                 if (!successful) throw successful;
+                 copyText.setSelectionRange(0, 0);
+                 //utils.openSuccessModal(modalMessage);
+                 document.body.removeChild(copyText);
+                 NotificationService.success(translation.copied_title, translation.copied_message);
+             } catch (e) {
+                 console.log(e);
+             }
+
+         };
 
         utils.copyToClipboard = function (elementId, modalMessage) {
 
@@ -26,9 +70,11 @@
 
         utils.saveToFile = function (data, filename) {
 
+            filename = filename+'.key';
+
             var file = new Blob([data]);
             if (window.navigator.msSaveOrOpenBlob) // IE10+
-                window.navigator.msSaveOrOpenBlob(file, filename+'.key');
+                window.navigator.msSaveOrOpenBlob(file, filename);
             else { // Others
                 var a = document.createElement("a"),
                     url = URL.createObjectURL(file);
@@ -47,7 +93,6 @@
         utils.getPrimaryColor = function () {
             return '#0a7cbe';
         };
-
 
         utils.getRandomColor = function () {
             var letters = "0123456789ABCDEF";
@@ -206,6 +251,31 @@
                 day = (date.getDate() < 10 ? "0" : "") + date.getDate(),
                 month = (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1),
                 year = 1900 + date.getYear();
+
+
+            // if(!utils.isValidDate(vm.filter.dateFrom) || !utils.isValidDate(vm.filter.dateTo)){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return;
+            // }
+
+            // var _day = parseInt(day);
+            // var _month = parseInt(month);
+            // var _year = parseInt(year);
+            //
+            // if(_day > 31 || _day === 0){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return null;
+            // }
+            //
+            // if(_month > 12 || _month === 0){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return null;
+            // }
+            //
+            // if(_year < 1900 || _year === 0 || _year > 2100){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return null;
+            // }
 
             return format
                 .replace("yyyy", year)

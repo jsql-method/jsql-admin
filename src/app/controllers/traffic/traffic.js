@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function TrafficController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService) {
+    function TrafficController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $timeout) {
         var vm = this;
 
         vm.chartType = 'BASIC';
@@ -42,22 +42,25 @@
         vm.getStats = getStats;
         vm.getStatsForPage = getStatsForPage;
         vm.createChart = createChart;
-        vm.showInput = showInput;
+        vm.copyToClipboard = UtilsService.copyToClipboardText;
 
         init();
 
+        function maskDates(){
+            $('#dateFrom').mask('00-00-0000');
+            $('#dateTo').mask('00-00-0000');
+        }
+
         //--------
         function init() {
+
+            $timeout(maskDates);
 
             getApplications().then(function () {
                 vm.loading = false;
                 getStats();
             });
 
-        }
-
-        function showInput(type, request){
-            request[type+'Input'] = true;
         }
 
         function getStatsForPage(page) {
@@ -100,6 +103,8 @@
 
                 if(vm.rawChartData.length > 0){
                     vm.createChart(vm.chartType);
+                }else{
+                    ChartService.eraseChart();
                 }
 
             });

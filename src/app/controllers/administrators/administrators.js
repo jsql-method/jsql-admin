@@ -114,17 +114,27 @@
 
         function demoteAdmin(admin) {
 
-            AdminService.demoteAdmin({
-                email: admin.email
-            }).then(function (result) {
+            UtilsService.openModal(translation.are_you_sure_demote_admin, true,
+                translation.demote_admin, 'warning',
+                translation.demote_admin, demoteAdmin.bind(this, admin)
+            );
 
-                if (UtilsService.hasGeneralError(result)) {
-                    UtilsService.openFailedModal(UtilsService.getGeneralError(result));
-                }else{
-                    getAdmins();
-                }
+            function demoteAdmin(admin){
 
-            });
+                AdminService.demoteAdmin({
+                    email: admin.email
+                }).then(function (result) {
+
+                    if (UtilsService.hasGeneralError(result)) {
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                    }else{
+                        getAdmins();
+                    }
+
+                });
+
+            }
+
 
         }
 
