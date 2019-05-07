@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal) {
+    function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal, NotificationService) {
         var utils = {};
 
          utils.isValidDate = function(date){
@@ -29,6 +29,29 @@
             return true;
 
         };
+
+         utils.copyToClipboardText = function(text){
+
+             try {
+
+                 var copyText = document.createElement("textarea");
+                 // to avoid breaking orgain page when copying more words
+                 // cant copy when adding below this code
+                 // dummy.style.display = 'none'
+                 document.body.appendChild(copyText);
+                 copyText.value = text;
+                 copyText.select();
+                 var successful = document.execCommand("copy");
+                 if (!successful) throw successful;
+                 copyText.setSelectionRange(0, 0);
+                 //utils.openSuccessModal(modalMessage);
+                 document.body.removeChild(copyText);
+                 NotificationService.success(translation.copied_title, translation.copied_message);
+             } catch (e) {
+                 console.log(e);
+             }
+
+         };
 
         utils.copyToClipboard = function (elementId, modalMessage) {
 
@@ -68,7 +91,6 @@
         utils.getPrimaryColor = function () {
             return '#0a7cbe';
         };
-
 
         utils.getRandomColor = function () {
             var letters = "0123456789ABCDEF";

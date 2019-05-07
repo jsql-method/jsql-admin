@@ -46,5 +46,7 @@ var translation = {
     'securityInfo' : 'By default, security settings are balanced between performance and data security',
     'username_unavailable' : 'Provided first name and last name is already in use in this company',
     'thank_you_feedback' : 'Thank you for feedback',
-    'invalid_dates' : 'Invalid dates provided'
+    'invalid_dates' : 'Invalid dates provided',
+    'copied_title' : 'Copied',
+    'copied_message' : 'Copied to clipboard'
 };

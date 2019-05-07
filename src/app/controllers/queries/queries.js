@@ -50,6 +50,7 @@
         vm.createChart = createChart;
         vm.showInput = showInput;
         vm.updateQuery = updateQuery;
+        vm.copyToClipboard = UtilsService.copyToClipboardText;
 
         init();
 

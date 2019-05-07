@@ -128,9 +128,9 @@
           <div class="tbody">
             <div class="tr thead">
               <div class="td">SQL</div>
-              <div class="td medium-size">Hash</div>
+              <div class="td medium-size">Hash<span class="ion ion-ios-copy-outline"></span></div>
               <div class="td medium-size">Date</div>
-              <div class="td large-size">Developer</div>
+              <div class="td large-size">Developer<span class="ion ion-ios-copy-outline"></span></div>
               <div class="td small-size">Used</div>
               <div class="td small-size">Dynamic</div>
             </div>
@@ -150,18 +150,16 @@
 
               </div>
 
-              <div class="td medium-size clickable" ng-click="vm.showInput('hash', query)">
-                  <span ng-show="!query.hashInput">{{ query.hash }}</span>
-                  <input ng-show="query.hashInput" type="text" class="form-control" value="{{query.hash}}" readonly/>
+              <div class="td medium-size clickable" ng-click="vm.copyToClipboard(query.hash)">
+                  {{ query.hash }}
               </div>
 
               <div class="td medium-size">
                   {{ query.queryDate | date : 'dd-MM-yyyy hh:mm:ss' }}
               </div>
 
-              <div class="td large-size clickable" ng-click="vm.showInput('developerName', query)">
-                  <span ng-show="!query.developerNameInput">{{ query.developerName }}</span>
-                  <input ng-show="query.developerNameInput" type="text" class="form-control" value="{{query.developerName}}" readonly/>
+              <div class="td large-size clickable" ng-click="vm.copyToClipboard(query.developerName)">
+                  {{ query.developerName }}
               </div>
 
               <div class="td boolean small-size">

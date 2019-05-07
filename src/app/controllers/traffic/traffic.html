@@ -94,28 +94,25 @@
                 <div class="table-flex" ng-if="!vm.loadingTable && vm.data.list.requests.length > 0">
                     <div class="tbody">
                         <div class="tr thead">
-                            <div class="td">Application</div>
+                            <div class="td">Application<span class="ion ion-ios-copy-outline"></span></div>
                             <div class="td">Date</div>
-                            <div class="td">SQL</div>
-                            <div class="td">Hash</div>
+                            <div class="td">SQL<span class="ion ion-ios-copy-outline"></span></div>
+                            <div class="td">Hash<span class="ion ion-ios-copy-outline"></span></div>
                         </div>
                     </div>
                     <div class="tbody">
                         <div ng-repeat="request in vm.data.list.requests track by $index" class="tr">
-                            <div class="td clickable" ng-click="vm.showInput('application', request)">
-                                <span ng-show="!request.applicationInput">{{ request.applicationName }}</span>
-                                <input ng-show="request.applicationInput" type="text" class="form-control" value="{{request.applicationName}}" readonly=""/>
+                            <div class="td clickable" ng-click="vm.copyToClipboard(request.applicationName)">
+                                {{ request.applicationName }}
                             </div>
                             <div class="td">
                                 {{ request.requestDate | date : 'dd-MM-yyyy hh:mm:ss' }}
                             </div>
-                            <div class="td clickable" ng-click="vm.showInput('query', request)">
-                                <span ng-show="!request.queryInput">{{ request.query }}</span>
-                                <input ng-show="request.queryInput" type="text" class="form-control" value="{{request.query}}" readonly=""/>
+                            <div class="td clickable" ng-click="vm.copyToClipboard(request.query)">
+                               {{ request.query }}
                             </div>
-                            <div class="td clickable" ng-click="vm.showInput('hash', request)">
-                                <span ng-show="!request.hashInput">{{ request.hash }}</span>
-                                <input ng-show="request.hashInput" type="text" class="form-control" value="{{request.hash}}" readonly=""/>
+                            <div class="td clickable" ng-click="vm.copyToClipboard(request.hash)">
+                               {{ request.hash }}
                             </div>
                         </div>
                     </div>

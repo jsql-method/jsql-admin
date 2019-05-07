@@ -45,7 +45,7 @@
         vm.getStats = getStats;
         vm.getStatsForPage = getStatsForPage;
         vm.createChart = createChart;
-        vm.showInput = showInput;
+        vm.copyToClipboard = UtilsService.copyToClipboardText;
 
         init();
 
@@ -75,10 +75,6 @@
 
             });
 
-        }
-
-        function showInput(type, build){
-            build[type+'Input'] = true;
         }
 
         function getStatsForPage(page) {
