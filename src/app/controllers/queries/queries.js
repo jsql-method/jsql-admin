@@ -172,7 +172,7 @@
 
             var chartData = null;
             var options = {
-                datasetLabel: 'Queries prepared per day'
+                datasetLabel: 'Queries prepared daily'
             };
 
             switch (chartType) {

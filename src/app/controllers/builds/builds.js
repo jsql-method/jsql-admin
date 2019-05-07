@@ -111,13 +111,23 @@
             });
 
             EndpointsFactory.buildsChart(request).$promise.then(function (result) {
-                vm.rawChartData = result.data;
+                vm.rawChartData = prepareChartData(result.data);
 
                 if(vm.rawChartData.length > 0){
                     vm.createChart(vm.chartType);
                 }
 
             });
+
+        }
+
+        function prepareChartData(rawChartData){
+
+            for(var i = 0; i < rawChartData.length; i++){
+                rawChartData[i].count = 1;
+            }
+
+            return rawChartData;
 
         }
 
@@ -131,15 +141,15 @@
 
             switch (chartType) {
                 case 'BASIC' :
-                    chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'hashingDate', 'queriesCount');
+                    chartData = ChartService.prepareBasicChartData(vm.rawChartData, 'hashingDate', 'count');
                     options.type = 'BASIC';
                     break;
                 case 'APPLICATIONS' :
-                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'applicationName', 'hashingDate', 'queriesCount');
+                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'applicationName', 'hashingDate', 'count');
                     options.type = 'MULTI';
                     break;
                 case 'DEVELOPERS' :
-                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'developerName', 'hashingDate', 'queriesCount');
+                    chartData = ChartService.prepareMultiChartData(vm.rawChartData, 'developerName', 'hashingDate', 'count');
                     options.type = 'MULTI';
                     break;
             }
