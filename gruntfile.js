@@ -20,6 +20,7 @@ var options = {
         './bower_components/js-cookie/src/js.cookie.js',
         './bower_components/angular/angular.js',
         './bower_components/jquery/dist/jquery.min.js',
+        './bower_components/jquery-mask-plugin/dist/jquery.mask.min.js',
         './bower_components/ngstorage/ngStorage.min.js',
         './bower_components/angular-animate/angular-animate.js',
         './bower_components/angular-cookies/angular-cookies.js',

@@ -18,6 +18,8 @@
             repeatNewPassword: ''
         };
 
+        var profileCopy = null;
+
         vm.messagesChangePassword = {};
         vm.messagesProfile = {};
 
@@ -44,6 +46,7 @@
             DictService.profile()
                 .then(function (result) {
                     vm.profile = result;
+                    profileCopy =  $.extend({}, result);;
                     vm.loading = false;
                 });
 
@@ -131,7 +134,9 @@
                 .then(function (result) {
 
                     if(UtilsService.hasGeneralError(result)){
-                        UtilsService.openFailedModal();
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                        vm.profile = $.extend({}, profileCopy);
+                        console.log(profileCopy);
                     }else if (UtilsService.hasErrors(result)) {
                         vm.messagesChangePassword = UtilsService.getErrors(result);
                     } else {
@@ -170,7 +175,7 @@
                 .then(function (result) {
 
                     if(UtilsService.hasGeneralError(result)){
-                        UtilsService.openFailedModal();
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     }else if (UtilsService.hasErrors(result)) {
                         vm.messagesChangePassword = UtilsService.getErrors(result);
                     } else {

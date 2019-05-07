@@ -34,7 +34,7 @@
                         <div class="input-group">
                             <input id="dateFrom" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
                                    ng-model="vm.filter.dateFrom" is-open="vm.datePickerOpen.dateFrom" ng-required="true"
-                                   close-text="Close" alt-input-formats="[vm.format]"/>
+                                   close-text="Close" alt-input-formats="[vm.format]" placeholder="dd-MM-yyyy" readonly/>
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-primary" ng-click="vm.open('dateFrom')">
                                     <span class="ion-android-calendar"></span>
@@ -48,7 +48,7 @@
                         <div class="input-group">
                             <input id="dateTo" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
                                    ng-model="vm.filter.dateTo" is-open="vm.datePickerOpen.dateTo" ng-required="true"
-                                   close-text="Close" alt-input-formats="[vm.format]"/>
+                                   close-text="Close" alt-input-formats="[vm.format]" placeholder="dd-MM-yyyy" readonly/>
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-primary" ng-click="vm.open('dateTo')">
                                     <span class="ion-android-calendar"></span>
@@ -103,21 +103,19 @@
                 <div class="table-flex" ng-if="!vm.loadingTable && vm.data.list.builds.length > 0">
                     <div class="tbody">
                         <div class="tr thead">
-                            <div class="td">Application</div>
-                            <div class="td">Developer</div>
+                            <div class="td">Application<span class="ion ion-ios-copy-outline"></span></div>
+                            <div class="td">Developer<span class="ion ion-ios-copy-outline"></span></div>
                             <div class="td">Hashing date</div>
                             <div class="td">Queries No</div>
                         </div>
                     </div>
                     <div class="tbody">
                         <div ng-repeat="build in vm.data.list.builds track by $index" class="tr">
-                            <div class="td clickable" ng-click="vm.showInput('application', build)">
-                                <span ng-show="!build.applicationInput">{{ build.applicationName }}</span>
-                                <input ng-show="build.applicationInput" type="text" class="form-control" value="{{build.applicationName}}" readonly=""/>
+                            <div class="td clickable" ng-click="vm.copyToClipboard(build.applicationName)">
+                                {{ build.applicationName }}
                             </div>
-                            <div class="td clickable" ng-click="vm.showInput('developer', build)">
-                                <span ng-show="!build.developerInput">{{ build.developerName }}</span>
-                                <input ng-show="build.developerInput" type="text" class="form-control" value="{{build.developerName}}" readonly=""/>
+                            <div class="td clickable" ng-click="vm.copyToClipboard(build.developerName)">
+                                {{ build.developerName }}
                             </div>
                             <div class="td">
                                 {{ build.hashingDate }}

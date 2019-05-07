@@ -71,6 +71,10 @@
               border-left: 1px solid #007bff;
             }
 
+            span {
+              margin-left: 1rem;
+            }
+
           }
 
         }
@@ -108,6 +112,18 @@
           &.boolean {
             color: #007bff;
             font-size: 1.5rem
+          }
+
+          &.small-size {
+            max-width: 6rem;
+          }
+
+          &.medium-size {
+            max-width: 11rem;
+          }
+
+          &.large-size {
+            max-width: 20rem;
           }
 
           > .form-group {

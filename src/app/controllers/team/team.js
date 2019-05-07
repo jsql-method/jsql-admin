@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function TeamController(AuthService, DeveloperService, UtilsService, DictService, SERVER_URL) {
+    function TeamController(AuthService, DeveloperService, UtilsService, DictService, SERVER_URL, EndpointsFactory) {
         var vm = this;
 
         vm.loading = true;
@@ -25,6 +25,7 @@
         vm.getImage = getImage;
         vm.backToList = backToList;
         vm.goToAddDeveloper = goToAddDeveloper;
+        vm.advanceDeveloper = advanceDeveloper;
 
         init();
 
@@ -182,6 +183,32 @@
                 }
 
             });
+
+        }
+
+        function advanceDeveloper(developer) {
+
+            UtilsService.openModal(translation.are_you_sure_advance_developer, true,
+                translation.advance_developer, 'warning',
+                translation.advance_developer, advanceDeveloper.bind(this, developer)
+            );
+
+            function advanceDeveloper(developer){
+
+                EndpointsFactory.advanceDeveloper({
+                    email: developer.email
+                }).$promise.then(function (result) {
+
+                    if (UtilsService.hasGeneralError(result)) {
+                        UtilsService.openFailedModal(UtilsService.getGeneralError(result));
+                    }else{
+                        getDevelopers();
+                    }
+
+                });
+
+            }
+
 
         }
 
