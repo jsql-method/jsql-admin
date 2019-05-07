@@ -252,7 +252,19 @@ var app = angular
                         title: 'JSQL - Feedback',
                         shortTitle: 'Feedback'
                     }
+                })
+                .state("payment", {
+                    url: "/successful-payment",
+                    templateUrl: "app/controllers/payment/payment.html",
+                    controller: "PaymentController",
+                    controllerAs: "vm",
+                    data: {
+                        requiresLogin: false,
+                        title: 'JSQL - Successful Payment',
+                        shortTitle: 'Successful Payment'
+                    }
                 });
+
             $urlRouterProvider.otherwise('/');
         }
     ])

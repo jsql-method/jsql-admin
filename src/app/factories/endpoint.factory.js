@@ -48,8 +48,13 @@
             buildsChart: buildsChart,
             requestsChart: requestsChart,
             queriesChart: queriesChart,
-            feedback: feedback
+            feedback: feedback,
+            verify: verify
         };
+
+        function verify(token){
+            return ApiFactory.post(SERVER_URL + "/api/payment/verify/" + token);
+        }
 
         function feedback(token, data){
             return ApiFactory.post(
