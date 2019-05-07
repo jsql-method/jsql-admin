@@ -3,17 +3,17 @@
 
     angular
         .module("jsql")
-        .controller("PaymentController", ["AuthService", "UtilsService", "$state", PaymentController]);
+        .controller("PaymentController", ["AuthService", "UtilsService", "$state", "$timeout", PaymentController]);
 
     /**
      * @ngInject
      */
-    function PaymentController(AuthService, UtilsService, $state) {
+    function PaymentController(AuthService, UtilsService, $state, $timeout) {
         var vm = this;
 
         vm.info = null;
 
-        vm.submitFeedback = function () {
+        vm.loadInfo = function () {
 
             var token = $state.params.hostedpage;
             EndpointsFactory.verify(token).$promise.then(function (result) {
@@ -28,6 +28,7 @@
             });
         };
 
+        $timeout(vm.loadInfo);
 
     }
 })(angular);
