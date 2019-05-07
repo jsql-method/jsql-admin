@@ -241,6 +241,17 @@ var app = angular
                         title: 'JSQL - Reset',
                         shortTitle: 'Reset'
                     }
+                })
+                .state("feedback", {
+                    url: "/feedback/:token",
+                    templateUrl: "app/controllers/feedback/feedback.html",
+                    controller: "FeedbackController",
+                    controllerAs: "vm",
+                    data: {
+                        requiresLogin: false,
+                        title: 'JSQL - Feedback',
+                        shortTitle: 'Feedback'
+                    }
                 });
             $urlRouterProvider.otherwise('/');
         }

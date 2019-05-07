@@ -1,0 +1,161 @@
+.feedbackController {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(180deg, #0a7cbe 45%, #275aa7 165%);
+
+  h5 {
+    color: #0d7abb;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .logo {
+    background-image: url(/images/auth/jsql-logo-alfa.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .reset-form {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 6px;
+    width: 40rem;
+
+    label {
+      color: #777;
+      font-size: .9rem;
+    }
+
+  }
+
+  .form-wrapper {
+    display: flex;
+    flex-direction: row;
+
+    .logo-container {
+      display: flex;
+      width: 60%;
+      height: 15rem;
+
+      .logo {
+        width: 14rem;
+        height: 100%;
+      }
+
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      width: 40%;
+
+      .logo-container {
+        display: none;
+      }
+
+    }
+
+  }
+
+  .forgot-password {
+    margin: 1rem 0;
+
+    a {
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+  }
+
+  .friendly-information {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+
+    .info-row {
+      display: flex;
+      flex-direction: row;
+      align-self: flex-end;
+      width: 20rem;
+      padding-top: 1rem;
+    }
+
+    .underline {
+      border-bottom: 1px solid #ccc;
+      height: 2px;
+      width: 100%;
+    }
+
+    .desc {
+      display: flex;
+      flex-direction: column;
+      width: 15rem;
+
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+
+    }
+
+    .logo-container {
+      flex: 1;
+      align-items: center;
+
+      .logo {
+        width: 100%;
+        height: 100%;
+      }
+
+    }
+
+  }
+
+  @media only screen and (max-width: 728px) {
+
+    h5 {
+      text-align: center;
+    }
+
+    .reset-form {
+      border-radius: 0;
+      width: 100%;
+    }
+
+    .form-wrapper {
+
+      > .logo-container {
+        display: none;
+      }
+
+      .form-container {
+        width: 100%;
+
+        > .logo-container {
+          display: flex;
+          width: 100%;
+
+          .logo {
+            width: 100%;
+          }
+
+        }
+
+      }
+
+    }
+
+    .btn {
+      width: 100%;
+    }
+
+  }
+
+}
+
+
