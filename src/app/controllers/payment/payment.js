@@ -3,19 +3,19 @@
 
     angular
         .module("jsql")
-        .controller("PaymentController", ["EndpointsFactory", "UtilsService", "$state", "$timeout", PaymentController]);
+        .controller("PaymentController", ["EndpointsFactory", "UtilsService", "$stateParams", "$timeout", PaymentController]);
 
     /**
      * @ngInject
      */
-    function PaymentController(EndpointsFactory, UtilsService, $state, $timeout) {
+    function PaymentController(EndpointsFactory, UtilsService, $stateParams, $timeout) {
         var vm = this;
 
         vm.info = null;
 
         vm.loadInfo = function () {
 
-            var token = $state.params.hostedpage;
+            var token = location.search.split('hostedpage=')[1];
             EndpointsFactory.verify(token).$promise.then(function (result) {
 
                 if(UtilsService.hasGeneralError(result)){
