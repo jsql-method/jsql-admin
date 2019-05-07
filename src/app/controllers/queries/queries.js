@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $location) {
+    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $timeout) {
         var vm = this;
 
         vm.chartType = 'BASIC';
@@ -23,13 +23,16 @@
             dateTo: false
         };
 
+        var tomorrowDate = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
         vm.filter = {
             applications: [
                 parseInt($stateParams.id)
             ],
             developers: [],
             dateFrom: new Date(),
-            dateTo: new Date(),
+            dateTo: tomorrowDate,
             used: null,
             dynamic: null,
             search: null
@@ -47,11 +50,19 @@
         vm.createChart = createChart;
         vm.showInput = showInput;
         vm.updateQuery = updateQuery;
+        vm.copyToClipboard = UtilsService.copyToClipboardText;
 
         init();
 
+        function maskDates(){
+            $('#dateFrom').mask('00-00-0000');
+            $('#dateTo').mask('00-00-0000');
+        }
+
         //--------
         function init() {
+
+            $timeout(maskDates);
 
             if(vm.role !== 'APP_DEV'){
 
@@ -134,6 +145,8 @@
 
                 if (vm.rawChartData.length > 0) {
                     vm.createChart(vm.chartType);
+                }else{
+                    ChartService.eraseChart();
                 }
 
             });
@@ -169,7 +182,7 @@
 
             var chartData = null;
             var options = {
-                datasetLabel: 'Queries prepared per day'
+                datasetLabel: 'Queries prepared daily'
             };
 
             switch (chartType) {

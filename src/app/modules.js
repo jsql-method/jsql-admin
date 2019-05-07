@@ -211,13 +211,13 @@ var app = angular
                 })
                 .state("activate", {
                     url: "/activate/:token",
-                    templateUrl: "app/controllers/activate/activate.html",
-                    controller: "ActivateController",
+                    templateUrl: "app/controllers/reset/reset.html",
+                    controller: "ResetController",
                     controllerAs: "vm",
                     data: {
                         requiresLogin: false,
-                        title: 'JSQL - Activate',
-                        shortTitle: 'Activate'
+                        title: 'JSQL - Activation',
+                        shortTitle: 'Activation'
                     }
                 })
                 .state("forgotPassword", {
@@ -241,7 +241,30 @@ var app = angular
                         title: 'JSQL - Reset',
                         shortTitle: 'Reset'
                     }
+                })
+                .state("feedback", {
+                    url: "/feedback/:token",
+                    templateUrl: "app/controllers/feedback/feedback.html",
+                    controller: "FeedbackController",
+                    controllerAs: "vm",
+                    data: {
+                        requiresLogin: false,
+                        title: 'JSQL - Feedback',
+                        shortTitle: 'Feedback'
+                    }
+                })
+                .state("payment", {
+                    url: "/successful-payment",
+                    templateUrl: "app/controllers/payment/payment.html",
+                    controller: "PaymentController",
+                    controllerAs: "vm",
+                    data: {
+                        requiresLogin: false,
+                        title: 'JSQL - Successful Payment',
+                        shortTitle: 'Successful Payment'
+                    }
                 });
+
             $urlRouterProvider.otherwise('/');
         }
     ])

@@ -3,13 +3,15 @@
 
     angular
         .module("jsql")
-        .controller("ResetController", ["AuthService", "UtilsService", "$stateParams", ResetController]);
+        .controller("ResetController", ["AuthService", "UtilsService", "$stateParams", "$state", ResetController]);
 
     /**
      * @ngInject
      */
-    function ResetController(AuthService, UtilsService, $stateParams) {
+    function ResetController(AuthService, UtilsService, $stateParams, $state) {
         var vm = this;
+
+        vm.isActivation = window.location.href.indexOf("activate") > -1;
 
         vm.changePassword = {};
         vm.messages = {};
@@ -33,7 +35,7 @@
                     }else if (UtilsService.hasErrors(result)) {
                         vm.messages = UtilsService.getErrors(result);
                     } else {
-                        UtilsService.openSuccessModal(translation.passwordChanged, function(){
+                        UtilsService.openSuccessModal(vm.isActivation ? translation.account_activated : translation.passwordChanged, function(){
                             window.location.href = "/login";
                         });
                     }

@@ -33,6 +33,7 @@
             addDeveloperToApplication: addDeveloperToApplication,
             deleteDeveloperWithApplication: deleteDeveloperWithApplication,
             demoteAdmin: demoteAdmin,
+            advanceDeveloper: advanceDeveloper,
             addAdmin: addAdmin,
             builds: builds,
             requests: requests,
@@ -47,8 +48,21 @@
             toggleProduction: toggleProduction,
             buildsChart: buildsChart,
             requestsChart: requestsChart,
-            queriesChart: queriesChart
+            queriesChart: queriesChart,
+            feedback: feedback,
+            verify: verify
         };
+
+        function verify(token){
+            return ApiFactory.post(SERVER_URL + "/api/payment/verify/" + token);
+        }
+
+        function feedback(token, data){
+            return ApiFactory.post(
+                SERVER_URL + "/api/user/feedback/" + token,
+                data
+            );
+        }
 
         function login(loginRequest) {
             return ApiFactory.post(SERVER_URL + "/api/login", loginRequest);
@@ -182,6 +196,10 @@
 
         function addAdmin(data) {
             return ApiFactory.post(SERVER_URL + "/api/app-admin", data);
+        }
+
+        function advanceDeveloper(id) {
+            return ApiFactory.patch(SERVER_URL + "/api/app-dev", id);
         }
 
         function demoteAdmin(id) {

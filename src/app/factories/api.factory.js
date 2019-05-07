@@ -79,7 +79,12 @@
 
                 console.error(err);
 
-                if (err.status !== 401) {
+                if(err.status === -1){
+                    $injector.get('AuthService').deleteSession();
+                    window.location = '/login';
+                }
+
+                if (err.status !== 401 && err.status !== -1) {
                     $injector.get('UtilsService').openFailedModal();
                 }
 

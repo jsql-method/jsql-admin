@@ -11,6 +11,10 @@ var translation = {
     'avatar_maximum_size': 'Maximum file size is 1Mb',
     'something_gone_wrong': 'Ups, something gone wrong',
     'are_you_sure': 'Are you sure?',
+    'are_you_sure_demote_admin' : 'Are you sure? Admin will become developer with privileges to all applications',
+    'demote_admin' : 'Demote admin',
+    'are_you_sure_advance_developer' : 'Are you sure? Developer will become administrator with privileges to all applications',
+    'advance_developer' : 'Advance developer',
     'delete_account': 'Delete account',
     'yes': 'Yes',
     'forgot_password': 'Check your email to set new password',
@@ -44,5 +48,9 @@ var translation = {
     'productionKeyCopiedToClipboard' : 'Production key copied to clipboard',
     'productionKeyInfo' : 'This is production key for production purposes. For development purposes, use your development key',
     'securityInfo' : 'By default, security settings are balanced between performance and data security',
-    'username_unavailable' : 'Provided first name and last name is already in use in this company'
+    'username_unavailable' : 'Provided first name and last name is already in use in this company',
+    'thank_you_feedback' : 'Thank you for feedback',
+    'invalid_dates' : 'Invalid dates provided',
+    'copied_title' : 'Copied',
+    'copied_message' : 'Copied to clipboard'
 };

@@ -8,6 +8,7 @@
 
   > div:first-child {
     position: relative;
+    width: 100%;
   }
 
   .toast {
@@ -18,6 +19,10 @@
         font-weight: 500;
         color: #0c79bc;
       }
+    }
+
+    .toast-body, .toast-header {
+      background: #fff;
     }
 
     .type {
