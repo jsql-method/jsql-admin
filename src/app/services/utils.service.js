@@ -70,9 +70,11 @@
 
         utils.saveToFile = function (data, filename) {
 
+            filename = filename+'.key';
+
             var file = new Blob([data]);
             if (window.navigator.msSaveOrOpenBlob) // IE10+
-                window.navigator.msSaveOrOpenBlob(file, filename+'.key');
+                window.navigator.msSaveOrOpenBlob(file, filename);
             else { // Others
                 var a = document.createElement("a"),
                     url = URL.createObjectURL(file);

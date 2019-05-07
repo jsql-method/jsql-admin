@@ -43,7 +43,7 @@
         }
 
         function saveToFile(){
-            UtilsService.saveToFile(vm.developerKey, 'jsql');
+            UtilsService.saveToFile(vm.application.developerKey, 'jsql');
         }
 
         function deleteApplication() {
