@@ -3,12 +3,12 @@
 
     angular
         .module("jsql")
-        .controller("PaymentController", ["AuthService", "UtilsService", "$state", "$timeout", PaymentController]);
+        .controller("PaymentController", ["EndpointsFactory", "UtilsService", "$state", "$timeout", PaymentController]);
 
     /**
      * @ngInject
      */
-    function PaymentController(AuthService, UtilsService, $state, $timeout) {
+    function PaymentController(EndpointsFactory, UtilsService, $state, $timeout) {
         var vm = this;
 
         vm.info = null;
