@@ -45,5 +45,6 @@ var translation = {
     'productionKeyInfo' : 'This is production key for production purposes. For development purposes, use your development key',
     'securityInfo' : 'By default, security settings are balanced between performance and data security',
     'username_unavailable' : 'Provided first name and last name is already in use in this company',
-    'thank_you_feedback' : 'Thank you for feedback'
+    'thank_you_feedback' : 'Thank you for feedback',
+    'invalid_dates' : 'Invalid dates provided'
 };

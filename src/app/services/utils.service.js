@@ -9,6 +9,27 @@
     function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal) {
         var utils = {};
 
+         utils.isValidDate = function(date){
+            var day = parseInt(date.substring(0,2));
+            var month = parseInt(date.substring(3,5));
+            var year = parseInt(date.substring(6, 10));
+
+            if(day > 31 || day === 0){
+                return false;
+            }
+
+            if(month > 12 || month === 0){
+                return false;
+            }
+
+            if(year < 1900 || year === 0 || year > 2100){
+                return false;
+            }
+
+            return true;
+
+        };
+
         utils.copyToClipboard = function (elementId, modalMessage) {
 
             try {
@@ -206,6 +227,31 @@
                 day = (date.getDate() < 10 ? "0" : "") + date.getDate(),
                 month = (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1),
                 year = 1900 + date.getYear();
+
+
+            // if(!utils.isValidDate(vm.filter.dateFrom) || !utils.isValidDate(vm.filter.dateTo)){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return;
+            // }
+
+            // var _day = parseInt(day);
+            // var _month = parseInt(month);
+            // var _year = parseInt(year);
+            //
+            // if(_day > 31 || _day === 0){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return null;
+            // }
+            //
+            // if(_month > 12 || _month === 0){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return null;
+            // }
+            //
+            // if(_year < 1900 || _year === 0 || _year > 2100){
+            //     utils.openFailedModal(translation.invalid_dates);
+            //     return null;
+            // }
 
             return format
                 .replace("yyyy", year)

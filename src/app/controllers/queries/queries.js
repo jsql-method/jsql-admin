@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $location) {
+    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $timeout) {
         var vm = this;
 
         vm.chartType = 'BASIC';
@@ -53,8 +53,15 @@
 
         init();
 
+        function maskDates(){
+            $('#dateFrom').mask('00-00-0000');
+            $('#dateTo').mask('00-00-0000');
+        }
+
         //--------
         function init() {
+
+            $timeout(maskDates);
 
             if(vm.role !== 'APP_DEV'){
 

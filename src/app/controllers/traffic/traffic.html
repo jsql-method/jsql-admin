@@ -28,7 +28,7 @@
                         <div class="input-group">
                             <input id="dateFrom" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
                                    ng-model="vm.filter.dateFrom" is-open="vm.datePickerOpen.dateFrom" ng-required="true"
-                                   close-text="Close" alt-input-formats="[vm.format]"/>
+                                   close-text="Close" alt-input-formats="[vm.format]" placeholder="dd-MM-yyyy" readonly/>
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-primary" ng-click="vm.open('dateFrom')">
                                     <span class="ion-android-calendar"></span>
@@ -42,7 +42,7 @@
                         <div class="input-group">
                             <input id="dateTo" type="text" class="form-control" uib-datepicker-popup="{{ vm.format }}"
                                    ng-model="vm.filter.dateTo" is-open="vm.datePickerOpen.dateTo" ng-required="true"
-                                   close-text="Close" alt-input-formats="[vm.format]"/>
+                                   close-text="Close" alt-input-formats="[vm.format]" placeholder="dd-MM-yyyy" readonly/>
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-primary" ng-click="vm.open('dateTo')">
                                     <span class="ion-android-calendar"></span>

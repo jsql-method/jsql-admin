@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function BuildsController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService) {
+    function BuildsController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $timeout) {
         var vm = this;
 
         vm.chartType = 'BASIC';
@@ -49,8 +49,15 @@
 
         init();
 
+        function maskDates(){
+            $('#dateFrom').mask('00-00-0000');
+            $('#dateTo').mask('00-00-0000');
+        }
+
         //--------
         function init() {
+
+            $timeout(maskDates);
 
             getApplications().then(function () {
 
