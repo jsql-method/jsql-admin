@@ -112,6 +112,7 @@
                         UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else {
 
+                        AuthService.refreshSession();
                         getDevelopers();
                         backToList();
 
@@ -143,6 +144,7 @@
                     vm.messages = UtilsService.getErrors(result);
                 } else {
 
+                    AuthService.refreshSession();
                     getDevelopers();
                     backToList();
 
