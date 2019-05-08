@@ -210,7 +210,7 @@
                         AuthService.logout()
                             .then(function () {
                                 AuthService.deleteSession();
-                                window.location.href = "/login";
+                                window.location.href = "/login?deactivated=true";
                             })
                             .catch(function (error) {
                                 console.log(error);

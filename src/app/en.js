@@ -52,5 +52,6 @@ var translation = {
     'thank_you_feedback' : 'Thank you for feedback',
     'invalid_dates' : 'Invalid dates provided',
     'copied_title' : 'Copied',
-    'copied_message' : 'Copied to clipboard'
+    'copied_message' : 'Copied to clipboard',
+    'account_deactivated' : 'Account has been removed. Check your email and give us feedback'
 };
