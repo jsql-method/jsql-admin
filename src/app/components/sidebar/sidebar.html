@@ -17,7 +17,7 @@
       <div class="details">
         <div class="name font-weight-bold">{{ vm.session.fullName }}</div>
         <!--<div class="type">{{ vm.session.role }}</div>-->
-        <div class="company">{{ vm.session.companyName }}</div>
+        <div class="company" ng-show="vm.session.companyName !== vm.session.fullName">{{ vm.session.companyName }}</div>
         <!--<div ng-if="vm.role === 'COMPANY_ADMIN'">{{ vm.plan.name }}</div>-->
         <!--<div ng-if="vm.role !== 'APP_DEV'"><span class="icon icon-apps"></span>{{vm.plan.usedApps + '/' + vm.plan.maxApps}}</div>-->
         <!--<div ng-if="vm.role !== 'APP_DEV'"><span class="icon icon-users"></span> {{vm.plan.usedUsers + '/' + vm.plan.maxUsers}}</div>-->
