@@ -1,0 +1,73 @@
+.modal-open:hover {
+  cursor: pointer;
+}
+.messageModal {
+  background-color: #2b2b2b;
+
+  &.error {
+
+    .row {
+      color: #dc0707;
+    }
+
+  }
+
+  &.success {
+
+    .row {
+      color: #0fb70f;
+    }
+
+  }
+
+  .modal-header {
+    border-bottom: 2px solid #ddae0b;
+    background: linear-gradient(50deg, #191919 80%, #2b2b2b 20%);
+
+    .modal-title {
+      color: #ddae0b;
+      display: inline-block;
+      background: none;
+      border: none;
+    }
+
+    button {
+      min-width: 6rem;
+      width: auto;
+      border: 0;
+      background: transparent;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+
+    }
+  }
+
+  .modal-footer {
+    .btn {
+      width: 10rem;
+      height: 34px;
+      padding: 0 10px;
+      margin-left: .5rem;
+      font-weight: bold;
+      background: transparent;
+      border-radius: 0;
+      transition: 0.2s color linear;
+
+      &:focus, &:hover, &:active {
+        color: $primaryColor;
+      }
+
+    }
+  }
+
+  .row {
+    margin: 1rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+}
