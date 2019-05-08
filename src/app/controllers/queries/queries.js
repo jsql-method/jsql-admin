@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $timeout) {
+    function QueriesController(AuthService, EndpointsFactory, DictService, dateFormat, UtilsService, ChartService, $stateParams, $timeout, $uibModal) {
         var vm = this;
 
         vm.chartType = 'BASIC';
@@ -48,9 +48,10 @@
         vm.getStats = getStats;
         vm.getStatsForPage = getStatsForPage;
         vm.createChart = createChart;
-        vm.showInput = showInput;
+        vm.editQuery = editQuery;
         vm.updateQuery = updateQuery;
         vm.copyToClipboard = UtilsService.copyToClipboardText;
+        vm.shortText = UtilsService.shortText;
 
         init();
 
@@ -78,13 +79,36 @@
 
         }
 
-        function showInput(type, query, $event){
-            query[type+'Input'] = true;
+        function editQuery(query){
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                backdrop: 'static',
+                templateUrl: "app/modals/editor/editor.html",
+                controller: "EditorController",
+                controllerAs: "vm",
+                resolve: {
+                    Data: function () {
+                        return {
+                            query: query
+                        };
+                    }
+                }
+            });
+
+            modalInstance.result.then(
+                function (result) {
+                    if (result) {
+                        updateQuery(query);
+                    }
+                },
+                function () {
+                }
+            );
+
         }
 
-        function updateQuery(query, $event){
-            $event.stopPropagation();
-            query.queryInput = false;
+        function updateQuery(query){
 
             EndpointsFactory.updateQuery(query.id, {
                 query: query.query,

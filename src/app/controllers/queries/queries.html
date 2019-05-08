@@ -138,16 +138,8 @@
           <div class="tbody">
             <div ng-repeat="query in vm.data.list.queries track by $index" class="tr">
 
-              <div class="td clickable" ng-click="vm.showInput('query', query)">
-                <span ng-show="!query.queryInput">{{ query.query }}</span>
-
-                <div class="form-group" ng-show="query.queryInput">
-                  <textarea class="form-control" ng-model="query.query"></textarea>
-                  <button type="button" class="btn btn-primary" ng-click="vm.updateQuery(query, $event)">
-                    <span class="ion-checkmark"></span>
-                  </button>
-                </div>
-
+              <div class="td clickable" ng-click="vm.editQuery(query)">
+              {{ vm.shortText(query.query, 40) }}
               </div>
 
               <div class="td medium-size clickable" ng-click="vm.copyToClipboard(query.hash)">

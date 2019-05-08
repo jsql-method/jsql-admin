@@ -1,15 +1,20 @@
-<div class="modal-content">
+<div class="modal-content editorModal">
     <div class="modal-header">
-        <h5 class="modal-title">{{vm.title}}</h5>
+        <h5 class="modal-title">SQL editor</h5>
         <button type="button" class="close" ng-click="vm.closeModal(false)" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p style="text-align: center; color: black;">{{vm.message}}</p>
+        <form class="form" ng-submit="vm.submit()">
+            <div class="form-group">
+                <div id="editor" class="form-control">{{vm.query.query}}</div>
+            </div>
+        </form>
     </div>
     <div class="modal-footer" style="justify-content: center;">
-        <button type="button" class="btn btn-primary" ng-click="vm.closeModal(true)">{{ vm.submit ? vm.submit : 'Ok' }}</button>
-        <button type="button" ng-if="vm.vissibleButtonDelete" ng-click="vm.closeModal(false)" class="btn btn-warning">No</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.submit()">Save query</button>
+        <button type="button" ng-click="vm.closeModal(false)" class="btn btn-warning">Cancel</button>
     </div>
+
 </div>
