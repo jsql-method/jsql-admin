@@ -138,7 +138,7 @@
                         vm.profile = $.extend({}, profileCopy);
                         console.log(profileCopy);
                     }else if (UtilsService.hasErrors(result)) {
-                        vm.messagesChangePassword = UtilsService.getErrors(result);
+                        vm.messagesProfile = UtilsService.getErrors(result);
                     } else {
 
                         EventEmitterService.broadcast(
