@@ -6,8 +6,93 @@
     /**
      * @ngInject
      */
-    function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal, NotificationService) {
+    function UtilsService($rootScope, $state, $stateParams, DictService, EventEmitterService, $location, $uibModal, NotificationService, $timeout) {
         var utils = {};
+
+        utils.waitForNotNull = function(execFn){
+
+            var promise = {
+                execFn: execFn,
+                data: null,
+                fn: [],
+                then: function(callback){
+                    promise.fn.push(callback);
+                    return promise;
+                },
+                ex: function(){
+
+                    $timeout(function(){
+
+                        if(promise.data === null){
+                            promise.ex();
+                            promise.data = execFn();
+                        }
+
+                        if(promise.data != null){
+                            for(var i = 0; i < promise.fn.length; i++){
+                                promise.fn[i](promise.data);
+                            }
+                        }
+
+                    }, 50);
+
+                    return promise;
+
+                }
+            };
+
+            return promise.ex();
+
+        };
+
+        utils.promise = function(execFn){
+
+            var promise = {
+                execFn: execFn,
+                data: null,
+                fn: [],
+                fn2: [],
+                then: function(callback){
+                    promise.fn.push(callback);
+                    return promise;
+                },
+                catch: function(callback){
+                    promise.fn2.push(callback);
+                    return promise;
+                },
+                ex: function(){
+
+                    $timeout(function(){
+
+                        if(promise.data === null){
+                            promise.ex();
+                            execFn().then(function(res){
+                                promise.data = res;
+
+                                for(var i = 0; i < promise.fn.length; i++){
+                                    promise.fn[i](promise.data);
+                                }
+
+                            }).catch(function(err){
+                                promise.data = err;
+
+                                for(var i = 0; i < promise.fn2.length; i++){
+                                    promise.fn2[i](promise.data);
+                                }
+
+                            })
+                        }
+
+                    }, 50);
+
+                    return promise;
+
+                }
+            };
+
+            return promise.ex();
+
+        };
 
          utils.isValidDate = function(date){
             var day = parseInt(date.substring(0,2));

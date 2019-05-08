@@ -95,13 +95,13 @@
           </li>
         </ul>
       </li>
-      <li ng-if="vm.role !== 'APP_DEV'" ng-class="vm.setActive('/developers')">
+      <li ng-if="vm.role !== 'APP_DEV' && vm.plan.maxUsers > 1" ng-class="vm.setActive('/developers')">
         <a href="/developers?rf={{vm.stamp}}"><span class="icon icon-team"></span>Developers</a>
       </li>
       <li ng-class="vm.setActive('/traffic')">
         <a href="/traffic?rf={{vm.stamp}}"><span class="icon icon-traffic"></span>Traffic</a>
       </li>
-      <li ng-if="vm.role !== 'APP_DEV' && vm.role !== 'APP_ADMIN'" ng-class="vm.setActive('/administrators')">
+      <li ng-if="vm.role !== 'APP_DEV' && vm.role !== 'APP_ADMIN' && vm.plan.maxUsers > 1" ng-class="vm.setActive('/administrators')">
         <a href="/administrators?rf={{vm.stamp}}"><span class="icon icon-admins"></span>Admins</a>
       </li>
       <li ng-if="vm.role !== 'APP_DEV' && vm.role !== 'APP_ADMIN'" ng-class="vm.setActive('/billing')">
