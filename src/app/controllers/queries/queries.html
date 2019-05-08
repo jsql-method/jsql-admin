@@ -124,47 +124,47 @@
           No data
         </div>
 
-        <div class="table-flex" ng-if="!vm.loadingTable && vm.data.list.queries.length > 0">
-          <div class="tbody">
-            <div class="tr thead">
-              <div class="td">SQL</div>
-              <div class="td medium-size">Hash<span class="ion ion-ios-copy-outline"></span></div>
-              <div class="td medium-size">Date</div>
-              <div class="td large-size">Developer<span class="ion ion-ios-copy-outline"></span></div>
-              <div class="td small-size">Used</div>
-              <div class="td small-size">Dynamic</div>
-            </div>
-          </div>
-          <div class="tbody">
-            <div ng-repeat="query in vm.data.list.queries track by $index" class="tr">
+        <table  ng-if="!vm.loadingTable && vm.data.list.queries.length > 0">
+          <tbody >
+            <tr class="thead" >
+              <td class="td td-1">SQL</td>
+              <td class="td td-2">Hash<span class="ion ion-ios-copy-outline"></span></td>
+              <td class="td td-3">Date</td>
+              <td class="td td-4">Developer<span class="ion ion-ios-copy-outline"></span></td>
+              <td class="td td-5">Used</td>
+              <td class="td td-6">Dynamic</td>
+            </tr>
+          </tbody>
+          <tbody >
+            <tr ng-repeat="query in vm.data.list.queries track by $index" class="tr">
 
-              <div class="td clickable" ng-click="vm.editQuery(query)">
-              {{ vm.shortText(query.query, 40) }}
-              </div>
+              <td class="td td-1 clickable" ng-click="vm.editQuery(query)">
+              {{ query.query }}
+              </td>
 
-              <div class="td medium-size clickable" ng-click="vm.copyToClipboard(query.hash)">
+              <td class="td td-2 clickable" ng-click="vm.copyToClipboard(query.hash)">
                   {{ query.hash }}
-              </div>
+              </td>
 
-              <div class="td medium-size">
+              <td class="td td-3">
                   {{ query.queryDate | date : 'dd-MM-yyyy hh:mm:ss' }}
-              </div>
+              </td>
 
-              <div class="td large-size clickable" ng-click="vm.copyToClipboard(query.developerName)">
+              <td class="td td-4 clickable" ng-click="vm.copyToClipboard(query.developerName)">
                   {{ query.developerName }}
-              </div>
+              </td>
 
-              <div class="td boolean small-size">
+              <td class="td td-5 boolean">
                 <span class="{{query.used ? 'ion-android-checkbox' : 'ion-android-checkbox-blank'}}"></span>
-              </div>
+              </td>
 
-              <div class="td boolean small-size">
+              <td class="td td-6 boolean">
                 <span class="{{query.dynamic ? 'ion-android-checkbox' : 'ion-android-checkbox-blank'}}"></span>
-              </div>
+              </td>
 
-            </div>
-          </div>
-        </div>
+            </tr>
+          </tbody>
+        </table>
 
         <nav ng-if="vm.data.list.queries.length > 0" class="mt-2">
           <ul class="pagination">
