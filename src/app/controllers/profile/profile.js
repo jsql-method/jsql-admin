@@ -9,6 +9,7 @@
     function ProfileController($timeout, $scope, AuthService, DictService, $uibModal, EventEmitterService, $injector, SERVER_URL, UtilsService) {
         var vm = this;
 
+        vm.role = AuthService.getRole();
         vm.loading = true;
         vm.avatar = null;
         vm.profile = null;
