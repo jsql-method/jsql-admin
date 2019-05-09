@@ -47,96 +47,87 @@
 
   }
 
-  .table-flex {
+  table {
+    width: 100%;
+  }
+
+  tr {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
-    .tbody {
-      display: flex;
-      flex-direction: column;
+    &.thead {
+      font-weight: bold;
 
-      .tr {
-        display: flex;
-        flex-direction: row;
+      > .td {
+        background: #007bff;
+        color: white;
+        border-left: 1px solid #fff;
 
-        &.thead {
-          font-weight: bold;
-
-          > .td {
-            background: #007bff;
-            color: white;
-            border-left: 1px solid #fff;
-
-            &:first-child{
-              border-left: 1px solid #007bff;
-            }
-
-            span {
-              margin-left: 1rem;
-            }
-
-          }
-
+        &:first-child {
+          border-left: 1px solid #007bff;
         }
 
-        &:not(.thead):last-child{
-
-          .td {
-
-            &:first-child {
-              border-bottom-left-radius: 6px;
-            }
-
-            &:last-child {
-              border-bottom-right-radius: 6px;
-            }
-
-          }
-
+        span {
+          margin-left: 1rem;
         }
 
-        .td {
-          //display: flex; -- removed because ellipsis not working
-          flex: 1;
-          align-items: center;
-          justify-content: left;
-          border: 1px solid #dee2e6;
-          padding: .5rem;
-          margin-top: -1px;
-          margin-left: -1px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-          line-height: 3rem;
+      }
 
-          &.boolean {
-            color: #007bff;
-            font-size: 1.5rem
-          }
+    }
 
-          &.small-size {
-            max-width: 6rem;
-          }
+    &:not(.thead):last-child {
 
-          &.medium-size {
-            max-width: 11rem;
-          }
+      .td {
 
-          &.large-size {
-            max-width: 20rem;
-          }
-
-          > .form-group {
-            text-align: center;
-
-            .btn {
-              width: 50%;
-            }
-
-          }
-
+        &:first-child {
+          border-bottom-left-radius: 6px;
         }
 
+        &:last-child {
+          border-bottom-right-radius: 6px;
+        }
+
+      }
+
+    }
+
+    .td {
+      border: 1px solid #dee2e6;
+      padding: .5rem;
+      margin-top: -1px;
+      margin-left: -1px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      line-height: 3rem;
+
+      &.boolean {
+        color: #007bff;
+        font-size: 1.5rem
+      }
+
+      &.td-1 {
+        width: 25%;
+      }
+
+      &.td-2 {
+        width: 20%;
+      }
+
+      &.td-3 {
+        width: 25%;
+      }
+
+      &.td-4 {
+        width: 20%;
+      }
+
+      &.td-5 {
+        width: 5%;
+      }
+
+      &.td-6 {
+        width: 5%;
       }
 
     }

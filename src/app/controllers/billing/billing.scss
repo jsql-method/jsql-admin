@@ -5,6 +5,12 @@
     margin: 1rem;
   }
 
+  .progress-bar.zero {
+    width: 100% !important;
+    text-align: center;
+    background: gray;
+  }
+
   label {
     margin: 1rem;
     margin-bottom: 0;

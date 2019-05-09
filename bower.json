@@ -19,7 +19,8 @@
     "selectize": "^0.12.6",
     "angularjs-dropdown-multiselect": "^1.11.8",
     "chart.js": "chartjs#^2.8.0",
-    "jquery-mask-plugin": "^1.14.15"
+    "jquery-mask-plugin": "^1.14.15",
+    "ace-builds": "^1.4.4"
   },
   "devDependencies": {
     "angular-mocks": "^1.7.5"
