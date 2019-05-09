@@ -61,7 +61,8 @@
 
         provider.refreshSession = function(callback){
 
-            return EndpointsFactory.session().$promise.then(function (result) {
+
+              return EndpointsFactory.session().$promise.then(function (result) {
 
                 if (result.status === 200) {
                     provider.setSession(result.data);

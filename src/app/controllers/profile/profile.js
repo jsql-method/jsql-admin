@@ -9,6 +9,7 @@
     function ProfileController($timeout, $scope, AuthService, DictService, $uibModal, EventEmitterService, $injector, SERVER_URL, UtilsService) {
         var vm = this;
 
+        vm.role = AuthService.getRole();
         vm.loading = true;
         vm.avatar = null;
         vm.profile = null;
@@ -138,7 +139,7 @@
                         vm.profile = $.extend({}, profileCopy);
                         console.log(profileCopy);
                     }else if (UtilsService.hasErrors(result)) {
-                        vm.messagesChangePassword = UtilsService.getErrors(result);
+                        vm.messagesProfile = UtilsService.getErrors(result);
                     } else {
 
                         EventEmitterService.broadcast(
@@ -210,7 +211,7 @@
                         AuthService.logout()
                             .then(function () {
                                 AuthService.deleteSession();
-                                window.location.href = "/login";
+                                window.location.href = "/login?deactivated=true";
                             })
                             .catch(function (error) {
                                 console.log(error);

@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" ng-if="vm.role === 'COMPANY_ADMIN'">
                         <label for="email">Email</label>
                         <input ng-model="vm.profile.email" type="email"
                                class="form-control {{vm.messagesProfile.email ? 'is-invalid' : ''}}" id="email"
@@ -68,7 +68,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-danger" ng-click="vm.deactivateAccount()">Delete account
+                    <button type="button" class="btn btn-danger" ng-if="vm.role === 'COMPANY_ADMIN'" ng-click="vm.deactivateAccount()">Delete account
                     </button>
                 </form>
             </div>

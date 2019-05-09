@@ -48,8 +48,9 @@
 
                         var applicationId = result.data.message;
 
-                        UtilsService.openSuccessModal(translation.applicationCreated, function(){
+                        AuthService.refreshSession();
 
+                        UtilsService.openSuccessModal(translation.applicationCreated, function(){
                             $location.path('/application/'+applicationId);
                         });
                     }

@@ -15,6 +15,11 @@
         vm.password = '';
         vm.generalMessage = '';
 
+
+        if (window.location.href.indexOf('deactivated') > -1) {
+            UtilsService.openSuccessModal(translation.account_deactivated);
+        }
+
         vm.submitLogin = function () {
 
             vm.generalMessage = '';
@@ -41,5 +46,7 @@
                 }
             );
         };
+
+
     }
 })(angular);

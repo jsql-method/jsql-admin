@@ -69,12 +69,18 @@
                         vm.session.role = AuthService.beautifyRole(vm.session.role);
                         vm.role =  AuthService.getRole();
 
+
                     });
 
                 }
 
                 function getPlan() {
-                    vm.plan = AuthService.getPlan();
+
+                    UtilsService.waitForNotNull(AuthService.getPlan).then(function(plan){
+                        vm.plan = plan;
+                        console.log(vm.plan);
+                    });
+
                 }
 
                 function logout() {
