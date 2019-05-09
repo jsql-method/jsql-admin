@@ -8,19 +8,23 @@
       <p class="alert alert-info text-center">
         Your current plan is <b>{{vm.plan.name}}</b>
         <br/>
+        <span ng-show="vm.plan.trial">
+            Your have still {{vm.plan.trialDays}} days of trial before subscription begin
+        <br/>
+        </span>
         Your plan is <b>{{vm.plan.active ? 'active' : 'unactive'}}</b>
       </p>
 
       <label>Used apps</label>
       <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: {{vm.appPercentage}}%;" aria-valuenow="{{vm.appPercentage}}" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {{ vm.plan.usedApps === 0 ? 'zero' : '' }}" role="progressbar" style="width: {{vm.appPercentage}}%;" aria-valuenow="{{vm.appPercentage}}" aria-valuemin="0" aria-valuemax="100">
           {{vm.plan.usedApps + '/' + vm.plan.maxApps}}
         </div>
       </div>
 
       <label>Used users</label>
       <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: {{vm.devPercentage}}%;" aria-valuenow="{{vm.devPercentage}}" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {{ vm.plan.usedUsers === 0 ? 'zero' : '' }}" role="progressbar" style="width: {{vm.devPercentage}}%;" aria-valuenow="{{vm.devPercentage}}" aria-valuemin="0" aria-valuemax="100">
           {{vm.plan.usedUsers + '/' + vm.plan.maxUsers}}
         </div>
       </div>

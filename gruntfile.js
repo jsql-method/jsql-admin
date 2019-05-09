@@ -16,6 +16,9 @@ var options = {
     ],
 
     libsJsFiles: [
+        './bower_components/ace-builds/src-min-noconflict/ace.js',
+        './bower_components/ace-builds/src-min-noconflict/mode-sql.js',
+        './bower_components/ace-builds/src-min-noconflict/theme-sqlserver.js',
         './bower_components/chart.js/dist/Chart.bundle.min.js',
         './bower_components/js-cookie/src/js.cookie.js',
         './bower_components/angular/angular.js',
