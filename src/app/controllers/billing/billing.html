@@ -8,6 +8,10 @@
       <p class="alert alert-info text-center">
         Your current plan is <b>{{vm.plan.name}}</b>
         <br/>
+        <span ng-show="vm.plan.trial">
+            Your have 14 days trial before subscription begin
+        <br/>
+        </span>
         Your plan is <b>{{vm.plan.active ? 'active' : 'unactive'}}</b>
       </p>
 
