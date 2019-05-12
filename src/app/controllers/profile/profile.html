@@ -61,7 +61,7 @@
                         <label for="email">Email</label>
                         <input ng-model="vm.profile.email" type="email"
                                class="form-control {{vm.messagesProfile.email ? 'is-invalid' : ''}}" id="email"
-                               placeholder="{{vm.profile.email}}" autocomplete="off"/>
+                               placeholder="{{vm.profile.email}}" autocomplete="off" readonly/>
                         <div class="invalid-feedback" ng-show="vm.messagesProfile.email">
                             {{ vm.messagesProfile.email }}
                         </div>
