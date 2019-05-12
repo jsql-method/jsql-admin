@@ -41,14 +41,14 @@
 
                         init();
 
+                        AuthService.refreshPlan();
+
                         DictService.refresh("applications");
                         EventEmitterService.broadcast(
                             EventEmitterService.namespace.APPLICATIONS
                         );
 
                         var applicationId = result.data.message;
-
-                        AuthService.refreshSession();
 
                         UtilsService.openSuccessModal(translation.applicationCreated, function(){
                             $location.path('/application/'+applicationId);

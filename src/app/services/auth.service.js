@@ -59,6 +59,14 @@
             });
         };
 
+        provider.refreshPlan = function(){
+
+            EndpointsFactory.plan().$promise.then(function (result) {
+                provider.setPlan(result.data);
+            });
+
+        };
+
         provider.refreshSession = function(callback){
 
 
