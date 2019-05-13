@@ -52,7 +52,7 @@
       </p>
 
       <a
-        href="https://payments.pabbly.com/portal/signin/jsqlbilling"
+        href="{{ vm.accessUrl ? vm.accessUrl : 'https://payments.pabbly.com/portal/signin/jsqlbilling' }}"
         target="_blank"
         class="btn btn-lg btn-primary"
         >Billing portal</a
