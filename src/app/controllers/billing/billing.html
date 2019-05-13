@@ -15,6 +15,10 @@
         Your plan is <b>{{vm.plan.active ? 'active' : 'unactive'}}</b>
       </p>
 
+      <p class="alert alert-warning text-center" ng-show="vm.plan.doubledSubscriptions">
+        Probably you have doubled active subscriptions in Pabbly
+      </p>
+
       <label>Used apps</label>
       <div class="progress">
         <div class="progress-bar {{ vm.plan.usedApps === 0 ? 'zero' : '' }}" role="progressbar" style="width: {{vm.appPercentage}}%;" aria-valuenow="{{vm.appPercentage}}" aria-valuemin="0" aria-valuemax="100">
@@ -48,7 +52,7 @@
       </p>
 
       <a
-        href="https://payments.pabbly.com/portal/signin/jsqlbilling"
+        href="{{ vm.accessUrl ? vm.accessUrl : 'https://payments.pabbly.com/portal/signin/jsqlbilling' }}"
         target="_blank"
         class="btn btn-lg btn-primary"
         >Billing portal</a
