@@ -76,9 +76,8 @@
 
                 function getPlan() {
 
-                    UtilsService.waitForNotNull(AuthService.getPlan).then(function(plan){
-                        vm.plan = plan;
-                        console.log(vm.plan);
+                    AuthService.refreshPlan().then(function(){
+                        vm.plan = AuthService.getPlan();
                     });
 
                 }

@@ -61,7 +61,7 @@
 
         provider.refreshPlan = function(){
 
-            EndpointsFactory.plan().$promise.then(function (result) {
+            return EndpointsFactory.plan().$promise.then(function (result) {
                 provider.setPlan(result.data);
             });
 
