@@ -62,9 +62,9 @@
                     </div>
                     <div class="form-group">
                         <label for="salt">Salt</label>
-                        <input id="salt" type="text" class="form-control {{vm.messages.isSalt ? 'is-invalid' : ''}}" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt || vm.options.saltRandomize"/>
-                        <div class="invalid-feedback" ng-show="vm.messages.isSalt">
-                            {{ vm.messages.isSalt }}
+                        <input id="salt" type="text" class="form-control {{vm.messages.salt ? 'is-invalid' : ''}}" ng-model="vm.options.salt" ng-disabled="!vm.options.isSalt || vm.options.saltRandomize"/>
+                        <div class="invalid-feedback" ng-show="vm.messages.salt">
+                            {{ vm.messages.salt }}
                         </div>
                         <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.prod || vm.options.saltRandomize">
                             Generate

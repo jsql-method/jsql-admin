@@ -11,6 +11,7 @@
 
         vm.loading = true;
 
+        vm.role = AuthService.getRole();
         vm.messages = null;
         vm.developer = {};
         vm.developers = [];
@@ -112,7 +113,7 @@
                         UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else {
 
-                        AuthService.refreshSession();
+                        AuthService.refreshPlan();
                         getDevelopers();
                         backToList();
 
@@ -144,7 +145,7 @@
                     vm.messages = UtilsService.getErrors(result);
                 } else {
 
-                    AuthService.refreshSession();
+                    AuthService.refreshPlan();
                     getDevelopers();
                     backToList();
 

@@ -72,7 +72,7 @@
                         UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else {
 
-                        AuthService.refreshSession();
+                        AuthService.refreshPlan();
                         getAdmins();
                         backToList();
 
@@ -104,7 +104,7 @@
                     vm.messages = UtilsService.getErrors(result);
                 } else {
 
-                    AuthService.refreshSession();
+                    AuthService.refreshPlan();
                     getAdmins();
                     backToList();
 

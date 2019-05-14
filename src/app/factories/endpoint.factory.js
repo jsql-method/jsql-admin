@@ -50,8 +50,13 @@
             requestsChart: requestsChart,
             queriesChart: queriesChart,
             feedback: feedback,
-            verify: verify
+            verify: verify,
+            getPabblyAccess: getPabblyAccess
         };
+
+        function getPabblyAccess(){
+            return ApiFactory.get(SERVER_URL + "/api/user/pabbly-session");
+        }
 
         function verify(token){
             return ApiFactory.post(SERVER_URL + "/api/payment/verify/" + token);
