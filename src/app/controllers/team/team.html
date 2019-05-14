@@ -53,7 +53,7 @@
                                             ng-click="vm.deleteDeveloper(developer.id)">
                                         Delete
                                     </button>
-                                    <button type="button" class="btn btn-primary mr-2"
+                                    <button type="button" class="btn btn-primary mr-2" ng-if="vm.role === 'COMPANY_ADMIN'"
                                             ng-click="vm.advanceDeveloper(developer)">
                                         Advance to admin
                                     </button>
