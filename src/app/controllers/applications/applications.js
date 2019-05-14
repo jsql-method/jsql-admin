@@ -59,6 +59,8 @@
                             UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                         } else {
 
+                            AuthService.refreshPlan();
+
                             DictService.refresh("applications");
                             EventEmitterService.broadcast(
                                 EventEmitterService.namespace.APPLICATIONS
