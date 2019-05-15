@@ -11,6 +11,7 @@
 
         vm.loading = true;
 
+        vm.role = AuthService.getRole();
         vm.messages = null;
         vm.developer = {};
         vm.developers = [];
