@@ -118,11 +118,11 @@
 
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.plainQueriesAllowed ? 'is-invalid' : ''}}" id="plainQueriesAllowed" ng-model="vm.options.plainQueriesAllowed" ng-disabled="vm.options.prod">
-                            <label class="custom-control-label" for="plainQueriesAllowed">Disable hashing for development mode</label>
+                            <input type="checkbox" class="custom-control-input {{vm.messages.allowedPlainQueries ? 'is-invalid' : ''}}" id="allowedPlainQueries" ng-model="vm.options.allowedPlainQueries" ng-disabled="vm.options.prod">
+                            <label class="custom-control-label" for="allowedPlainQueries">Disable hashing for development mode</label>
                         </div>
-                        <div class="invalid-feedback" ng-show="vm.messages.plainQueriesAllowed">
-                            {{ vm.messages.plainQueriesAllowed }}
+                        <div class="invalid-feedback" ng-show="vm.messages.allowedPlainQueries">
+                            {{ vm.messages.allowedPlainQueries }}
                         </div>
                     </div>
 
