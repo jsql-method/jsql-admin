@@ -130,14 +130,25 @@
                         <h6>Production database settings</h6>
 
                         <div class="alert alert-info" role="alert">
-                            Connection URL should have JDBC syntax:
+                            Connection URL should have syntax:
                             <br/>
-                            jdbc:[postgresql;mysql]://[database_host]:[port]/[database_name]
+                            [database_host]:[port]/[database_name]
+                        </div>
+
+                        <div class="input-group">
+
                         </div>
 
                         <div class="form-group">
                             <label for="productionDatabaseOptions.databaseConnectionUrl">Connection URL</label>
-                            <input id="productionDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        {{vm.options.databaseDialect === 'POSTGRES' ? 'jdbc:postgresql://' : 'jdbc:mysql://'}}
+                                    </div>
+                              </div>
+                              <input id="productionDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                            </div>
                             <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionUrl">
                                 {{ vm.messages.productionDatabaseOptions.databaseConnectionUrl }}
                             </div>
@@ -173,14 +184,22 @@
                         <h6>Developers database settings</h6>
 
                         <div class="alert alert-info" role="alert">
-                            Connection URL should have JDBC syntax:
+                            Connection URL should have syntax:
                             <br/>
-                            jdbc:[postgresql;mysql]://[database_host]:[port]/[database_name]
+                            [database_host]:[port]/[database_name]
                         </div>
 
                         <div class="form-group">
                             <label for="developerDatabaseOptions.databaseConnectionUrl">Connection URL</label>
-                            <input id="developerDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        {{vm.options.databaseDialect === 'POSTGRES' ? 'jdbc:postgresql://' : 'jdbc:mysql://'}}
+                                    </div>
+                                </div>
+                                <input id="developerDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                            </div>
                             <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionUrl">
                                 {{ vm.messages.developerDatabaseOptions.databaseConnectionUrl }}
                             </div>
