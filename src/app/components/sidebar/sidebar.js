@@ -38,7 +38,11 @@
                     getImage();
                     getSessionData().then(function(){
                         getApplications().then(function(){
-                            getPlan();
+
+                            if(AuthService.getRole() === 'COMPANY_ADMIN'){
+                                getPlan();
+                            }
+
                             vm.loading = false;
                         });
                     });
