@@ -39,7 +39,7 @@
                     getSessionData().then(function(){
                         getApplications().then(function(){
 
-                            if(AuthService.getRole() === 'COMPANY_ADMIN'){
+                            if(AuthService.getRole() !== 'APP_DEV'){
                                 getPlan();
                             }
 
