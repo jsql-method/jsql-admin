@@ -158,11 +158,16 @@ a.article:hover {
 ----------------------------------------------------- */
 
 #content {
-  width: calc(100% - 250px);
+  width: 100%;
   min-height: 100vh;
   transition: all .3s;
   float: left;
   background: #fafafa;
+
+  &.part-screen {
+    width: calc(100% - 250px);
+  }
+
 }
 
 .btn-info {
