@@ -50,9 +50,10 @@ a:focus {
 ----------------------------------------------------- */
 
 .wrapper {
-  display: flex;
+  display: block;
   width: 100%;
-  align-items: stretch;
+  background: #176db3;
+  float: left;
 }
 
 a[data-toggle="collapse"] {
@@ -157,9 +158,11 @@ a.article:hover {
 ----------------------------------------------------- */
 
 #content {
-  flex: 1;
+  width: calc(100% - 250px);
   min-height: 100vh;
-  transition: all 0.3s;
+  transition: all .3s;
+  float: left;
+  background: #fafafa;
 }
 
 .btn-info {
@@ -721,4 +724,17 @@ h2 {
 
 .uib-datepicker-current {
   border-radius: .2rem !important;
+}
+
+.pagination {
+  .page-item {
+    float: left;
+  }
+}
+
+.pagination {
+  display: table !important;
+}
+.pagination>li {
+  display: table-cell !important;
 }
