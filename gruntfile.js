@@ -92,7 +92,7 @@ module.exports = function (grunt) {
 
         connect: {
             options: {
-                port: 9092,
+                port: 9090,
                 hostname: 'localhost',
                 middleware: function (connect, options, middleware) {
                     middleware.unshift(history());
