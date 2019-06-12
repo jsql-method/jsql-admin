@@ -16,6 +16,7 @@
         vm.application = null;
         vm.productionInfo = translation.applicationInProduction;
         vm.productionKeyInfo = translation.productionKeyInfo;
+        vm.developerKeyInfo = translation.developerKeyInfo;
 
         vm.copyKey = copyKey;
         vm.deleteApplication = deleteApplication;
@@ -42,8 +43,8 @@
             UtilsService.copyToClipboard(id, id === 'applicationKey' ? translation.apiKeyCopiedToClipboard : translation.productionKeyCopiedToClipboard);
         }
 
-        function saveToFile(){
-            UtilsService.saveToFile(vm.application.developerKey, 'jsql');
+        function saveToFile(key){
+            UtilsService.saveToFile(key, 'jsql');
         }
 
         function deleteApplication() {
