@@ -84,29 +84,30 @@
                     localStorage.setItem("LAST_PAGES", JSON.stringify(vm.mostVisited));
                 }
 
-                vm.setVisibleSidebar = function () {
+                // vm.setVisibleSidebar = function () {
+                //
+                //  //   vissibleSidebar = !vissibleSidebar;
+                //     if (!sidebar || !footerSidebar) {
+                //         sidebar = document.getElementById("sidebar-custom");
+                //         footerSidebar = document.getElementById("footer-sidebar");
+                //        // sidebarWidth = sidebar.style.minWidth;
+                //     }
+                //
+                //     console.log('x');
+                //
+                //     if (sidebar.style.width !== zeroWidth) {
+                //         sidebar.style = 'width:'+zeroWidth;
+                //         footerSidebar.style = 'width:'+zeroWidth+';min-width:'+zeroWidth+';';
+                //     } else {
+                //         sidebar.style = '';
+                //         footerSidebar.style = '';
+                //
+                //       // footerSidebar.style.minWidth = sidebarWidth;
+                //       //  footerSidebar.style.width = unsetWidth;
+                //     }
+                //
+                // };
 
-                 //   vissibleSidebar = !vissibleSidebar;
-                    if (!sidebar || !footerSidebar) {
-                        sidebar = document.getElementById("sidebar-custom");
-                        footerSidebar = document.getElementById("footer-sidebar");
-                       // sidebarWidth = sidebar.style.minWidth;
-                    }
-
-                    console.log('x');
-
-                    if (sidebar.style.width !== zeroWidth) {
-                        sidebar.style = 'width:'+zeroWidth;
-                        footerSidebar.style = 'width:'+zeroWidth+';min-width:'+zeroWidth+';';
-                    } else {
-                        sidebar.style = '';
-                        footerSidebar.style = '';
-
-                      // footerSidebar.style.minWidth = sidebarWidth;
-                      //  footerSidebar.style.width = unsetWidth;
-                    }
-
-                };
             }
         };
     }

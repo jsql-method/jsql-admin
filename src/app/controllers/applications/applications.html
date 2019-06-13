@@ -38,12 +38,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="developerKey">Production key</label>
+                        <label for="developerKey">Development key</label>
                         <input type="text" class="form-control" id="developerKey" readonly ng-value="vm.application.developerKey"/>
                     </div>
 
                     <div class="alert alert-info" role="alert">
-                        {{ vm.productionKeyInfo }}
+                        {{ vm.developerKeyInfo }}
                     </div>
 
                     <div class="form-group">
@@ -51,7 +51,27 @@
                             Copy to clipboard
                         </button>
 
-                        <button type="button" class="btn btn-primary" ng-click="vm.saveToFile()">
+                        <button type="button" class="btn btn-primary" ng-click="vm.saveToFile(vm.application.developerKey)">
+                            Download key
+                        </button>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="productionKey">Production key</label>
+                        <input type="text" class="form-control" id="productionKey" readonly ng-value="vm.application.productionKey"/>
+                    </div>
+
+                    <div class="alert alert-info" role="alert">
+                        {{ vm.productionKeyInfo }}
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" ng-click="vm.copyKey('productionKey')">
+                            Copy to clipboard
+                        </button>
+
+                        <button type="button" class="btn btn-primary" ng-click="vm.saveToFile(vm.application.productionKey)">
                             Download key
                         </button>
                     </div>
