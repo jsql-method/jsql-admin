@@ -30,7 +30,7 @@
 
     <jsql-sidebar ng-if="$root.isLogged"></jsql-sidebar>
 
-    <div id="content">
+    <div id="content" class="{{$root.isLogged ? 'part-screen' : ''}}">
         <jsql-navbar ng-if="$root.isLogged"></jsql-navbar>
         <div class="content" ui-view></div>
     </div>
