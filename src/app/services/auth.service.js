@@ -6,7 +6,7 @@
     /**
      * @ngInject
      */
-    function AuthService(EndpointsFactory, $state) {
+    function AuthService(EndpointsFactory, $state, $rootScope, $timeout) {
         var provider = {};
 
         /**
@@ -45,6 +45,12 @@
                         EndpointsFactory.plan().$promise.then(function (result) {
                             provider.setPlan(result.data);
                             $state.go('builds');
+
+                            $rootScope.timed = false;
+                            $timeout(function(){
+                                $rootScope.timed = true;
+                            }, 500);
+
                         });
                     }
 

@@ -20,22 +20,45 @@
                 </div>
 
                 <form ng-submit="vm.submitOptions()">
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.prod ? 'is-invalid' : ''}}" id="prod" ng-change="vm.warningProdMode()" ng-model="vm.options.prod">
-                            <label class="custom-control-label" for="prod">Production mode</label>
+
+                    <div class="outer-form-group">
+                        <h6>Production cache</h6>
+
+                        <div class="alert alert-info" role="alert">
+                            In order to ensure maximum efficiency, we recommend you enable the cache for the production environment
                         </div>
-                        <div class="invalid-feedback" ng-show="vm.messages.prod">
-                            {{ vm.messages.prod }}
+
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input {{vm.messages.prodCache ? 'is-invalid' : ''}}" id="prodCache" ng-change="vm.warningProdMode()" ng-model="vm.options.prodCache">
+                                <label class="custom-control-label" for="prodCache">Enable queries cache</label>
+                            </div>
+                            <div class="invalid-feedback" ng-show="vm.messages.prodCache">
+                             {{ vm.messages.prodCache }}
+                            </div>
                         </div>
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary center-btn" ng-click="vm.purgeQueries()" ng-disabled="vm.purging.queries">Purge queries cache
+                                <span class="ion ion-refresh" ng-show="vm.purging.queries"></span>
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary center-btn" ng-click="vm.purgeOptions()" ng-disabled="vm.purging.options">Purge options cache
+                                <span class="ion ion-refresh" ng-show="vm.purging.options"></span>
+                            </button>
+                        </div>
+
                     </div>
+
                     <div class="form-group">
                         <label for="encodingAlgorithm">Encoding algorithm</label>
-                        <select id="encodingAlgorithm" class="form-control" ng-model="vm.options.encodingAlgorithm" ng-options="option.value as option.name for option in vm.encodingAlgorithmValues" ng-disabled="vm.options.prod"></select>
+                        <select id="encodingAlgorithm" class="form-control" ng-model="vm.options.encodingAlgorithm" ng-options="option.value as option.name for option in vm.encodingAlgorithmValues" ></select>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.isSalt ? 'is-invalid' : ''}}" id="isSalt" ng-model="vm.options.isSalt" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.isSalt ? 'is-invalid' : ''}}" id="isSalt" ng-model="vm.options.isSalt" >
                             <label class="custom-control-label" for="isSalt">Enable salt adding</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.isSalt">
@@ -44,7 +67,7 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.saltAfter ? 'is-invalid' : ''}}" id="saltAfter" ng-model="vm.options.saltAfter" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.saltAfter ? 'is-invalid' : ''}}" id="saltAfter" ng-model="vm.options.saltAfter" ng-disabled="!vm.options.isSalt ">
                             <label class="custom-control-label" for="saltAfter">Add salt after query</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.saltAfter">
@@ -53,7 +76,7 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.saltBefore ? 'is-invalid' : ''}}" id="saltBefore" ng-model="vm.options.saltBefore" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.saltBefore ? 'is-invalid' : ''}}" id="saltBefore" ng-model="vm.options.saltBefore" ng-disabled="!vm.options.isSalt ">
                             <label class="custom-control-label" for="saltBefore">Add salt before query</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.saltBefore">
@@ -66,13 +89,13 @@
                         <div class="invalid-feedback" ng-show="vm.messages.salt">
                             {{ vm.messages.salt }}
                         </div>
-                        <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.prod || vm.options.saltRandomize">
+                        <button type="button" class="btn btn-primary mt-2" ng-click="vm.generateRandomSalt()" ng-disabled="!vm.options.isSalt || vm.options.saltRandomize">
                             Generate
                         </button>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.saltRandomize ? 'is-invalid' : ''}}" id="saltRandomize" ng-model="vm.options.saltRandomize" ng-disabled="!vm.options.isSalt || vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.saltRandomize ? 'is-invalid' : ''}}" id="saltRandomize" ng-model="vm.options.saltRandomize" ng-disabled="!vm.options.isSalt ">
                             <label class="custom-control-label" for="saltRandomize">Generate random salt in-fly</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.saltRandomize">
@@ -81,7 +104,7 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.hashLengthLikeQuery ? 'is-invalid' : ''}}" id="hashLengthLikeQuery" ng-model="vm.options.hashLengthLikeQuery" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.hashLengthLikeQuery ? 'is-invalid' : ''}}" id="hashLengthLikeQuery" ng-model="vm.options.hashLengthLikeQuery" >
                             <label class="custom-control-label" for="hashLengthLikeQuery">Hash length should be equal to query length</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.hashLengthLikeQuery">
@@ -90,21 +113,21 @@
                     </div>
                     <div class="form-group">
                         <label for="hashMinLength">Hash min length</label>
-                        <input id="hashMinLength" type="number" class="form-control {{vm.messages.hashMinLength ? 'is-invalid' : ''}}" ng-model="vm.options.hashMinLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                        <input id="hashMinLength" type="number" class="form-control {{vm.messages.hashMinLength ? 'is-invalid' : ''}}" ng-model="vm.options.hashMinLength" ng-disabled="vm.options.hashLengthLikeQuery "/>
                         <div class="invalid-feedback" ng-show="vm.messages.hashMinLength">
                             {{ vm.messages.hashMinLength }}
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="hashMaxLength">Hash max length</label>
-                        <input id="hashMaxLength" type="number" class="form-control {{vm.messages.hashMaxLength ? 'is-invalid' : ''}}" ng-model="vm.options.hashMaxLength" ng-disabled="vm.options.hashLengthLikeQuery || vm.options.prod"/>
+                        <input id="hashMaxLength" type="number" class="form-control {{vm.messages.hashMaxLength ? 'is-invalid' : ''}}" ng-model="vm.options.hashMaxLength" ng-disabled="vm.options.hashLengthLikeQuery "/>
                         <div class="invalid-feedback" ng-show="vm.messages.hashMaxLength">
                             {{ vm.messages.hashMaxLength }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.removeQueriesAfterBuild ? 'is-invalid' : ''}}" id="removeQueriesAfterBuild" ng-model="vm.options.removeQueriesAfterBuild" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.removeQueriesAfterBuild ? 'is-invalid' : ''}}" id="removeQueriesAfterBuild" ng-model="vm.options.removeQueriesAfterBuild" >
                             <label class="custom-control-label" for="removeQueriesAfterBuild">Remove developer queries after build</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.removeQueriesAfterBuild">
@@ -113,12 +136,17 @@
                     </div>
                     <div class="form-group">
                         <label for="databaseDialect">Database dialect</label>
-                        <select id="databaseDialect" class="form-control" ng-model="vm.options.databaseDialect" ng-options="option.value as option.name for option in vm.databaseDialectValues" ng-disabled="vm.options.prod"></select>
+                        <select id="databaseDialect" class="form-control" ng-model="vm.options.databaseDialect" ng-options="option.value as option.name for option in vm.databaseDialectValues" ></select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group outer-form-group">
+
+                        <div class="alert alert-info" role="alert">
+                            Disabled hashing not working with production either development key
+                        </div>
+
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input {{vm.messages.allowedPlainQueries ? 'is-invalid' : ''}}" id="allowedPlainQueries" ng-model="vm.options.allowedPlainQueries" ng-disabled="vm.options.prod">
+                            <input type="checkbox" class="custom-control-input {{vm.messages.allowedPlainQueries ? 'is-invalid' : ''}}" id="allowedPlainQueries" ng-model="vm.options.allowedPlainQueries" >
                             <label class="custom-control-label" for="allowedPlainQueries">Disable hashing for development mode</label>
                         </div>
                         <div class="invalid-feedback" ng-show="vm.messages.allowedPlainQueries">
@@ -147,7 +175,7 @@
                                         {{vm.options.databaseDialect === 'POSTGRES' ? 'jdbc:postgresql://' : 'jdbc:mysql://'}}
                                     </div>
                               </div>
-                              <input id="productionDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                              <input id="productionDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUrl" />
                             </div>
                             <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionUrl">
                                 {{ vm.messages.productionDatabaseOptions.databaseConnectionUrl }}
@@ -156,7 +184,7 @@
 
                         <div class="form-group">
                             <label for="productionDatabaseOptions.databaseConnectionUsername">Username</label>
-                            <input id="productionDatabaseOptions.databaseConnectionUsername" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUsername ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUsername" ng-disabled="vm.options.prod"/>
+                            <input id="productionDatabaseOptions.databaseConnectionUsername" type="text" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionUsername ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionUsername" />
                             <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionUsername">
                                 {{ vm.messages.productionDatabaseOptions.databaseConnectionUsername }}
                             </div>
@@ -164,7 +192,7 @@
 
                         <div class="form-group">
                             <label for="productionDatabaseOptions.databaseConnectionPassword">Password</label>
-                            <input id="productionDatabaseOptions.databaseConnectionPassword" type="password" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionPassword ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionPassword" ng-disabled="vm.options.prod"/>
+                            <input id="productionDatabaseOptions.databaseConnectionPassword" type="password" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionPassword ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionPassword" />
                             <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionPassword">
                                 {{ vm.messages.productionDatabaseOptions.databaseConnectionPassword }}
                             </div>
@@ -172,7 +200,7 @@
 
                         <div class="form-group">
                             <label for="productionDatabaseOptions.databaseConnectionTimeout">Connection timeout (sec)</label>
-                            <input id="productionDatabaseOptions.databaseConnectionTimeout" type="number" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionTimeout ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionTimeout" ng-disabled="vm.options.prod"/>
+                            <input id="productionDatabaseOptions.databaseConnectionTimeout" type="number" class="form-control {{vm.messages.productionDatabaseOptions.databaseConnectionTimeout ? 'is-invalid' : ''}}" ng-model="vm.options.productionDatabaseOptions.databaseConnectionTimeout" />
                             <div class="invalid-feedback" ng-show="vm.messages.productionDatabaseOptions.databaseConnectionTimeout">
                                 {{ vm.messages.productionDatabaseOptions.databaseConnectionTimeout }}
                             </div>
@@ -198,7 +226,7 @@
                                         {{vm.options.databaseDialect === 'POSTGRES' ? 'jdbc:postgresql://' : 'jdbc:mysql://'}}
                                     </div>
                                 </div>
-                                <input id="developerDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUrl" ng-disabled="vm.options.prod"/>
+                                <input id="developerDatabaseOptions.databaseConnectionUrl" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUrl ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUrl" />
                             </div>
                             <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionUrl">
                                 {{ vm.messages.developerDatabaseOptions.databaseConnectionUrl }}
@@ -207,7 +235,7 @@
 
                         <div class="form-group">
                             <label for="developerDatabaseOptions.databaseConnectionUsername">Username</label>
-                            <input id="developerDatabaseOptions.databaseConnectionUsername" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUsername ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUsername" ng-disabled="vm.options.prod"/>
+                            <input id="developerDatabaseOptions.databaseConnectionUsername" type="text" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionUsername ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionUsername" />
                             <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionUsername">
                                 {{ vm.messages.developerDatabaseOptions.databaseConnectionUsername }}
                             </div>
@@ -215,7 +243,7 @@
 
                         <div class="form-group">
                             <label for="developerDatabaseOptions.databaseConnectionPassword">Password</label>
-                            <input id="developerDatabaseOptions.databaseConnectionPassword" type="password" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionPassword ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionPassword" ng-disabled="vm.options.prod"/>
+                            <input id="developerDatabaseOptions.databaseConnectionPassword" type="password" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionPassword ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionPassword" />
                             <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionPassword">
                                 {{ vm.messages.developerDatabaseOptions.databaseConnectionPassword }}
                             </div>
@@ -223,7 +251,7 @@
 
                         <div class="form-group">
                             <label for="developerDatabaseOptions.databaseConnectionTimeout">Connection timeout (sec)</label>
-                            <input id="developerDatabaseOptions.databaseConnectionTimeout" type="number" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionTimeout ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionTimeout" ng-disabled="vm.options.prod"/>
+                            <input id="developerDatabaseOptions.databaseConnectionTimeout" type="number" class="form-control {{vm.messages.developerDatabaseOptions.databaseConnectionTimeout ? 'is-invalid' : ''}}" ng-model="vm.options.developerDatabaseOptions.databaseConnectionTimeout" />
                             <div class="invalid-feedback" ng-show="vm.messages.developerDatabaseOptions.databaseConnectionTimeout">
                                 {{ vm.messages.developerDatabaseOptions.databaseConnectionTimeout }}
                             </div>
@@ -231,7 +259,7 @@
 
                     </div>
 
-                    <button type="submit" class="btn btn-primary" ng-disabled="vm.options.prod">Save options</button>
+                    <button type="submit" class="btn btn-primary" >Save options</button>
                 </form>
             </div>
         </div>

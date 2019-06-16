@@ -14,7 +14,6 @@
         vm.loading = true;
         vm.id = parseInt($stateParams.id);
         vm.application = null;
-        vm.productionInfo = translation.applicationInProduction;
         vm.productionKeyInfo = translation.productionKeyInfo;
         vm.developerKeyInfo = translation.developerKeyInfo;
 
