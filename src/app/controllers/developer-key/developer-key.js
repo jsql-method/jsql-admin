@@ -11,25 +11,17 @@
     function DeveloperKeyController(AuthService, UtilsService) {
         var vm = this;
 
-        vm.keyType = '';
+        vm.keyType = translation.yourDeveloperKeyForDevelopment;
         vm.developerKey = '';
         vm.role = AuthService.getRole();
 
         vm.copyDeveloperKey = copyDeveloperKey;
-        vm.saveToFile = saveToFile
+        vm.saveToFile = saveToFile;
 
         init();
 
         function init() {
-
             vm.developerKey = AuthService.getDeveloperKey();
-
-            if(vm.role === 'APP_DEV'){
-                vm.keyType = translation.yourDeveloperKeyForDevelopment;
-            }else if(vm.role === 'COMPANY_ADMIN' || vm.role === 'APP_ADMIN'){
-                vm.keyType = translation.onlyDevelopmentKeyProductionKeyForApp;
-            }
-
         }
 
         function copyDeveloperKey() {

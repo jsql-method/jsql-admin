@@ -46,6 +46,8 @@
             updateQuery: updateQuery,
             getImage: getImage,
             toggleProduction: toggleProduction,
+            purgeQueries: purgeQueries,
+            purgeOptions: purgeOptions,
             buildsChart: buildsChart,
             requestsChart: requestsChart,
             queriesChart: queriesChart,
@@ -238,6 +240,14 @@
                 SERVER_URL + "/api/options/" + id,
                 options
             );
+        }
+
+        function purgeQueries(id){
+            return ApiFactory.patch(SERVER_URL + "/api/options/purge-queries/" + id);
+        }
+
+        function purgeOptions(id){
+            return ApiFactory.patch(SERVER_URL + "/api/options/purge-options/" + id);
         }
 
         function toggleProduction(id, data){

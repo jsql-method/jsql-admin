@@ -7,14 +7,23 @@ app.run([
     "$state",
     "EventEmitterService",
     "UtilsService",
+    "$timeout",
     function (
         $rootScope,
         DictService,
         AuthService,
         $state,
         EventEmitterService,
-        UtilsService
+        UtilsService,
+        $timeout
     ) {
+
+
+        $rootScope.timed = false;
+
+        $timeout(function(){
+            $rootScope.timed = true;
+        }, 500);
 
         DictService.load();
 
