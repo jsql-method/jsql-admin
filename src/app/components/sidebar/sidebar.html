@@ -58,8 +58,8 @@
           </li>
           <li ng-repeat="application in vm.applications track by $index" ng-class="vm.setActive('/application/'+application.id)">
             <a href="/application/{{ application.id }}?rf={{vm.stamp}}">
-              <span ng-if="application.prod" class="ion ion-arrow-right-b"></span>
-              <span ng-if="!application.prod" class="ion ion-code"></span>
+              <!--<span ng-if="application.prod" class="ion ion-arrow-right-b"></span>-->
+              <span  class="ion ion-code"></span>
 
               {{application.name}}
             </a>

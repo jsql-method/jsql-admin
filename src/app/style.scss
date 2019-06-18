@@ -743,3 +743,10 @@ h2 {
 .pagination>li {
   display: table-cell !important;
 }
+
+#loader {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
