@@ -18,11 +18,17 @@
         };
         vm.securityInfo = translation.securityInfo;
         vm.application = null;
+        vm.purging = {
+            options: false,
+            queries: false
+        };
 
         vm.toggleProduction = toggleProduction;
         vm.submitOptions = submitOptions;
         vm.generateRandomSalt = generateRandomSalt;
         vm.warningProdMode = warningProdMode;
+        vm.purgeQueries = purgeQueries;
+        vm.purgeOptions = purgeOptions;
 
         init();
 
@@ -42,21 +48,16 @@
 
         function warningProdMode() {
 
-
-            if (vm.options.prod) {
-                vm.options.prod = false;
-                UtilsService.openModal(translation.confirmEnableProductionMode, true, 'Switch', 'warning', translation.productionMode, function () {
-                    vm.options.prod = true;
+            if (vm.options.prodCache) {
+                vm.options.prodCache = true;
+                UtilsService.openModal(translation.confirmDisableProductionMode, true, 'Switch', 'warning', translation.productionMode, function () {
+                    vm.options.prodCache = false;
                     vm.toggleProduction();
                 });
-            } else {
-                vm.options.prod = true;
-                UtilsService.openModal(translation.confirmDisableProductionMode, true, 'Disable', 'warning', translation.productionMode, function () {
-                    vm.options.prod = false;
-                    vm.toggleProduction();
-                });
+            }else{
+                vm.options.prodCache = true;
+                vm.toggleProduction();
             }
-
 
         }
 
@@ -76,17 +77,48 @@
                 })
         }
 
+        function purgeQueries(){
+
+            vm.purging.queries = true;
+
+            ApplicationService.purgeQueries(vm.id)
+                .then(function () {
+
+                    $timeout(function(){
+                        vm.purging.queries = false;
+                    }, 500);
+
+                });
+
+        }
+
+        function purgeOptions(){
+
+            vm.purging.options = true;
+
+            ApplicationService.purgeOptions(vm.id)
+                .then(function () {
+
+                    $timeout(function(){
+                        vm.purging.options = false;
+                    }, 500);
+
+                });
+
+        }
+
+
         function toggleProduction(){
 
             ApplicationService.toggleProduction(vm.id, {
-                prod: vm.options.prod
+                prod: vm.options.prodCache
             })
                 .then(function (result) {
 
                     if (UtilsService.hasGeneralError(result)) {
                         UtilsService.openFailedModal(UtilsService.getGeneralError(result));
                     } else {
-                        UtilsService.openSuccessModal(vm.options.prod ? translation.productionEnabled : translation.productionDisabled);
+                        UtilsService.openSuccessModal(vm.options.prodCache ? translation.productionEnabled : translation.productionDisabled);
 
                         DictService.refresh("applications");
                         EventEmitterService.broadcast(

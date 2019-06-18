@@ -25,8 +25,7 @@
 </head>
 
 <body>
-<div class="wrapper">
-    <jsql-login-form ng-if="!$root.isLogged"></jsql-login-form>
+<div class="wrapper" ng-show="$root.timed">
 
     <jsql-sidebar ng-if="$root.isLogged"></jsql-sidebar>
 
@@ -36,8 +35,19 @@
     </div>
 </div>
 
-<jsql-footer ng-if="$root.isLogged"></jsql-footer>
-<jsql-notifications ng-if="$root.isLogged"></jsql-notifications>
+<div id="loader" ng-show="!$root.timed">
+    <div class="spinner" >
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+
+<jsql-footer ng-if="$root.isLogged" ng-show="$root.timed"></jsql-footer>
+<jsql-notifications ng-if="$root.isLogged" ng-show="$root.timed"></jsql-notifications>
 
 <!-- @if ENV='production' -->
 <script src="bundle.min.js"></script>

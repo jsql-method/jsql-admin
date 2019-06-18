@@ -49,6 +49,14 @@
             return EndpointsFactory.toggleProduction(id, data).$promise;
         };
 
+        provider.purgeQueries = function (id) {
+            return EndpointsFactory.purgeQueries(id).$promise;
+        };
+
+        provider.purgeOptions = function (id) {
+            return EndpointsFactory.purgeOptions(id).$promise;
+        };
+
         provider.updateQuery = function (id, data) {
             return EndpointsFactory.updateQuery(id, data).$promise;
         };
