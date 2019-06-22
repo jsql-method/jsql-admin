@@ -22,30 +22,31 @@
                 <form ng-submit="vm.submitOptions()">
 
                     <div class="outer-form-group">
-                        <h6>Production cache</h6>
+                        <h6>Cache</h6>
 
                         <div class="alert alert-info" role="alert">
-                            In order to ensure maximum efficiency, we recommend you enable the cache for the production environment
+                            In order to ensure maximum efficiency, we have cache enabled in our services.
+                            You can purge it whenever you want to rapidly reset cache.
                         </div>
 
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input {{vm.messages.prodCache ? 'is-invalid' : ''}}" id="prodCache" ng-change="vm.warningProdMode()" ng-model="vm.options.prodCache">
-                                <label class="custom-control-label" for="prodCache">Enable queries cache</label>
-                            </div>
-                            <div class="invalid-feedback" ng-show="vm.messages.prodCache">
-                             {{ vm.messages.prodCache }}
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<div class="custom-control custom-checkbox">-->
+                                <!--<input type="checkbox" class="custom-control-input {{vm.messages.prodCache ? 'is-invalid' : ''}}" id="prodCache" ng-change="vm.warningProdMode()" ng-model="vm.options.prodCache">-->
+                                <!--<label class="custom-control-label" for="prodCache">Enable queries cache</label>-->
+                            <!--</div>-->
+                            <!--<div class="invalid-feedback" ng-show="vm.messages.prodCache">-->
+                             <!--{{ vm.messages.prodCache }}-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group">-->
+                            <!--<button type="button" class="btn btn-primary center-btn" ng-click="vm.purgeQueries()" ng-disabled="vm.purging.queries">Purge queries cache-->
+                                <!--<span class="ion ion-refresh" ng-show="vm.purging.queries"></span>-->
+                            <!--</button>-->
+                        <!--</div>-->
 
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary center-btn" ng-click="vm.purgeQueries()" ng-disabled="vm.purging.queries">Purge queries cache
-                                <span class="ion ion-refresh" ng-show="vm.purging.queries"></span>
-                            </button>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary center-btn" ng-click="vm.purgeOptions()" ng-disabled="vm.purging.options">Purge options cache
+                            <button type="button" class="btn btn-primary center-btn" ng-click="vm.purgeOptions()" ng-disabled="vm.purging.options">Purge cache
                                 <span class="ion ion-refresh" ng-show="vm.purging.options"></span>
                             </button>
                         </div>
