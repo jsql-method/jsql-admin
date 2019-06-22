@@ -2,6 +2,6 @@
 
  angular.module('constants', [])
 
-.constant('SERVER_URL', 'http://localhost:9191')
+.constant('SERVER_URL', 'https://api.jsql.it')
 
 ;

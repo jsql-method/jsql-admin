@@ -87,6 +87,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-preprocess');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ng-constant');
+    grunt.loadNpmTasks('grunt-cache-breaker');
 
     grunt.initConfig({
 
@@ -376,7 +377,19 @@ module.exports = function (grunt) {
                     // PORT: 9027
                 }
             }
+        },
+
+        cachebreaker: {
+            prod: {
+                options: {
+                    match: ['bundle.min.js', 'bundle.min.css'],
+                },
+                files: {
+                    src: ['dist/index.html']
+                }
+            }
         }
+
     });
 
     grunt.registerTask('build', [
@@ -443,7 +456,8 @@ module.exports = function (grunt) {
             'build',
             'concat:bundleCss',
             'concat:bundleJs',
-            'clean:prod'
+            'clean:prod',
+            'cachebreaker:prod'
         ]);
 
     });
