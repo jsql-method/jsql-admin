@@ -1,4 +1,4 @@
-# **Stockgames** - aplikacja webowa
+# **JSQL Admin panel** - aplikacja webowa
 
 ## Instrukcja dla programisty
 
